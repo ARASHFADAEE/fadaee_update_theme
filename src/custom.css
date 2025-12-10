@@ -1,0 +1,66 @@
+/* ===============================
+   Fixed WordPress Code Block Style
+================================= */
+
+/* جلوگیری از خراب شدن استایل توسط Gutenberg */
+.wp-block-code,
+.wp-block-code * {
+    margin: 0 !important;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ساختار اصلی کد */
+pre,
+.wp-block-code,
+pre code,
+.wp-block-code code {
+    background: #1e1e1e !important;
+    color: #f8f8f2 !important;
+    border-radius: 12px;
+    padding: 16px 20px !important;
+    font-size: 14px !important;
+    line-height: 1.8 !important;
+    font-family: Consolas, Monaco, "Fira Code", monospace !important;
+    white-space: pre !important;
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    display: block;
+    direction: ltr;
+    text-align: left;
+}
+
+/* جلوگیری از وارد شدن <p> و <br> اضافی */
+.wp-block-code p,
+pre p,
+pre br {
+    display: none !important;
+}
+
+/* Scrollbar */
+pre::-webkit-scrollbar {
+    height: 8px;
+}
+pre::-webkit-scrollbar-track {
+    background: #2a2a2a;
+    border-radius: 10px;
+}
+pre::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 10px;
+}
+
+/* رسپانسیو */
+@media (max-width: 600px) {
+    pre,
+    .wp-block-code {
+        font-size: 13px !important;
+        padding: 14px !important;
+    }
+}
+
+
+
+.content{
+    line-height: 2rem;
+}

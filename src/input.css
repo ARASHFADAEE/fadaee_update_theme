@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .scroll-container {
+    @apply flex overflow-x-auto gap-6 px-4 -mx-4 sm:-mx-8 sm:px-8;
+    @apply scrollbar-hidden scroll-snap-x-mandatory overscroll-x-contain;
+  }
+  .scroll-item {
+    @apply flex-none w-72 scroll-snap-center;
+  }
+  .photo-tilt:nth-child(odd) { @apply rotate-2; }
+  .photo-tilt:nth-child(even) { @apply -rotate-2; }
+  .avatar { @apply transition-all duration-500 ease-out; }
+  .avatar-border { @apply opacity-0 transition-all duration-500 ease-out; }
+  .scrolled .avatar { @apply scale-70 -translate-y-10; }
+  .scrolled .avatar-border { @apply opacity-100 scale-[1.8] translate-x-1; }
+  .scrollbar-hidden { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hidden::-webkit-scrollbar { display: none; }
+}
+
+
+@layer utilities {
+  .prose {
+    @apply text-lg leading-8 text-zinc-600 dark:text-zinc-400;
+  }
+  .prose :where(h2):not(:where([class~="not-prose"] *)) {
+    @apply mt-16 mb-6 text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 scroll-mt-24;
+  }
+  .prose :where(h3):not(:where([class~="not-prose"] *)) {
+    @apply mt-12 mb-4 text-xl font-semibold text-zinc-800 dark:text-zinc-200;
+  }
+  .prose :where(a):not(:where([class~="not-prose"] *)) {
+    @apply text-red-600 hover:text-red-500 dark:text-red-400 dark:hover:text-red-300 no-underline;
+  }
+  .prose :where(blockquote):not(:where([class~="not-prose"] *)) {
+    @apply border-l-4 border-red-500/30 pl-6 italic text-zinc-700 dark:text-zinc-300;
+  }
+}
