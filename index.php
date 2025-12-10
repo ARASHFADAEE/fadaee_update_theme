@@ -22,14 +22,11 @@
             <!-- Photo Gallery -->
             <div class="mt-20 overflow-hidden py-4">
                 <div class="scroll-container gap-5 sm:gap-8">
-                    <div class="photo-item w-44 sm:w-72 flex-none"><img src="<?php echo THEME_URL?>/assets/img/1761889367151.jpeg" class="photo-tilt aspect-9/10 w-full rounded-2xl object-cover shadow-lg sm:shadow-2xl" /></div>
-                    <div class="photo-item w-44 sm:w-72 flex-none"><img src="<?php echo THEME_URL?>/assets/img/image-2.webp" class="photo-tilt aspect-9/10 w-full rounded-2xl object-cover shadow-lg sm:shadow-2xl" /></div>
-                    <div class="photo-item w-44 sm:w-72 flex-none"><img src="<?php echo THEME_URL?>/assets/img/image-2.webp" class="photo-tilt aspect-9/10 w-full rounded-2xl object-cover shadow-lg sm:shadow-2xl" /></div>
-                    <div class="photo-item w-44 sm:w-72 flex-none"><img src="<?php echo THEME_URL?>/assets/img/image-2.webp" class="photo-tilt aspect-9/10 w-full rounded-2xl object-cover shadow-lg sm:shadow-2xl" /></div>
-                    <div class="photo-item w-44 sm:w-72 flex-none"><img src="<?php echo THEME_URL?>/assets/img/image-2.webp" class="photo-tilt aspect-9/10 w-full rounded-2xl object-cover shadow-lg sm:shadow-2xl" /></div>
-                    <div class="photo-item w-44 sm:w-72 flex-none"><img src="<?php echo THEME_URL?>/assets/img/image-2.webp" class="photo-tilt aspect-9/10 w-full rounded-2xl object-cover shadow-lg sm:shadow-2xl" /></div>
-                    <div class="photo-item w-44 sm:w-72 flex-none"><img src="<?php echo THEME_URL?>/assets/img/image-2.webp" class="photo-tilt aspect-9/10 w-full rounded-2xl object-cover shadow-lg sm:shadow-2xl" /></div>
-                    <div class="photo-item w-44 sm:w-72 flex-none"><img src="<?php echo THEME_URL?>/assets/img/image-2.webp" class="photo-tilt aspect-9/10 w-full rounded-2xl object-cover shadow-lg sm:shadow-2xl" /></div>
+                    <div class="photo-item w-44 sm:w-72 flex-none"><img src="<?php echo THEME_URL?>/assets/img/1.jpg" class="photo-tilt aspect-9/10 w-full rounded-2xl object-cover shadow-lg sm:shadow-2xl" /></div>
+                    <div class="photo-item w-44 sm:w-72 flex-none"><img src="<?php echo THEME_URL?>/assets/img/2.png" class="photo-tilt aspect-9/10 w-full rounded-2xl object-cover shadow-lg sm:shadow-2xl" /></div>
+                    <div class="photo-item w-44 sm:w-72 flex-none"><img src="<?php echo THEME_URL?>/assets/img/3.jpg" class="photo-tilt aspect-9/10 w-full rounded-2xl object-cover shadow-lg sm:shadow-2xl" /></div>
+                    <div class="photo-item w-44 sm:w-72 flex-none"><img src="<?php echo THEME_URL?>/assets/img/4.jpg" class="photo-tilt aspect-9/10 w-full rounded-2xl object-cover shadow-lg sm:shadow-2xl" /></div>
+                    <div class="photo-item w-44 sm:w-72 flex-none"><img src="<?php echo THEME_URL?>/assets/img/5.png" class="photo-tilt aspect-9/10 w-full rounded-2xl object-cover shadow-lg sm:shadow-2xl" /></div>
                 </div>
             </div>
 
