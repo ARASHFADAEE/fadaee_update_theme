@@ -68,7 +68,7 @@ $post_author = the_author_meta('display_name', $post_id);
                             <span class="mx-3">•</span>
                             <span><?php echo get_post_meta($post_id, 'likes_count', true) ?: 0; ?> Likes</span>
                         </div>
-                        <div class="flex gap-4">
+                        <div class="flex gap-4 items-justified-center">
                             <button id="Like_Post" data-post_id="<?php echo $post_id ?>" class="Like_Post flex items-center gap-2 rounded-lg bg-green-50 px-4 py-2 text-sm font-medium text-green-700 hover:bg-green-100 dark:bg-green-900/20 dark:text-green-400 ">
                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
                                 <span><?php echo get_post_meta($post_id, 'likes_count', true) ?: 0; ?></span>
