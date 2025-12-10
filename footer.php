@@ -14,6 +14,5 @@
     if (saved === 'dark' || (!saved && prefersDark)) document.documentElement.classList.add('dark');
     else document.documentElement.classList.remove('dark');
 </script>
-
 </body>
 </html>
