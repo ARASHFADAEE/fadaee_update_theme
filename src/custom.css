@@ -1395,3 +1395,821 @@ table td:has(strong) {
     overflow: hidden !important;
     text-overflow: ellipsis !important;
 }
+
+
+/* ===============================
+   Beautiful Blockquote Styles
+================================= */
+
+/* استایل پایه blockquote */
+blockquote {
+    position: relative;
+    margin: 2rem 0;
+    padding: 1.5rem 1.5rem 1.5rem 4rem;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-right: 4px solid #f59e0b;
+    border-radius: 12px;
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #78350f;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.dark blockquote {
+    background: linear-gradient(135deg, #422006 0%, #713f12 100%);
+    border-right-color: #f59e0b;
+    color: #fde68a;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+/* آیکون نقل قول */
+blockquote:before {
+    content: """;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    font-size: 4rem;
+    line-height: 1;
+    color: #f59e0b;
+    opacity: 0.3;
+    font-family: Georgia, serif;
+}
+
+.dark blockquote:before {
+    color: #fbbf24;
+    opacity: 0.2;
+}
+
+/* پاراگراف داخل blockquote */
+blockquote p {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-style: italic;
+    font-weight: 500;
+    color: inherit !important;
+    font-size: 1.0625rem !important;
+    line-height: 1.8 !important;
+}
+
+/* لینک‌ها داخل blockquote */
+blockquote a {
+    color: #92400e;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.dark blockquote a {
+    color: #fbbf24;
+}
+
+blockquote a:hover {
+    color: #78350f;
+}
+
+.dark blockquote a:hover {
+    color: #fde68a;
+}
+
+/* رسپانسیو برای موبایل */
+@media (max-width: 640px) {
+    blockquote {
+        margin: 1.5rem 0;
+        padding: 1.25rem 1rem 1.25rem 3rem;
+        font-size: 1rem;
+        border-radius: 8px;
+    }
+    
+    blockquote:before {
+        font-size: 3rem;
+        top: 0.25rem;
+        right: 0.5rem;
+    }
+    
+    blockquote p {
+        font-size: 1rem !important;
+        line-height: 1.75 !important;
+    }
+}
+
+/* استایل‌های مختلف blockquote */
+
+/* blockquote با cite */
+blockquote cite {
+    display: block;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    font-style: normal;
+    color: #92400e;
+    font-weight: 600;
+}
+
+.dark blockquote cite {
+    color: #fbbf24;
+}
+
+blockquote cite:before {
+    content: "— ";
+}
+
+/* blockquote داخل prose */
+.prose blockquote,
+.content blockquote {
+    margin: 2rem 0 !important;
+    max-width: 100% !important;
+}
+
+@media (max-width: 640px) {
+    .prose blockquote,
+    .content blockquote {
+        margin: 1.5rem 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+}
+
+/* انواع مختلف blockquote با کلاس‌های اضافی */
+
+/* blockquote سبز (موفقیت) */
+blockquote.success {
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    border-right-color: #10b981;
+    color: #065f46;
+}
+
+.dark blockquote.success {
+    background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+    border-right-color: #34d399;
+    color: #d1fae5;
+}
+
+blockquote.success:before {
+    color: #10b981;
+}
+
+/* blockquote آبی (اطلاعات) */
+blockquote.info {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border-right-color: #3b82f6;
+    color: #1e3a8a;
+}
+
+.dark blockquote.info {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border-right-color: #60a5fa;
+    color: #dbeafe;
+}
+
+blockquote.info:before {
+    color: #3b82f6;
+}
+
+/* blockquote قرمز (هشدار) */
+blockquote.warning {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    border-right-color: #ef4444;
+    color: #7f1d1d;
+}
+
+.dark blockquote.warning {
+    background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+    border-right-color: #f87171;
+    color: #fee2e2;
+}
+
+blockquote.warning:before {
+    color: #ef4444;
+}
+
+/* blockquote خاکستری (نقل قول ساده) */
+blockquote.simple {
+    background: #f4f4f5;
+    border-right-color: #71717a;
+    color: #3f3f46;
+}
+
+.dark blockquote.simple {
+    background: #27272a;
+    border-right-color: #a1a1aa;
+    color: #e4e4e7;
+}
+
+blockquote.simple:before {
+    color: #71717a;
+}
+
+.dark blockquote.simple:before {
+    color: #a1a1aa;
+}
+
+/* حذف margin اضافی */
+blockquote > *:first-child {
+    margin-top: 0 !important;
+}
+
+blockquote > *:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* بهبود خوانایی */
+blockquote {
+    font-feature-settings: "kern" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* انیمیشن ظریف */
+blockquote {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* جلوگیری از overflow */
+blockquote {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+/* اصلاح برای RTL */
+[dir="rtl"] blockquote {
+    border-right: 4px solid #f59e0b;
+    border-left: none;
+    padding-right: 4rem;
+    padding-left: 1.5rem;
+}
+
+[dir="rtl"] blockquote:before {
+    right: 0.75rem;
+    left: auto;
+}
+
+@media (max-width: 640px) {
+    [dir="rtl"] blockquote {
+        padding-right: 3rem;
+        padding-left: 1rem;
+    }
+    
+    [dir="rtl"] blockquote:before {
+        right: 0.5rem;
+    }
+}
+
+
+/* ===============================
+   Index Page (Blog Archive) Responsive Styles
+================================= */
+
+/* بهبود کارت‌های مقاله */
+#post-container article {
+    transition: all 0.3s ease;
+}
+
+#post-container article:hover {
+    transform: translateY(-4px);
+}
+
+/* اصلاح فونت‌ها در موبایل */
+@media (max-width: 640px) {
+    #post-container article h2 {
+        font-size: 1.125rem !important;
+        line-height: 1.4 !important;
+        margin-top: 0.75rem !important;
+    }
+    
+    #post-container article p {
+        font-size: 0.9375rem !important;
+        line-height: 1.6 !important;
+        margin-top: 0.5rem !important;
+    }
+    
+    #post-container article .text-xs {
+        font-size: 0.8125rem !important;
+    }
+    
+    #post-container article .text-sm {
+        font-size: 0.875rem !important;
+    }
+}
+
+/* بهبود meta info */
+#post-container article time,
+#post-container article span {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* اصلاح padding در موبایل */
+@media (max-width: 640px) {
+    #post-container article > div {
+        padding: 1rem !important;
+    }
+}
+
+/* بهبود دکمه "مشاهده بیشتر" */
+#loadmore {
+    min-width: 200px;
+    position: relative;
+    overflow: hidden;
+}
+
+#loadmore:disabled {
+    background: #9ca3af !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+}
+
+#loadmore svg {
+    transition: transform 0.3s ease;
+}
+
+#loadmore:hover svg {
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(4px);
+    }
+}
+
+/* بهبود grid در موبایل */
+@media (max-width: 640px) {
+    #post-container {
+        gap: 1.5rem !important;
+    }
+}
+
+/* بهبود تصاویر */
+#post-container article img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+/* اصلاح line-clamp */
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* بهبود border و shadow */
+@media (max-width: 640px) {
+    #post-container article {
+        border-radius: 0.75rem !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+    }
+}
+
+/* اصلاح arrow direction برای RTL */
+[dir="rtl"] #post-container article .arrow {
+    transform: scaleX(-1);
+}
+
+[dir="rtl"] #post-container article .group\/link:hover .arrow {
+    transform: scaleX(-1) translateX(0.25rem);
+}
+
+/* بهبود فاصله‌گذاری */
+@media (max-width: 640px) {
+    main {
+        padding-top: 2rem !important;
+        padding-bottom: 3rem !important;
+    }
+    
+    header h1 {
+        margin-bottom: 1rem !important;
+    }
+    
+    header p {
+        font-size: 1rem !important;
+        line-height: 1.75 !important;
+    }
+}
+
+/* بهبود خوانایی متن */
+#post-container article p {
+    color: #52525b;
+}
+
+.dark #post-container article p {
+    color: #d4d4d8;
+}
+
+/* اصلاح aspect ratio برای تصاویر */
+.aspect-video {
+    aspect-ratio: 16 / 9;
+}
+
+@media (max-width: 640px) {
+    .aspect-video {
+        aspect-ratio: 16 / 10;
+    }
+}
+
+/* بهبود transition */
+#post-container article a {
+    transition: color 0.2s ease;
+}
+
+/* اصلاح overflow */
+#post-container {
+    overflow: visible;
+}
+
+#post-container article {
+    overflow: hidden;
+}
+
+/* بهبود empty state */
+.col-span-full {
+    grid-column: 1 / -1;
+}
+
+/* اصلاح برای تبلت */
+@media (min-width: 641px) and (max-width: 1024px) {
+    #post-container {
+        gap: 2rem !important;
+    }
+    
+    #post-container article h2 {
+        font-size: 1.25rem !important;
+    }
+    
+    #post-container article p {
+        font-size: 0.9375rem !important;
+    }
+}
+
+/* بهبود focus state */
+#post-container article a:focus {
+    outline: 2px solid #f97316;
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+}
+
+/* اصلاح برای صفحه‌نمایش‌های بزرگ */
+@media (min-width: 1280px) {
+    #post-container {
+        gap: 3rem !important;
+    }
+}
+
+/* بهبود loading state */
+#loadmore.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+#loadmore.loading svg {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ===============================
+   CRITICAL FIX - Override Conflicts
+================================= */
+
+/* اصلاح آیکون‌های header */
+.theme-toggle svg {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    display: block !important;
+    flex-shrink: 0 !important;
+}
+
+/* اطمینان از نمایش صحیح آیکون‌های تم */
+.theme-toggle .sun.dark\:hidden {
+    display: block !important;
+}
+
+.dark .theme-toggle .sun.dark\:hidden {
+    display: none !important;
+}
+
+.theme-toggle .moon.hidden {
+    display: none !important;
+}
+
+.theme-toggle .moon.dark\:block {
+    display: none !important;
+}
+
+.dark .theme-toggle .moon.dark\:block {
+    display: block !important;
+}
+
+@media (max-width: 640px) {
+    .theme-toggle svg {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+    }
+    
+    .theme-toggle {
+        padding: 0.5rem !important;
+        min-width: 2.5rem !important;
+        min-height: 2.5rem !important;
+    }
+}
+
+/* اصلاح navigation */
+nav ul {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+}
+
+nav ul li a {
+    display: block !important;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.875rem !important;
+    white-space: nowrap !important;
+}
+
+@media (max-width: 640px) {
+    nav ul li a {
+        padding: 0.375rem 0.625rem !important;
+        font-size: 0.8125rem !important;
+    }
+}
+
+/* اصلاح دکمه بازگشت */
+.group.inline-flex.items-center {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    font-size: 0.875rem !important;
+}
+
+.group.inline-flex.items-center svg {
+    width: 1rem !important;
+    height: 1rem !important;
+    flex-shrink: 0 !important;
+}
+
+.group.inline-flex.items-center .h-8.w-8 {
+    width: 2rem !important;
+    height: 2rem !important;
+    min-width: 2rem !important;
+    min-height: 2rem !important;
+}
+
+@media (max-width: 640px) {
+    .group.inline-flex.items-center {
+        font-size: 0.8125rem !important;
+    }
+    
+    .group.inline-flex.items-center .h-8.w-8 {
+        width: 1.75rem !important;
+        height: 1.75rem !important;
+        min-width: 1.75rem !important;
+        min-height: 1.75rem !important;
+    }
+}
+
+/* اصلاح دکمه‌های portfolio */
+.inline-flex.items-center.gap-1 {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.375rem !important;
+    white-space: nowrap !important;
+}
+
+.inline-flex.items-center.gap-1 svg {
+    width: 1rem !important;
+    height: 1rem !important;
+    flex-shrink: 0 !important;
+}
+
+@media (max-width: 640px) {
+    .inline-flex.items-center.gap-1 {
+        font-size: 0.875rem !important;
+        gap: 0.25rem !important;
+    }
+    
+    .inline-flex.items-center.gap-1 svg {
+        width: 0.875rem !important;
+        height: 0.875rem !important;
+    }
+}
+
+/* اصلاح footer portfolio cards */
+.flex.items-center.justify-between {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+}
+
+@media (max-width: 640px) {
+    .flex.items-center.justify-between {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.75rem !important;
+    }
+}
+
+/* اصلاح avatar در header */
+.avatar-border {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.h-16.w-16,
+.h-12.w-12 {
+    flex-shrink: 0 !important;
+}
+
+@media (max-width: 640px) {
+    .h-16.w-16 {
+        width: 3rem !important;
+        height: 3rem !important;
+    }
+    
+    .h-12.w-12 {
+        width: 2.5rem !important;
+        height: 2.5rem !important;
+    }
+}
+
+/* حذف تداخل با body */
+body * {
+    font-size: inherit;
+}
+
+body a,
+body button {
+    font-size: inherit !important;
+}
+
+/* اصلاح خاص برای آیکون‌ها */
+svg {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* اصلاح برای flex items */
+.flex.gap-2,
+.flex.gap-4 {
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* اصلاح text size در portfolio */
+.text-sm.font-medium {
+    font-size: 0.875rem !important;
+    line-height: 1.25rem !important;
+}
+
+@media (max-width: 640px) {
+    .text-sm.font-medium {
+        font-size: 0.8125rem !important;
+    }
+}
+
+/* اصلاح برای back button */
+.mb-8.sm\:mb-12 a {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+}
+
+/* Reset برای عناصر خاص */
+header .flex.items-center.justify-between {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+header .flex.items-center.justify-between > * {
+    flex-shrink: 0 !important;
+}
+
+/* اصلاح navigation در موبایل */
+@media (max-width: 640px) {
+    nav {
+        flex: 1 !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+    
+    nav ul {
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+    }
+    
+    nav ul::-webkit-scrollbar {
+        display: none !important;
+    }
+}
+
+/* اصلاح برای تمام SVG ها */
+svg.h-4,
+svg.w-4 {
+    width: 1rem !important;
+    height: 1rem !important;
+}
+
+svg.h-5,
+svg.w-5 {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+}
+
+svg.h-6,
+svg.w-6 {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+}
+
+@media (max-width: 640px) {
+    svg.h-4,
+    svg.w-4 {
+        width: 0.875rem !important;
+        height: 0.875rem !important;
+    }
+    
+    svg.h-5,
+    svg.w-5 {
+        width: 1rem !important;
+        height: 1rem !important;
+    }
+    
+    svg.h-6,
+    svg.w-6 {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+    }
+}
+
+/* اصلاح padding در cards */
+.p-5,
+.p-6 {
+    padding: 1.25rem !important;
+}
+
+@media (min-width: 640px) {
+    .sm\:p-6 {
+        padding: 1.5rem !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .p-5,
+    .p-6,
+    .sm\:p-6 {
+        padding: 1rem !important;
+    }
+}
+
+/* اصلاح gap */
+.gap-1 {
+    gap: 0.25rem !important;
+}
+
+.gap-2 {
+    gap: 0.5rem !important;
+}
+
+.gap-4 {
+    gap: 1rem !important;
+}
+
+@media (max-width: 640px) {
+    .gap-2,
+    .sm\:gap-4 {
+        gap: 0.5rem !important;
+    }
+}
+
+
+
+.hidden{
+    display: none !important;
+}

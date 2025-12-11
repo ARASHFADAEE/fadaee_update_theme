@@ -1,6 +1,6 @@
 <?php get_header()?>
     <!-- Main Content -->
-    <main class="flex-1 px-4 sm:px-8 mt-8 sm:mt-12 pb-16 sm:pb-24">
+    <main class="flex-1 px-4 sm:px-8 mt-8 sm:mt-12 pb-16 sm:pb-24 mx-auto">
         <div class="mx-auto max-w-2xl lg:max-w-5xl">
 
             <!-- Avatar near content -->
@@ -47,6 +47,18 @@
                              loading="lazy" />
                     </div>
                     <div class="photo-item w-40 sm:w-56 md:w-72 flex-none">
+                        <img src="<?php echo THEME_URL?>/assets/img/5.png" 
+                             alt="Gallery image 4" 
+                             class="photo-tilt aspect-9/10 w-full rounded-xl sm:rounded-2xl object-cover shadow-lg sm:shadow-2xl" 
+                             loading="lazy" />
+                    </div>
+                                        <div class="photo-item w-40 sm:w-56 md:w-72 flex-none">
+                        <img src="<?php echo THEME_URL?>/assets/img/5.png" 
+                             alt="Gallery image 4" 
+                             class="photo-tilt aspect-9/10 w-full rounded-xl sm:rounded-2xl object-cover shadow-lg sm:shadow-2xl" 
+                             loading="lazy" />
+                    </div>
+                                        <div class="photo-item w-40 sm:w-56 md:w-72 flex-none">
                         <img src="<?php echo THEME_URL?>/assets/img/5.png" 
                              alt="Gallery image 4" 
                              class="photo-tilt aspect-9/10 w-full rounded-xl sm:rounded-2xl object-cover shadow-lg sm:shadow-2xl" 
