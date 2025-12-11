@@ -137,3 +137,32 @@ q(function($) {
     });
 
 });
+
+
+// ===============================
+// Responsive Tables - Add data-label
+// ===============================
+document.addEventListener("DOMContentLoaded", function () {
+    const tables = document.querySelectorAll('table');
+    
+    tables.forEach(table => {
+        const headers = table.querySelectorAll('thead th');
+        const rows = table.querySelectorAll('tbody tr');
+        
+        // اگر جدول header نداشت، skip کن
+        if (headers.length === 0) return;
+        
+        // برای هر ردیف
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            
+            // برای هر سلول، data-label اضافه کن
+            cells.forEach((cell, index) => {
+                if (headers[index]) {
+                    const headerText = headers[index].textContent.trim();
+                    cell.setAttribute('data-label', headerText);
+                }
+            });
+        });
+    });
+});

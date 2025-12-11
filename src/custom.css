@@ -1266,3 +1266,132 @@ table td:has(strong) {
         background: #27272a;
     }
 }
+
+
+/* ===============================
+   Fix Like/Dislike Buttons on Mobile
+================================= */
+
+/* اصلاح دکمه‌های لایک و دیسلایک */
+@media (max-width: 640px) {
+    /* Container دکمه‌ها */
+    .not-prose .flex.gap-2 {
+        display: flex !important;
+        gap: 0.5rem !important;
+        width: 100% !important;
+    }
+    
+    /* دکمه‌های لایک و دیسلایک */
+    #Like_Post,
+    #DisLike_Post {
+        flex: 1 !important;
+        min-width: 0 !important;
+        max-width: 50% !important;
+        padding: 0.625rem 0.75rem !important;
+        font-size: 0.875rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.375rem !important;
+        white-space: nowrap !important;
+    }
+    
+    /* آیکون‌های داخل دکمه */
+    #Like_Post svg,
+    #DisLike_Post svg {
+        width: 1rem !important;
+        height: 1rem !important;
+        flex-shrink: 0 !important;
+    }
+    
+    /* متن داخل دکمه */
+    #Like_Post span,
+    #DisLike_Post span {
+        font-size: 0.875rem !important;
+        line-height: 1 !important;
+    }
+}
+
+/* برای موبایل‌های خیلی کوچک */
+@media (max-width: 375px) {
+    #Like_Post,
+    #DisLike_Post {
+        padding: 0.5rem 0.625rem !important;
+        font-size: 0.8125rem !important;
+        gap: 0.25rem !important;
+    }
+    
+    #Like_Post svg,
+    #DisLike_Post svg {
+        width: 0.875rem !important;
+        height: 0.875rem !important;
+    }
+    
+    #Like_Post span,
+    #DisLike_Post span {
+        font-size: 0.8125rem !important;
+    }
+}
+
+/* اصلاح Engagement Footer */
+@media (max-width: 640px) {
+    .not-prose {
+        margin-top: 2rem !important;
+        padding-top: 1.5rem !important;
+    }
+    
+    /* اطلاعات بازدید و لایک */
+    .not-prose .text-xs {
+        font-size: 0.8125rem !important;
+        line-height: 1.5 !important;
+    }
+    
+    /* فاصله بین عناصر */
+    .not-prose > div {
+        gap: 1rem !important;
+    }
+}
+
+/* اصلاح برای تبلت */
+@media (min-width: 641px) and (max-width: 768px) {
+    #Like_Post,
+    #DisLike_Post {
+        padding: 0.625rem 1rem !important;
+        font-size: 0.875rem !important;
+    }
+}
+
+/* اطمینان از عدم شکستن layout */
+.not-prose .flex {
+    flex-wrap: wrap !important;
+}
+
+@media (max-width: 640px) {
+    .not-prose .flex.gap-2.sm\:gap-4 {
+        gap: 0.5rem !important;
+    }
+    
+    .not-prose .flex-col.sm\:flex-row {
+        flex-direction: column !important;
+    }
+}
+
+/* بهبود ظاهر دکمه‌ها */
+#Like_Post,
+#DisLike_Post {
+    transition: all 0.2s ease !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+#Like_Post:active,
+#DisLike_Post:active {
+    transform: scale(0.95) !important;
+}
+
+/* جلوگیری از overflow در دکمه‌ها */
+#Like_Post,
+#DisLike_Post {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
