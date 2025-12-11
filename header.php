@@ -6,14 +6,14 @@
     <?php wp_head(); ?>
 
 </head>
-<body class="flex flex-col bg-zinc-50 dark:bg-black text-zinc-900 dark:text-zinc-100">
+<body class="flex flex-col bg-zinc-50 dark:bg-black text-zinc-900 dark:text-zinc-100" style="overflow-x: hidden; max-width: 100vw;">
 
 <!-- Background (optimized - no fixed) -->
 <div class="absolute inset-0 flex justify-center overflow-hidden pointer-events-none -z-10">
     <div class="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent dark:from-black/5"></div>
 </div>
 
-<div class="relative flex w-full flex-col max-w-7xl mx-auto">
+<div class="relative flex w-full flex-col max-w-7xl mx-auto" style="max-width: 100%; overflow-x: hidden;">
     <!-- Header -->
     <header class="will-change-transform relative z-50 flex flex-none flex-col" style="height: var(--header-height); margin-bottom: var(--header-mb);">
         <div class="top-0 z-10 h-16 pt-6">
