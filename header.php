@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,12 +20,19 @@
             <div class="relative mx-auto max-w-7xl px-4 sm:px-8 lg:px-12">
                 <div class="flex items-center justify-between">
 
-                    <!-- Avatar -->
-                    <div class="hidden sm:block h-16 w-16 origin-left transition-transform hover:scale-105 relative">
-                        <div class="avatar-border absolute inset-0 rounded-full ring-4 ring-red-500/20"></div>
-                    </div>
+                    <!-- Theme Toggle (left in RTL = end) -->
+                    <button id="theme-toggle" class="theme-toggle group rounded-full p-2 shadow-lg ring-1 ring-zinc-900/5 backdrop-blur bg-white/0 dark:bg-white/0">
+                        <svg class="sun h-6 w-6 dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                  d="M12 3v1m0 16v1m8.485-12.879l-.707.707M5.222 18.364l-.707.707m13.95-13.95l-.707-.707M5.222 5.222l-.707-.707M12 5.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13z" />
+                        </svg>
+                        <svg class="moon h-6 w-6 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
 
-                    <!-- Navigation -->
+                    <!-- Navigation (center) -->
                     <nav class="md:block">
                         <?php
                         $menus = get_nav_menu_locations();
@@ -47,18 +54,10 @@
                         </ul>
                     </nav>
 
-
-                    <!-- Theme Toggle -->
-                    <button id="theme-toggle" class="theme-toggle group rounded-full p-2 shadow-lg ring-1 ring-zinc-900/5 backdrop-blur bg-white/0 dark:bg-white/0">
-                        <svg class="sun h-6 w-6 dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                  d="M12 3v1m0 16v1m8.485-12.879l-.707.707M5.222 18.364l-.707.707m13.95-13.95l-.707-.707M5.222 5.222l-.707-.707M12 5.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13z" />
-                        </svg>
-                        <svg class="moon h-6 w-6 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                        </svg>
-                    </button>
+                    <!-- Avatar (right in RTL = start) -->
+                    <div class="hidden sm:block h-16 w-16 origin-right transition-transform hover:scale-105 relative">
+                        <div class="avatar-border absolute inset-0 rounded-full ring-4 ring-red-500/20"></div>
+                    </div>
 
 
                 </div>

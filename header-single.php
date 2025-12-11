@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth antialiased">
+<html lang="fa" class="scroll-smooth antialiased">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,19 +16,19 @@
 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
     <!-- Header -->
-    <header class="will-change-transform  z-50 flex flex-none flex-col" style="height: var(--header-height); margin-bottom: var(--header-mb);">
-        <div class="top-0 z-10 h-16 pt-6">
-            <div class="relative mx-auto max-w-7xl px-4 sm:px-8 lg:px-12">
-                <div class="flex items-center justify-between">
+    <header  class="will-change-transform z-50 flex flex-none flex-col" style="height: var(--header-height); margin-bottom: var(--header-mb);">
+        <div class="top-0 z-10 h-14 sm:h-16 pt-4 sm:pt-6">
+            <div class="relative mx-auto max-w-7xl px-3 sm:px-6 lg:px-12">
+                <div class="flex items-center justify-between gap-2 sm:gap-4">
 
                     <!-- Avatar -->
-                    <div class="hidden sm:block h-16 w-16 origin-left transition-transform hover:scale-105 relative">
+                    <div class="hidden sm:block h-12 w-12 sm:h-16 sm:w-16 origin-left transition-transform hover:scale-105 relative flex-shrink-0">
                         <div class="avatar-border absolute inset-0 rounded-full ring-4 ring-red-500/20"></div>
                     </div>
 
                     <!-- Navigation -->
-                    <nav class="md:block">
-                        <ul class="flex rounded-full bg-white/0 px-3 text-sm font-medium shadow-lg ring-1 ring-zinc-900/5 backdrop-blur dark:bg-white/0 p-2">
+                    <nav  class="flex-1 flex justify-center sm:justify-start">
+                        <ul class="flex rounded-full bg-white/90 dark:bg-zinc-800/90 px-2 sm:px-3 text-xs sm:text-sm font-medium shadow-lg ring-1 ring-zinc-900/5 backdrop-blur p-1.5 sm:p-2 gap-0.5 sm:gap-1">
                             <?php
                             $menus=get_nav_menu_locations();
                             $menu_id=$menus['main_menu'];
@@ -40,7 +40,7 @@
 
 
                                 ?>
-                            <li><a href="<?php echo esc_url($item->url) ?>" class="block px-3 py-2 hover:text-red-500 dark:hover:text-red-400 <?= $active?>"><?php echo  esc_html($item->title)?></a></li>
+                            <li><a href="<?php echo esc_url($item->url) ?>" class="block px-2 sm:px-3 py-1.5 sm:py-2 hover:text-red-500 dark:hover:text-red-400 transition-colors rounded-md <?= $active?>"><?php echo  esc_html($item->title)?></a></li>
 
 
                             <?php endforeach; ?>
@@ -48,12 +48,12 @@
                     </nav>
 
                     <!-- Theme Toggle -->
-                    <button id="theme-toggle" class="theme-toggle group rounded-full p-2 shadow-lg ring-1 ring-zinc-900/5 backdrop-blur bg-white/0 dark:bg-white/0">
-                        <svg class="sun h-6 w-6 dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <button id="theme-toggle" class="theme-toggle group rounded-full p-1.5 sm:p-2 shadow-lg ring-1 ring-zinc-900/5 backdrop-blur bg-white/90 dark:bg-zinc-800/90 flex-shrink-0 transition-colors hover:bg-white dark:hover:bg-zinc-700">
+                        <svg class="sun h-5 w-5 sm:h-6 sm:w-6 dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                   d="M12 3v1m0 16v1m8.485-12.879l-.707.707M5.222 18.364l-.707.707m13.95-13.95l-.707-.707M5.222 5.222l-.707-.707M12 5.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13z" />
                         </svg>
-                        <svg class="moon h-6 w-6 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="moon h-5 w-5 sm:h-6 sm:w-6 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                   d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                         </svg>

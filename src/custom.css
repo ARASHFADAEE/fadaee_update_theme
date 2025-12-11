@@ -54,13 +54,598 @@ pre::-webkit-scrollbar-thumb {
 @media (max-width: 600px) {
     pre,
     .wp-block-code {
-        font-size: 13px !important;
-        padding: 14px !important;
+        font-size: 12px !important;
+        padding: 12px !important;
+        border-radius: 8px;
+        margin-left: -1rem;
+        margin-right: -1rem;
+        width: calc(100% + 2rem);
+    }
+}
+
+.content {
+    line-height: 1.75rem;
+}
+
+@media (min-width: 640px) {
+    .content {
+        line-height: 2rem;
+    }
+}
+
+/* Responsive tables */
+.content table {
+    display: block;
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 640px) {
+    .content table {
+        font-size: 0.875rem;
+    }
+}
+
+/* Responsive images */
+.content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Better spacing on mobile */
+@media (max-width: 640px) {
+    .content p {
+        margin-bottom: 1rem;
+        font-size: 1.0625rem; /* 17px - بهترین سایز برای خوانایی فارسی در موبایل */
+        line-height: 1.8;
+    }
+    
+    .content h2 {
+        font-size: 1.5rem;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .content h3 {
+        font-size: 1.25rem;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .content ul,
+    .content ol {
+        padding-right: 1.5rem;
+        padding-left: 0;
+    }
+    
+    .content li {
+        font-size: 1.0625rem; /* 17px */
+        line-height: 1.8;
+        margin-bottom: 0.5rem;
     }
 }
 
 
+/* ===============================
+   Landing Page Styles
+================================= */
 
-.content{
-    line-height: 2rem;
+/* Gradient Hero Background */
+.gradient-hero {
+    background: linear-gradient(135deg, #f4f4f5 0%, #e4e4e7 50%, #f4f4f5 100%);
+}
+
+.dark .gradient-hero {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+}
+
+/* FAQ Links */
+.faq-link {
+    display: block;
+    padding: 1rem 1.5rem;
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.75rem;
+    color: #3f3f46;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.dark .faq-link {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #e5e5e5;
+}
+
+.faq-link:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(249, 115, 22, 0.5);
+    color: #f97316;
+    transform: translateX(-4px);
+}
+
+.dark .faq-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+[dir="rtl"] .faq-link:hover {
+    transform: translateX(4px);
+}
+
+/* Content Box */
+.content-box {
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+}
+
+.dark .content-box {
+    background: rgba(255, 255, 255, 0.02);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 640px) {
+    .content-box {
+        padding: 1.5rem;
+    }
+}
+
+.content-box .title {
+    font-size: 1.875rem;
+    font-weight: 900;
+    color: #18181b;
+    margin-bottom: 1.5rem;
+}
+
+.dark .content-box .title {
+    color: #ffffff;
+}
+
+@media (max-width: 640px) {
+    .content-box .title {
+        font-size: 1.5rem;
+    }
+}
+
+.content-box .intro {
+    font-size: 1.125rem;
+    line-height: 1.75;
+    color: #52525b;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 640px) {
+    .content-box .intro {
+        font-size: 1.0625rem; /* 17px */
+        line-height: 1.8;
+    }
+}
+
+.content-box .intro {
+    font-size: 1.125rem;
+    line-height: 1.75;
+    color: #52525b;
+    margin-bottom: 2rem;
+}
+
+.dark .content-box .intro {
+    color: #d4d4d8;
+}
+
+@media (max-width: 640px) {
+    .content-box .intro {
+        font-size: 1.0625rem; /* 17px */
+        line-height: 1.8;
+    }
+}
+
+/* Factor Sections */
+.factor {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.factor:last-child {
+    border-bottom: none;
+}
+
+.factor-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ea580c;
+    margin-bottom: 1rem;
+}
+
+.dark .factor-title {
+    color: #f97316;
+}
+
+@media (max-width: 640px) {
+    .factor-title {
+        font-size: 1.25rem;
+    }
+}
+
+.factor-text {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #52525b;
+    margin-bottom: 1rem;
+}
+
+.dark .factor-text {
+    color: #d4d4d8;
+}
+
+@media (max-width: 640px) {
+    .factor-text {
+        font-size: 1.0625rem; /* 17px */
+        line-height: 1.8;
+    }
+}
+
+.factor-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+}
+
+.factor-list li {
+    position: relative;
+    padding-right: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: #52525b;
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+.dark .factor-list li {
+    color: #d4d4d8;
+}
+
+@media (max-width: 640px) {
+    .factor-list li {
+        font-size: 1.0625rem; /* 17px */
+        line-height: 1.8;
+        padding-right: 2rem;
+    }
+}
+
+.factor-list li:before {
+    content: "◀";
+    position: absolute;
+    right: 0;
+    color: #f97316;
+    font-size: 0.75rem;
+}
+
+[dir="ltr"] .factor-list li {
+    padding-left: 1.5rem;
+    padding-right: 0;
+}
+
+[dir="ltr"] .factor-list li:before {
+    left: 0;
+    right: auto;
+    content: "▶";
+}
+
+/* Price Cards */
+.plan {
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.dark .plan {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.plan:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(249, 115, 22, 0.5);
+    transform: translateY(-4px);
+}
+
+.dark .plan:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.plan .name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ea580c;
+    margin-bottom: 1rem;
+}
+
+.dark .plan .name {
+    color: #f97316;
+}
+
+.plan .price {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #18181b;
+    margin-bottom: 0.5rem;
+}
+
+.dark .plan .price {
+    color: #ffffff;
+}
+
+.plan .target {
+    font-size: 0.875rem;
+    color: #71717a;
+    margin-bottom: 1rem;
+}
+
+.dark .plan .target {
+    color: #a1a1aa;
+}
+
+.plan .description {
+    font-size: 1rem;
+    color: #52525b;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.dark .plan .description {
+    color: #d4d4d8;
+}
+
+@media (max-width: 640px) {
+    .plan .description {
+        font-size: 1.0625rem; /* 17px */
+        line-height: 1.75;
+    }
+}
+
+.plan .cta {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    background: #f97316;
+    color: #000000;
+    font-weight: 700;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.plan .cta:hover {
+    background: #ea580c;
+    transform: scale(1.02);
+}
+
+/* Details/Accordion */
+.item {
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.75rem;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dark .item {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.item:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.dark .item:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.item summary {
+    font-weight: 600;
+    color: #18181b;
+    list-style: none;
+    cursor: pointer;
+}
+
+.dark .item summary {
+    color: #ffffff;
+}
+
+.item summary::-webkit-details-marker {
+    display: none;
+}
+
+.item .body {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: #52525b;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.dark .item .body {
+    border-top-color: rgba(255, 255, 255, 0.1);
+    color: #d4d4d8;
+}
+
+@media (max-width: 640px) {
+    .item .body {
+        font-size: 1.0625rem; /* 17px */
+        line-height: 1.75;
+    }
+}
+
+.item[open] {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(249, 115, 22, 0.3);
+}
+
+.dark .item[open] {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+
+/* ===============================
+   Persian Font Responsive Optimization
+================================= */
+
+/* بهینه‌سازی فونت فارسی برای موبایل */
+@media (max-width: 640px) {
+    /* تمام متن‌های فارسی در موبایل */
+    body {
+        font-size: 17px !important; /* بهترین سایز برای خوانایی فارسی */
+        line-height: 1.8 !important;
+    }
+    
+    /* پاراگراف‌ها */
+    p {
+        font-size: 17px !important;
+        line-height: 1.8 !important;
+        margin-bottom: 1rem;
+    }
+    
+    /* لیست‌ها */
+    ul li, ol li {
+        font-size: 17px !important;
+        line-height: 1.8 !important;
+    }
+    
+    /* دکمه‌ها و لینک‌ها */
+    a, button {
+        font-size: 16px !important;
+    }
+    
+    /* تیترها */
+    h1 {
+        font-size: clamp(1.75rem, 5vw, 2.5rem) !important;
+        line-height: 1.3 !important;
+    }
+    
+    h2 {
+        font-size: clamp(1.5rem, 4vw, 2rem) !important;
+        line-height: 1.4 !important;
+    }
+    
+    h3 {
+        font-size: clamp(1.25rem, 3.5vw, 1.75rem) !important;
+        line-height: 1.4 !important;
+    }
+    
+    /* جداول */
+    table {
+        font-size: 15px !important;
+    }
+    
+    /* کدها */
+    code:not(pre code) {
+        font-size: 15px !important;
+    }
+}
+
+/* بهینه‌سازی برای تبلت */
+@media (min-width: 641px) and (max-width: 1024px) {
+    body {
+        font-size: 16px;
+        line-height: 1.75;
+    }
+    
+    p {
+        font-size: 16px;
+        line-height: 1.75;
+    }
+}
+
+/* اصلاح prose برای فارسی */
+.prose {
+    font-size: 17px !important;
+    line-height: 1.8 !important;
+}
+
+@media (max-width: 640px) {
+    .prose {
+        font-size: 17px !important;
+        line-height: 1.8 !important;
+    }
+    
+    .prose p {
+        font-size: 17px !important;
+        line-height: 1.8 !important;
+        margin-bottom: 1.25rem !important;
+    }
+    
+    .prose li {
+        font-size: 17px !important;
+        line-height: 1.8 !important;
+    }
+    
+    .prose h2 {
+        font-size: 1.75rem !important;
+        margin-top: 2rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .prose h3 {
+        font-size: 1.5rem !important;
+        margin-top: 1.5rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+    
+    .prose h4 {
+        font-size: 1.25rem !important;
+    }
+}
+
+/* اصلاح فاصله‌گذاری برای RTL */
+@media (max-width: 640px) {
+    [dir="rtl"] .prose ul,
+    [dir="rtl"] .prose ol {
+        padding-right: 1.5rem !important;
+        padding-left: 0 !important;
+    }
+    
+    [dir="rtl"] .content ul,
+    [dir="rtl"] .content ol {
+        padding-right: 1.5rem !important;
+        padding-left: 0 !important;
+    }
+}
+
+/* بهبود خوانایی برای صفحه لندینگ */
+@media (max-width: 640px) {
+    .faq-link {
+        font-size: 16px !important;
+        line-height: 1.6 !important;
+        padding: 1rem 1.25rem !important;
+    }
+    
+    .item summary {
+        font-size: 16px !important;
+        line-height: 1.6 !important;
+    }
+    
+    .plan .name {
+        font-size: 1.375rem !important;
+    }
+    
+    .plan .price {
+        font-size: 1.75rem !important;
+    }
+    
+    .plan .target {
+        font-size: 15px !important;
+    }
+    
+    .plan .cta {
+        font-size: 16px !important;
+        padding: 0.875rem 1.5rem !important;
+    }
 }

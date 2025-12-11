@@ -2,7 +2,7 @@
 
     <footer class="mt-32 border-t border-zinc-200 dark:border-zinc-800 pb-16 pt-10 text-center text-sm text-zinc-500">
         <?php wp_footer();?>
-        <p>© 2025 Arash Fadaee All rights reserved.</p>
+        <p>© ۲۰۲۵ آرش فدایی - <?php echo fadaee_translate('all_rights_reserved'); ?></p>
     </footer>
 
 </div>

@@ -103,3 +103,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+
+
+q(function($) {
+
+    $("#loadmore").on("click", function() {
+
+        let button = $(this);
+        let page   = button.data('page');
+        let ajaxurl = button.data('url');
+
+        button.text("در حال بارگذاری...");
+
+        $.ajax({
+            url: ajaxurl,
+            type: "POST",
+            data: {
+                action: "fadaee_load_more",
+                page: page
+            },
+            success: function(res) {
+                if(res.trim() !== "") {
+                    $("#post-container").append(res);
+                    button.data("page", page + 1);
+                    button.text("مشاهده بیشتر");
+                } else {
+                    button.text("مقاله‌ای دیگر وجود ندارد");
+                    button.prop("disabled", true);
+                }
+            }
+        });
+
+    });
+
+});

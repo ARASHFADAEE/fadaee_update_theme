@@ -1,6 +1,6 @@
 <?php get_header()?>
 
-<main class="flex-1 px-4 sm:px-8 mt-12">
+<main class="flex-1 pt-12 sm:pt-24 pb-16 sm:pb-32 px-4 sm:px-8">
 
 <?php the_content();?>
 
@@ -9,15 +9,3 @@
 
 <?php get_footer()?>
 
-
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Document</title>
-</head>
-<body>
-
-</body>
-</html>

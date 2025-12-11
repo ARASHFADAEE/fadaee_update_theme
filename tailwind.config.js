@@ -1,9 +1,21 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./*.html", "./src/**/*.{html,js}"],
+  content: [
+    "./*.php",
+    "./src/**/*.{html,js,php}",
+    "./templates/**/*.php",
+    "./inc/**/*.php"
+  ],
+    safelist: [
+        'sm:-mx-8',
+        '-mx-4',
+    ],
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['IRANYekan', 'Tahoma', 'Arial', 'sans-serif'],
+      },
       animation: {
         'avatar-shrink': 'avatarShrink 0.5s ease-out forwards'
       },
