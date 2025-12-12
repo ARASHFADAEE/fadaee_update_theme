@@ -166,3 +166,40 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+document.addEventListener("DOMContentLoaded", () => {
+    const toggle = document.getElementById("mobile-menu-toggle");
+    const menuOverlay = document.getElementById("mobile-menu");
+    const navPanel = menuOverlay.querySelector(".mobile-nav");
+    const backdrop = menuOverlay.querySelector(".mobile-menu-backdrop");
+
+    const openMenu = () => {
+        menuOverlay.classList.remove("hidden");
+        document.body.classList.add("menu-open");
+        
+        // Slide panel in
+        navPanel.classList.remove("translate-x-full");
+        navPanel.classList.add("translate-x-0");
+    };
+
+    const closeMenu = () => {
+        document.body.classList.remove("menu-open");
+
+        // Slide panel out
+        navPanel.classList.remove("translate-x-0");
+        navPanel.classList.add("translate-x-full");
+
+        // Hide overlay after animation
+        setTimeout(() => {
+            menuOverlay.classList.add("hidden");
+        }, 250);
+    };
+
+    toggle?.addEventListener("click", openMenu);
+    backdrop?.addEventListener("click", closeMenu);
+
+    // Close with ESC
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeMenu();
+    });
+});
+
