@@ -54,7 +54,7 @@ $comment_count = get_comments_number();
         <?php endif; ?>
 
         <?php if (comments_open()): ?>
-            <div class="mt-10">
+            <div class="mt-10 mx-auto">
                 <?php
                 $current_post_type = get_post_type();
                 $options = arash_get_theme_options();

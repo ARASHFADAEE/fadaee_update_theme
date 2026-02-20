@@ -287,7 +287,9 @@ function arash_get_theme_option_defaults() {
         'social_twitter_icon' => 0,
         'social_dribbble_icon' => 0,
         'home_categories_enabled' => 1,
-        'home_categories_slugs' => 'javascript,php,laravel',
+        'home_category_1' => 0,
+        'home_category_2' => 0,
+        'home_category_3' => 0,
         'education_enabled' => 1,
         'education_order' => 1,
         'work_enabled' => 1,
@@ -841,16 +843,53 @@ function arash_customize_register($wp_customize) {
         'settings' => ARASH_THEME_OPTIONS_KEY . '[home_categories_enabled]',
     ]);
 
-    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[home_categories_slugs]', [
-        'type' => 'option',
-        'default' => 'javascript,php,laravel',
-        'sanitize_callback' => 'arash_sanitize_text',
+    $categories = get_categories([
+        'hide_empty' => false,
     ]);
-    $wp_customize->add_control('arash_theme_options_home_categories_slugs', [
-        'label' => __('اسلاگ دسته‌ها (با کاما جدا شوند)', 'arash-theme'),
+    $category_choices = [
+        0 => __('— انتخاب دسته‌بندی —', 'arash-theme'),
+    ];
+    foreach ($categories as $cat) {
+        $category_choices[$cat->term_id] = $cat->name;
+    }
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[home_category_1]', [
+        'type' => 'option',
+        'default' => $defaults['home_category_1'],
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+    $wp_customize->add_control('arash_theme_options_home_category_1', [
+        'label' => __('دسته‌بندی اول صفحه اصلی', 'arash-theme'),
         'section' => 'arash_theme_section_home_categories',
-        'type' => 'text',
-        'settings' => ARASH_THEME_OPTIONS_KEY . '[home_categories_slugs]',
+        'type' => 'select',
+        'choices' => $category_choices,
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[home_category_1]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[home_category_2]', [
+        'type' => 'option',
+        'default' => $defaults['home_category_2'],
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+    $wp_customize->add_control('arash_theme_options_home_category_2', [
+        'label' => __('دسته‌بندی دوم (اختیاری)', 'arash-theme'),
+        'section' => 'arash_theme_section_home_categories',
+        'type' => 'select',
+        'choices' => $category_choices,
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[home_category_2]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[home_category_3]', [
+        'type' => 'option',
+        'default' => $defaults['home_category_3'],
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+    $wp_customize->add_control('arash_theme_options_home_category_3', [
+        'label' => __('دسته‌بندی سوم (اختیاری)', 'arash-theme'),
+        'section' => 'arash_theme_section_home_categories',
+        'type' => 'select',
+        'choices' => $category_choices,
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[home_category_3]',
     ]);
     $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[education_enabled]', [
         'type' => 'option',
@@ -1797,7 +1836,5 @@ add_action('save_post_testimonial', 'arash_save_testimonial_meta_box');
     <?php
 }
 add_action('wp_footer', 'classic_table_responsive_script');
-
-
 
 

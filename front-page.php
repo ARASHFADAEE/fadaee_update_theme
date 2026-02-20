@@ -391,10 +391,20 @@
 
         <?php
         $home_categories_enabled = arash_get_theme_option('home_categories_enabled');
-        $home_categories_slugs = arash_get_theme_option('home_categories_slugs');
+        $home_category_1 = (int) arash_get_theme_option('home_category_1');
+        $home_category_2 = (int) arash_get_theme_option('home_category_2');
+        $home_category_3 = (int) arash_get_theme_option('home_category_3');
         ?>
 
-        <?php if ($home_categories_enabled && !empty($home_categories_slugs)): ?>
+        <?php
+        $home_category_ids = array_unique(array_filter([
+            $home_category_1,
+            $home_category_2,
+            $home_category_3,
+        ]));
+        ?>
+
+        <?php if ($home_categories_enabled && !empty($home_category_ids)): ?>
         <section class="w-full py-20 bg-gradient-to-b from-zinc-100 to-white dark:from-zinc-900 dark:to-black">
             <div class="max-w-6xl mx-auto px-6">
 
@@ -404,11 +414,9 @@
                 </div>
 
                 <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <?php
-                    $slugs = array_filter(array_map('trim', explode(',', $home_categories_slugs)));
-                    foreach ($slugs as $slug):
-                        $term = get_category_by_slug($slug);
-                        if (!$term) {
+                    <?php foreach ($home_category_ids as $cat_id):
+                        $term = get_category($cat_id);
+                        if (!$term || is_wp_error($term)) {
                             continue;
                         }
                         $term_link = get_term_link($term);
