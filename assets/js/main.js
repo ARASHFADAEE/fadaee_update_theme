@@ -72,8 +72,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    updateIcon();
-
     // کلیک روی دکمه
     toggleBtn.addEventListener('click', function () {
         html.classList.toggle('dark');
@@ -83,23 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             localStorage.setItem('theme_fadaee','light');
         }
-
-        updateIcon();
     });
-
-    // آپدیت آیکون‌ها
-    function updateIcon() {
-        const sun = toggleBtn.querySelector('.sun');
-        const moon = toggleBtn.querySelector('.moon');
-
-        if(html.classList.contains('dark')) {
-            if (sun) sun.classList.remove('hidden');
-            if (moon) moon.classList.add('hidden');
-        } else {
-            if (sun) sun.classList.add('hidden');
-            if (moon) moon.classList.remove('hidden');
-        }
-    }
 
 });
 
