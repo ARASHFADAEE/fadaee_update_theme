@@ -455,7 +455,7 @@
 
                 <a href="<?php echo get_permalink(get_option('page_for_posts')); ?>"
                    class="text-sm sm:text-base font-medium text-red-600 hover:text-red-500 dark:text-red-400 dark:hover:text-red-300 transition-colors">
-                    <?php echo fadaee_translate('view_all'); ?> ←
+                    ←<?php echo fadaee_translate('view_all'); ?> 
                 </a>
             </div>
 
