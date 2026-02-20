@@ -1,4 +1,3 @@
-
 <?php get_header('single')?>
 
 
@@ -14,7 +13,7 @@ $post_author = the_author_meta('display_name', $post_id);
 
 ?>
     <!-- Main Article Content -->
-    <main class="flex-1 pt-12 sm:pt-24 pb-16 sm:pb-32 px-4 sm:px-8">
+    <main class="article-content flex-1 pt-12 sm:pt-24 pb-16 sm:pb-32 px-4 sm:px-8 ">
         <div class="mx-auto max-w-2xl lg:max-w-4xl">
 
             <!-- Back Button -->
@@ -80,6 +79,51 @@ $post_author = the_author_meta('display_name', $post_id);
                         </div>
                     </div>
                 </div>
+
+                <?php
+                if (comments_open() || get_comments_number()) {
+                    comments_template();
+                }
+                ?>
+
+                <!-- Navigation -->
+            <div class="mt-12 sm:mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+                <div class="flex flex-col sm:flex-row justify-between gap-6">
+                    <?php
+                    $prev_post = get_previous_post();
+                    $next_post = get_next_post();
+                    ?>
+                    
+                    <?php if ($prev_post) : ?>
+                        <a href="<?php echo get_permalink($prev_post); ?>" class="group flex-1 p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition border border-zinc-200 dark:border-zinc-800">
+                            <div class="text-xs text-zinc-500 dark:text-zinc-500 mb-1 flex items-center gap-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                                    <path fill-rule="evenodd" d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z" clip-rule="evenodd" />
+                                </svg>
+                                مقاله قبلی
+                            </div>
+                            <div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-red-500 dark:group-hover:text-red-400 transition">
+                                <?php echo get_the_title($prev_post); ?>
+                            </div>
+                        </a>
+                    <?php endif; ?>
+                    
+                    <?php if ($next_post) : ?>
+                        <a href="<?php echo get_permalink($next_post); ?>" class="group flex-1 p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition border border-zinc-200 dark:border-zinc-800 text-left">
+                            <div class="text-xs text-zinc-500 dark:text-zinc-500 mb-1 flex items-center gap-1 justify-end">
+                                مقاله بعدی
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                                    <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-red-500 dark:group-hover:text-red-400 transition text-right">
+                                <?php echo get_the_title($next_post); ?>
+                            </div>
+                        </a>
+                    <?php endif; ?>
+                </div>
+            </div>
+
             </article>
         </div>
     </main>

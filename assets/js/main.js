@@ -93,11 +93,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const moon = toggleBtn.querySelector('.moon');
 
         if(html.classList.contains('dark')) {
-            sun.classList.add('hidden');
-            moon.classList.remove('hidden');
+            if (sun) sun.classList.remove('hidden');
+            if (moon) moon.classList.add('hidden');
         } else {
-            sun.classList.remove('hidden');
-            moon.classList.add('hidden');
+            if (sun) sun.classList.add('hidden');
+            if (moon) moon.classList.remove('hidden');
         }
     }
 
@@ -171,12 +171,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const menuOverlay = document.getElementById("mobile-menu");
     const navPanel = menuOverlay.querySelector(".mobile-nav");
     const backdrop = menuOverlay.querySelector(".mobile-menu-backdrop");
+    const closeBtn = document.getElementById("mobile-menu-close");
 
     const openMenu = () => {
         menuOverlay.classList.remove("hidden");
         document.body.classList.add("menu-open");
-        
-        // Slide panel in
+
         navPanel.classList.remove("translate-x-full");
         navPanel.classList.add("translate-x-0");
     };
@@ -184,11 +184,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeMenu = () => {
         document.body.classList.remove("menu-open");
 
-        // Slide panel out
         navPanel.classList.remove("translate-x-0");
         navPanel.classList.add("translate-x-full");
 
-        // Hide overlay after animation
         setTimeout(() => {
             menuOverlay.classList.add("hidden");
         }, 250);
@@ -196,10 +194,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     toggle?.addEventListener("click", openMenu);
     backdrop?.addEventListener("click", closeMenu);
+    closeBtn?.addEventListener("click", closeMenu);
 
-    // Close with ESC
+    // Close menu when ESC is pressed
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") closeMenu();
     });
 });
 
+document.querySelectorAll('.submenu-toggle').forEach(toggle => {
+    toggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        const submenu = this.closest('li').querySelector('.mobile-submenu');
+        if (!submenu) return;
+
+        const isHidden = submenu.classList.contains('hidden');
+        submenu.classList.toggle('hidden');
+
+        const icon = this.querySelector('svg');
+        if (icon) {
+            icon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        this.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+    });
+});

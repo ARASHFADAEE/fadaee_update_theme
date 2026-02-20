@@ -145,6 +145,12 @@ while (have_posts()) : the_post();
                 </div>
             <?php endif; ?>
 
+            <?php
+            if (comments_open() || get_comments_number()) {
+                comments_template();
+            }
+            ?>
+
             <!-- Navigation -->
             <div class="mt-12 sm:mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-800">
                 <div class="flex flex-col sm:flex-row justify-between gap-6">

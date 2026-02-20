@@ -37,8 +37,8 @@ get_header();
                     <?php foreach ($categories as $category) : ?>
                         <a href="<?php echo get_term_link($category); ?>" 
                            class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition <?php echo is_tax('portfolio_category', $category->term_id) ? 'bg-red-500 text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'; ?>">
+                           <span class="mr-1.5 text-xs opacity-75">(<?php echo $category->count; ?>)</span>
                             <?php echo esc_html($category->name); ?>
-                            <span class="mr-1.5 text-xs opacity-75">(<?php echo $category->count; ?>)</span>
                         </a>
                     <?php endforeach; ?>
                 </div>
@@ -54,6 +54,7 @@ get_header();
                     $project_url = get_post_meta($post_id, '_project_url', true);
                     $project_technologies = get_post_meta($post_id, '_project_technologies', true);
                     $categories = get_the_terms($post_id, 'portfolio_category');
+                    $comments = get_comments_number($post_id);
                 ?>
                     <article class="group relative flex flex-col bg-white dark:bg-zinc-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-zinc-200 dark:border-zinc-800">
                         
@@ -133,15 +134,24 @@ get_header();
                                         <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
                                     </svg>
                                 </a>
-                                
-                                <?php if ($project_url) : ?>
-                                    <a href="<?php echo esc_url($project_url); ?>" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300 transition">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
-                                            <path fill-rule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z" clip-rule="evenodd" />
-                                            <path fill-rule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clip-rule="evenodd" />
+
+                                <div class="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400">
+                                    <?php if ($project_url) : ?>
+                                        <a href="<?php echo esc_url($project_url); ?>" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300 transition">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                                                <path fill-rule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z" clip-rule="evenodd" />
+                                                <path fill-rule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clip-rule="evenodd" />
+                                            </svg>
+                                        </a>
+                                    <?php endif; ?>
+
+                                    <div class="flex items-center gap-1">
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h6m5 8l-4.586-4.586A2 2 0 0012.172 15H6a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v6a2 2 0 01-2 2h-1.172A2 2 0 0016 17.414L18.586 20z" />
                                         </svg>
-                                    </a>
-                                <?php endif; ?>
+                                        <span><?php echo fadaee_persian_numbers($comments); ?></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </article>

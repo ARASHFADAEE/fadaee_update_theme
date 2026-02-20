@@ -2,6 +2,7 @@
 $post_id = get_the_ID();
 $views = fadaee_get_post_views($post_id);
 $likes = get_post_meta($post_id, 'likes_count', true) ?: 0;
+$comments = get_comments_number($post_id);
 ?>
 
 <article class="group relative flex flex-col">
@@ -28,6 +29,16 @@ $likes = get_post_meta($post_id, 'likes_count', true) ?: 0;
 
             <span>•</span>
             <span><?php echo fadaee_persian_numbers($views); ?> <?php echo fadaee_translate('views'); ?></span>
+
+            <?php if ($comments > 0): ?>
+                <span>•</span>
+                <span class="flex items-center gap-1">
+                    <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h6m5 8l-4.586-4.586A2 2 0 0012.172 15H6a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v6a2 2 0 01-2 2h-1.172A2 2 0 0016 17.414L18.586 20z" />
+                    </svg>
+                    <?php echo fadaee_persian_numbers($comments); ?>
+                </span>
+            <?php endif; ?>
 
             <?php if ($likes > 0): ?>
                 <span>•</span>

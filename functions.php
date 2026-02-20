@@ -4,6 +4,7 @@
 
 define('THEME_DIR', get_template_directory());
 define('THEME_URL', get_template_directory_uri());
+define('ARASH_THEME_OPTIONS_KEY', 'arash_theme_options');
 
 
 //support theme
@@ -228,7 +229,7 @@ function fadaee_translate($key) {
         'no_posts' => 'پستی یافت نشد',
         'all_rights_reserved' => 'تمامی حقوق محفوظ است',
         'senior_web_developer' => 'توسعه‌دهنده ارشد وب و متخصص PHP',
-        'intro_text' => 'سلام! من آرش فدایی هستم، یک توسعه‌دهنده وب با بیش از 10 سال تجربه در طراحی و توسعه وب‌سایت‌ها و اپلیکیشن‌های وب. علاقه‌مند به یادگیری تکنولوژی‌های جدید و به اشتراک‌گذاری دانش.',
+        'intro_text' => 'سلام! من آرش فدایی هستم، یک توسعه‌دهنده وب با بیش از 6 سال تجربه در طراحی و توسعه وب‌سایت‌ها و اپلیکیشن‌های وب. علاقه‌مند به یادگیری تکنولوژی‌های جدید و به اشتراک‌گذاری دانش.',
         'everything_more' => 'همه چیز و کمی بیشتر',
         'blog_description' => 'یادداشت‌ها و مقالاتی درباره برنامه‌نویسی، توسعه وب، و تجربیات شخصی من در دنیای تکنولوژی.',
     ];
@@ -254,6 +255,765 @@ function fadaee_persian_numbers($number) {
     return str_replace($english, $persian, (string)$number);
 }
 
+
+function arash_get_theme_option_defaults() {
+    return [
+        'general_logo' => 0,
+        'general_favicon' => 0,
+        'general_copyright' => 'تمامی حقوق برای آرش فدایی محفوظ است.',
+        'general_google_analytics_id' => '',
+        'hero_headline' => 'توسعه‌دهنده ارشد وب و متخصص PHP',
+        'hero_subheadline' => 'سلام! من آرش فدایی هستم، یک توسعه‌دهنده وب با بیش از ۶ سال تجربه در طراحی و توسعه وب‌سایت‌ها و اپلیکیشن‌های وب.',
+        'hero_primary_button_label' => 'همکاری با من',
+        'hero_primary_button_url' => '',
+        'hero_secondary_button_label' => 'مشاهده رزومه',
+        'hero_secondary_button_url' => '',
+        'hero_background_type' => 'color',
+        'hero_background_color' => '#f97316',
+        'hero_background_color_light' => '#f97316',
+        'hero_background_color_dark' => '#020617',
+        'hero_background_image' => 0,
+        'hero_avatar_id' => 0,
+        'primary_color' => '#f97316',
+        'accent_color' => '#ef4444',
+        'font_family' => 'IRANYekan',
+        'social_github' => '',
+        'social_linkedin' => '',
+        'social_twitter' => '',
+        'social_dribbble' => '',
+        'social_email' => '',
+        'social_github_icon' => 0,
+        'social_linkedin_icon' => 0,
+        'social_twitter_icon' => 0,
+        'social_dribbble_icon' => 0,
+        'home_categories_enabled' => 1,
+        'home_categories_slugs' => 'javascript,php,laravel',
+        'education_enabled' => 1,
+        'education_order' => 1,
+        'work_enabled' => 1,
+        'work_order' => 2,
+        'portfolio_items_per_page' => 6,
+        'portfolio_layout' => 'grid',
+        'blog_enabled' => 1,
+        'blog_items_per_page' => 6,
+        'blog_comment_rating_enabled' => 1,
+        'comments_per_page' => 10,
+        'contact_email' => '',
+        'contact_map_embed' => '',
+        'contact_form_shortcode' => '',
+        'footer_text' => 'تمامی حقوق برای آرش فدایی محفوظ است.',
+    ];
+}
+
+
+function arash_get_theme_options() {
+    $defaults = arash_get_theme_option_defaults();
+    $options = get_option(ARASH_THEME_OPTIONS_KEY, []);
+    if (!is_array($options)) {
+        $options = [];
+    }
+    return array_merge($defaults, $options);
+}
+
+
+function arash_get_theme_option($key) {
+    $options = arash_get_theme_options();
+    if (isset($options[$key])) {
+        return $options[$key];
+    }
+    $defaults = arash_get_theme_option_defaults();
+    if (isset($defaults[$key])) {
+        return $defaults[$key];
+    }
+    return null;
+}
+
+
+function arash_sanitize_checkbox($value) {
+    return $value ? 1 : 0;
+}
+
+
+function arash_sanitize_text($value) {
+    return sanitize_text_field($value);
+}
+
+
+function arash_sanitize_textarea($value) {
+    return sanitize_textarea_field($value);
+}
+
+
+function arash_sanitize_url($value) {
+    return esc_url_raw($value);
+}
+
+
+function arash_sanitize_email_field($value) {
+    return sanitize_email($value);
+}
+
+
+function arash_sanitize_color($value) {
+    return sanitize_hex_color($value);
+}
+
+
+function arash_sanitize_integer($value) {
+    return absint($value);
+}
+
+
+function arash_sanitize_choice($value, $setting) {
+    $control = $setting->manager->get_control($setting->id);
+    if (!$control || empty($control->choices)) {
+        return $value;
+    }
+    if (isset($control->choices[$value])) {
+        return $value;
+    }
+    $keys = array_keys($control->choices);
+    return reset($keys);
+}
+
+
+function arash_output_google_analytics() {
+    $options = arash_get_theme_options();
+    $tracking_id = '';
+    if (isset($options['general_google_analytics_id'])) {
+        $tracking_id = trim($options['general_google_analytics_id']);
+    }
+    if (!$tracking_id) {
+        return;
+    }
+    echo '<script async src="https://www.googletagmanager.com/gtag/js?id=' . esc_attr($tracking_id) . '"></script>';
+    echo '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","' . esc_js($tracking_id) . '");</script>';
+}
+add_action('wp_head', 'arash_output_google_analytics');
+
+
+function arash_customize_register($wp_customize) {
+    $defaults = arash_get_theme_option_defaults();
+
+    $wp_customize->add_panel('arash_theme_options_panel', [
+        'title' => __('تنظیمات قالب فدایی', 'arash-theme'),
+        'priority' => 10,
+    ]);
+
+    $wp_customize->add_section('arash_theme_section_general', [
+        'title' => __('عمومی', 'arash-theme'),
+        'panel' => 'arash_theme_options_panel',
+        'priority' => 10,
+    ]);
+
+    $wp_customize->add_section('arash_theme_section_hero', [
+        'title' => __('بخش هیرو', 'arash-theme'),
+        'panel' => 'arash_theme_options_panel',
+        'priority' => 20,
+    ]);
+
+    $wp_customize->add_section('arash_theme_section_colors', [
+        'title' => __('رنگ‌ها و تایپوگرافی', 'arash-theme'),
+        'panel' => 'arash_theme_options_panel',
+        'priority' => 30,
+    ]);
+
+    $wp_customize->add_section('arash_theme_section_social', [
+        'title' => __('شبکه‌های اجتماعی', 'arash-theme'),
+        'panel' => 'arash_theme_options_panel',
+        'priority' => 40,
+    ]);
+
+    $wp_customize->add_section('arash_theme_section_home_categories', [
+        'title' => __('دسته‌بندی‌های صفحه اصلی', 'arash-theme'),
+        'panel' => 'arash_theme_options_panel',
+        'priority' => 45,
+    ]);
+
+    $wp_customize->add_section('arash_theme_section_education', [
+        'title' => __('بخش تحصیلات', 'arash-theme'),
+        'panel' => 'arash_theme_options_panel',
+        'priority' => 50,
+    ]);
+
+    $wp_customize->add_section('arash_theme_section_work', [
+        'title' => __('بخش تجربه کاری', 'arash-theme'),
+        'panel' => 'arash_theme_options_panel',
+        'priority' => 60,
+    ]);
+
+    $wp_customize->add_section('arash_theme_section_portfolio', [
+        'title' => __('بخش نمونه‌کارها', 'arash-theme'),
+        'panel' => 'arash_theme_options_panel',
+        'priority' => 70,
+    ]);
+
+    $wp_customize->add_section('arash_theme_section_blog', [
+        'title' => __('بخش مقالات', 'arash-theme'),
+        'panel' => 'arash_theme_options_panel',
+        'priority' => 80,
+    ]);
+
+    $wp_customize->add_section('arash_theme_section_contact', [
+        'title' => __('بخش تماس', 'arash-theme'),
+        'panel' => 'arash_theme_options_panel',
+        'priority' => 90,
+    ]);
+
+    $wp_customize->add_section('arash_theme_section_footer', [
+        'title' => __('فوتر', 'arash-theme'),
+        'panel' => 'arash_theme_options_panel',
+        'priority' => 100,
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[general_logo]', [
+        'type' => 'option',
+        'default' => $defaults['general_logo'],
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+
+    $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'arash_theme_options_general_logo', [
+        'label' => __('لوگوی سایت', 'arash-theme'),
+        'section' => 'arash_theme_section_general',
+        'mime_type' => 'image',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[general_logo]',
+    ]));
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[general_favicon]', [
+        'type' => 'option',
+        'default' => $defaults['general_favicon'],
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+
+    $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'arash_theme_options_general_favicon', [
+        'label' => __('فیوآیکون اختصاصی', 'arash-theme'),
+        'section' => 'arash_theme_section_general',
+        'mime_type' => 'image',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[general_favicon]',
+    ]));
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[general_copyright]', [
+        'type' => 'option',
+        'default' => $defaults['general_copyright'],
+        'sanitize_callback' => 'arash_sanitize_text',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_general_copyright', [
+        'label' => __('متن کپی‌رایت', 'arash-theme'),
+        'section' => 'arash_theme_section_general',
+        'type' => 'text',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[general_copyright]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[general_google_analytics_id]', [
+        'type' => 'option',
+        'default' => $defaults['general_google_analytics_id'],
+        'sanitize_callback' => 'arash_sanitize_text',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_general_google_analytics_id', [
+        'label' => __('Google Analytics ID', 'arash-theme'),
+        'section' => 'arash_theme_section_general',
+        'type' => 'text',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[general_google_analytics_id]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[hero_headline]', [
+        'type' => 'option',
+        'default' => $defaults['hero_headline'],
+        'sanitize_callback' => 'arash_sanitize_text',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_hero_headline', [
+        'label' => __('عنوان اصلی', 'arash-theme'),
+        'section' => 'arash_theme_section_hero',
+        'type' => 'text',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[hero_headline]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[hero_subheadline]', [
+        'type' => 'option',
+        'default' => $defaults['hero_subheadline'],
+        'sanitize_callback' => 'arash_sanitize_textarea',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_hero_subheadline', [
+        'label' => __('متن توضیحی', 'arash-theme'),
+        'section' => 'arash_theme_section_hero',
+        'type' => 'textarea',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[hero_subheadline]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[hero_primary_button_label]', [
+        'type' => 'option',
+        'default' => $defaults['hero_primary_button_label'],
+        'sanitize_callback' => 'arash_sanitize_text',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_hero_primary_button_label', [
+        'label' => __('متن دکمه اصلی', 'arash-theme'),
+        'section' => 'arash_theme_section_hero',
+        'type' => 'text',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[hero_primary_button_label]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[hero_primary_button_url]', [
+        'type' => 'option',
+        'default' => $defaults['hero_primary_button_url'],
+        'sanitize_callback' => 'arash_sanitize_url',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_hero_primary_button_url', [
+        'label' => __('لینک دکمه اصلی', 'arash-theme'),
+        'section' => 'arash_theme_section_hero',
+        'type' => 'url',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[hero_primary_button_url]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[hero_secondary_button_label]', [
+        'type' => 'option',
+        'default' => $defaults['hero_secondary_button_label'],
+        'sanitize_callback' => 'arash_sanitize_text',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_hero_secondary_button_label', [
+        'label' => __('متن دکمه دوم', 'arash-theme'),
+        'section' => 'arash_theme_section_hero',
+        'type' => 'text',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[hero_secondary_button_label]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[hero_secondary_button_url]', [
+        'type' => 'option',
+        'default' => $defaults['hero_secondary_button_url'],
+        'sanitize_callback' => 'arash_sanitize_url',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_hero_secondary_button_url', [
+        'label' => __('لینک دکمه دوم', 'arash-theme'),
+        'section' => 'arash_theme_section_hero',
+        'type' => 'url',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[hero_secondary_button_url]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[hero_background_type]', [
+        'type' => 'option',
+        'default' => $defaults['hero_background_type'],
+        'sanitize_callback' => 'arash_sanitize_choice',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_hero_background_type', [
+        'label' => __('نوع پس‌زمینه', 'arash-theme'),
+        'section' => 'arash_theme_section_hero',
+        'type' => 'select',
+        'choices' => [
+            'color' => __('رنگ ثابت', 'arash-theme'),
+            'image' => __('تصویر', 'arash-theme'),
+        ],
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[hero_background_type]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[hero_background_color]', [
+        'type' => 'option',
+        'default' => $defaults['hero_background_color'],
+        'sanitize_callback' => 'arash_sanitize_color',
+    ]);
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'arash_theme_options_hero_background_color', [
+        'label' => __('رنگ پس‌زمینه هیرو', 'arash-theme'),
+        'section' => 'arash_theme_section_hero',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[hero_background_color]',
+    ]));
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[hero_background_color_light]', [
+        'type' => 'option',
+        'default' => $defaults['hero_background_color'],
+        'sanitize_callback' => 'arash_sanitize_color',
+    ]);
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'arash_theme_options_hero_background_color_light', [
+        'label' => __('رنگ هیرو در حالت روشن', 'arash-theme'),
+        'section' => 'arash_theme_section_hero',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[hero_background_color_light]',
+    ]));
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[hero_background_color_dark]', [
+        'type' => 'option',
+        'default' => '#0b1020',
+        'sanitize_callback' => 'arash_sanitize_color',
+    ]);
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'arash_theme_options_hero_background_color_dark', [
+        'label' => __('رنگ هیرو در حالت تاریک', 'arash-theme'),
+        'section' => 'arash_theme_section_hero',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[hero_background_color_dark]',
+    ]));
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[hero_background_image]', [
+        'type' => 'option',
+        'default' => $defaults['hero_background_image'],
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+
+    $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'arash_theme_options_hero_background_image', [
+        'label' => __('تصویر پس‌زمینه هیرو', 'arash-theme'),
+        'section' => 'arash_theme_section_hero',
+        'mime_type' => 'image',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[hero_background_image]',
+    ]));
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[hero_avatar_id]', [
+        'type' => 'option',
+        'default' => $defaults['hero_avatar_id'],
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+
+    $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'arash_theme_options_hero_avatar_id', [
+        'label' => __('تصویر آواتار هیرو', 'arash-theme'),
+        'section' => 'arash_theme_section_hero',
+        'mime_type' => 'image',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[hero_avatar_id]',
+    ]));
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[primary_color]', [
+        'type' => 'option',
+        'default' => $defaults['primary_color'],
+        'sanitize_callback' => 'arash_sanitize_color',
+    ]);
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'arash_theme_options_primary_color', [
+        'label' => __('رنگ اصلی', 'arash-theme'),
+        'section' => 'arash_theme_section_colors',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[primary_color]',
+    ]));
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[accent_color]', [
+        'type' => 'option',
+        'default' => $defaults['accent_color'],
+        'sanitize_callback' => 'arash_sanitize_color',
+    ]);
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'arash_theme_options_accent_color', [
+        'label' => __('رنگ تأکیدی', 'arash-theme'),
+        'section' => 'arash_theme_section_colors',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[accent_color]',
+    ]));
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[font_family]', [
+        'type' => 'option',
+        'default' => $defaults['font_family'],
+        'sanitize_callback' => 'arash_sanitize_choice',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_font_family', [
+        'label' => __('فونت اصلی', 'arash-theme'),
+        'section' => 'arash_theme_section_colors',
+        'type' => 'select',
+        'choices' => [
+            'IRANYekan' => 'IRANYekan',
+            'Vazirmatn' => 'Vazirmatn',
+            'IRANSans' => 'IRANSans',
+            'Estedad' => 'Estedad',
+        ],
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[font_family]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[social_github]', [
+        'type' => 'option',
+        'default' => $defaults['social_github'],
+        'sanitize_callback' => 'arash_sanitize_url',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_social_github', [
+        'label' => __('لینک گیت‌هاب', 'arash-theme'),
+        'section' => 'arash_theme_section_social',
+        'type' => 'url',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[social_github]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[social_github_icon]', [
+        'type' => 'option',
+        'default' => 0,
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+    $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'arash_theme_options_social_github_icon', [
+        'label' => __('آیکن گیت‌هاب', 'arash-theme'),
+        'section' => 'arash_theme_section_social',
+        'mime_type' => 'image',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[social_github_icon]',
+    ]));
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[social_linkedin]', [
+        'type' => 'option',
+        'default' => $defaults['social_linkedin'],
+        'sanitize_callback' => 'arash_sanitize_url',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_social_linkedin', [
+        'label' => __('لینک لینکدین', 'arash-theme'),
+        'section' => 'arash_theme_section_social',
+        'type' => 'url',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[social_linkedin]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[social_linkedin_icon]', [
+        'type' => 'option',
+        'default' => 0,
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+    $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'arash_theme_options_social_linkedin_icon', [
+        'label' => __('آیکن لینکدین', 'arash-theme'),
+        'section' => 'arash_theme_section_social',
+        'mime_type' => 'image',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[social_linkedin_icon]',
+    ]));
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[social_twitter]', [
+        'type' => 'option',
+        'default' => $defaults['social_twitter'],
+        'sanitize_callback' => 'arash_sanitize_url',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_social_twitter', [
+        'label' => __('لینک توییتر / ایکس', 'arash-theme'),
+        'section' => 'arash_theme_section_social',
+        'type' => 'url',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[social_twitter]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[social_twitter_icon]', [
+        'type' => 'option',
+        'default' => 0,
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+    $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'arash_theme_options_social_twitter_icon', [
+        'label' => __('آیکن توییتر/ایکس', 'arash-theme'),
+        'section' => 'arash_theme_section_social',
+        'mime_type' => 'image',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[social_twitter_icon]',
+    ]));
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[social_dribbble]', [
+        'type' => 'option',
+        'default' => $defaults['social_dribbble'],
+        'sanitize_callback' => 'arash_sanitize_url',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_social_dribbble', [
+        'label' => __('لینک دریبل', 'arash-theme'),
+        'section' => 'arash_theme_section_social',
+        'type' => 'url',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[social_dribbble]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[social_dribbble_icon]', [
+        'type' => 'option',
+        'default' => 0,
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+    $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'arash_theme_options_social_dribbble_icon', [
+        'label' => __('آیکن دریبل', 'arash-theme'),
+        'section' => 'arash_theme_section_social',
+        'mime_type' => 'image',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[social_dribbble_icon]',
+    ]));
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[social_email]', [
+        'type' => 'option',
+        'default' => $defaults['social_email'],
+        'sanitize_callback' => 'arash_sanitize_email_field',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_social_email', [
+        'label' => __('ایمیل تماس', 'arash-theme'),
+        'section' => 'arash_theme_section_social',
+        'type' => 'email',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[social_email]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[home_categories_enabled]', [
+        'type' => 'option',
+        'default' => 1,
+        'sanitize_callback' => 'arash_sanitize_checkbox',
+    ]);
+    $wp_customize->add_control('arash_theme_options_home_categories_enabled', [
+        'label' => __('نمایش دسته‌بندی‌های صفحه اصلی', 'arash-theme'),
+        'section' => 'arash_theme_section_home_categories',
+        'type' => 'checkbox',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[home_categories_enabled]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[home_categories_slugs]', [
+        'type' => 'option',
+        'default' => 'javascript,php,laravel',
+        'sanitize_callback' => 'arash_sanitize_text',
+    ]);
+    $wp_customize->add_control('arash_theme_options_home_categories_slugs', [
+        'label' => __('اسلاگ دسته‌ها (با کاما جدا شوند)', 'arash-theme'),
+        'section' => 'arash_theme_section_home_categories',
+        'type' => 'text',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[home_categories_slugs]',
+    ]);
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[education_enabled]', [
+        'type' => 'option',
+        'default' => $defaults['education_enabled'],
+        'sanitize_callback' => 'arash_sanitize_checkbox',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_education_enabled', [
+        'label' => __('نمایش بخش تحصیلات', 'arash-theme'),
+        'section' => 'arash_theme_section_education',
+        'type' => 'checkbox',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[education_enabled]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[education_order]', [
+        'type' => 'option',
+        'default' => $defaults['education_order'],
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_education_order', [
+        'label' => __('ترتیب نمایش تحصیلات', 'arash-theme'),
+        'section' => 'arash_theme_section_education',
+        'type' => 'number',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[education_order]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[work_enabled]', [
+        'type' => 'option',
+        'default' => $defaults['work_enabled'],
+        'sanitize_callback' => 'arash_sanitize_checkbox',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_work_enabled', [
+        'label' => __('نمایش بخش تجربه کاری', 'arash-theme'),
+        'section' => 'arash_theme_section_work',
+        'type' => 'checkbox',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[work_enabled]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[work_order]', [
+        'type' => 'option',
+        'default' => $defaults['work_order'],
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_work_order', [
+        'label' => __('ترتیب نمایش تجربه کاری', 'arash-theme'),
+        'section' => 'arash_theme_section_work',
+        'type' => 'number',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[work_order]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[portfolio_items_per_page]', [
+        'type' => 'option',
+        'default' => $defaults['portfolio_items_per_page'],
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_portfolio_items_per_page', [
+        'label' => __('تعداد نمونه‌کار در هر صفحه', 'arash-theme'),
+        'section' => 'arash_theme_section_portfolio',
+        'type' => 'number',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[portfolio_items_per_page]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[portfolio_layout]', [
+        'type' => 'option',
+        'default' => $defaults['portfolio_layout'],
+        'sanitize_callback' => 'arash_sanitize_choice',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_portfolio_layout', [
+        'label' => __('چیدمان نمونه‌کارها', 'arash-theme'),
+        'section' => 'arash_theme_section_portfolio',
+        'type' => 'select',
+        'choices' => [
+            'grid' => __('شبکه‌ای', 'arash-theme'),
+            'masonry' => __('ماسونری', 'arash-theme'),
+            'list' => __('لیستی', 'arash-theme'),
+        ],
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[portfolio_layout]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[blog_enabled]', [
+        'type' => 'option',
+        'default' => $defaults['blog_enabled'],
+        'sanitize_callback' => 'arash_sanitize_checkbox',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_blog_enabled', [
+        'label' => __('نمایش بخش مقالات', 'arash-theme'),
+        'section' => 'arash_theme_section_blog',
+        'type' => 'checkbox',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[blog_enabled]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[blog_items_per_page]', [
+        'type' => 'option',
+        'default' => $defaults['blog_items_per_page'],
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_blog_items_per_page', [
+        'label' => __('تعداد مقاله در هر صفحه', 'arash-theme'),
+        'section' => 'arash_theme_section_blog',
+        'type' => 'number',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[blog_items_per_page]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[contact_email]', [
+        'type' => 'option',
+        'default' => $defaults['contact_email'],
+        'sanitize_callback' => 'arash_sanitize_email_field',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_contact_email', [
+        'label' => __('ایمیل فرم تماس', 'arash-theme'),
+        'section' => 'arash_theme_section_contact',
+        'type' => 'email',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[contact_email]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[contact_map_embed]', [
+        'type' => 'option',
+        'default' => $defaults['contact_map_embed'],
+        'sanitize_callback' => 'arash_sanitize_textarea',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_contact_map_embed', [
+        'label' => __('کد نقشه گوگل یا نقشه ایرانی', 'arash-theme'),
+        'section' => 'arash_theme_section_contact',
+        'type' => 'textarea',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[contact_map_embed]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[contact_form_shortcode]', [
+        'type' => 'option',
+        'default' => $defaults['contact_form_shortcode'],
+        'sanitize_callback' => 'arash_sanitize_text',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_contact_form_shortcode', [
+        'label' => __('شورت‌کد فرم تماس', 'arash-theme'),
+        'section' => 'arash_theme_section_contact',
+        'type' => 'text',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[contact_form_shortcode]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[footer_text]', [
+        'type' => 'option',
+        'default' => $defaults['footer_text'],
+        'sanitize_callback' => 'arash_sanitize_text',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_footer_text', [
+        'label' => __('متن فوتر', 'arash-theme'),
+        'section' => 'arash_theme_section_footer',
+        'type' => 'text',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[footer_text]',
+    ]);
+}
+add_action('customize_register', 'arash_customize_register');
 
 // AJAX Load More
 add_action('wp_ajax_fadaee_load_more', 'fadaee_load_more');
@@ -305,11 +1065,48 @@ function arash_register_post_types() {
         'has_archive' => true,
         'show_in_rest' => true,
         'rest_base' => 'portfolio',
-        'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
+        'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'comments'),
         'menu_icon' => 'dashicons-portfolio',
         'rewrite' => array('slug' => 'portfolio'),
     ));
 
+    register_post_type('education', array(
+        'labels' => array(
+            'name' => __('تحصیلات', 'arash-theme'),
+            'singular_name' => __('تحصیل', 'arash-theme'),
+            'add_new' => __('افزودن تحصیل', 'arash-theme'),
+            'add_new_item' => __('افزودن تحصیل جدید', 'arash-theme'),
+            'edit_item' => __('ویرایش تحصیل', 'arash-theme'),
+            'new_item' => __('تحصیل جدید', 'arash-theme'),
+            'view_item' => __('مشاهده تحصیل', 'arash-theme'),
+            'search_items' => __('جستجوی تحصیلات', 'arash-theme'),
+            'not_found' => __('موردی یافت نشد', 'arash-theme'),
+        ),
+        'public' => true,
+        'show_in_rest' => true,
+        'supports' => array('title', 'editor', 'thumbnail', 'page-attributes'),
+        'menu_icon' => 'dashicons-welcome-learn-more',
+        'rewrite' => array('slug' => 'education'),
+    ));
+
+    register_post_type('work_experience', array(
+        'labels' => array(
+            'name' => __('تجربه‌های کاری', 'arash-theme'),
+            'singular_name' => __('تجربه کاری', 'arash-theme'),
+            'add_new' => __('افزودن تجربه کاری', 'arash-theme'),
+            'add_new_item' => __('افزودن تجربه کاری جدید', 'arash-theme'),
+            'edit_item' => __('ویرایش تجربه کاری', 'arash-theme'),
+            'new_item' => __('تجربه کاری جدید', 'arash-theme'),
+            'view_item' => __('مشاهده تجربه کاری', 'arash-theme'),
+            'search_items' => __('جستجوی تجربه‌های کاری', 'arash-theme'),
+            'not_found' => __('موردی یافت نشد', 'arash-theme'),
+        ),
+        'public' => true,
+        'show_in_rest' => true,
+        'supports' => array('title', 'editor', 'thumbnail', 'page-attributes', 'comments'),
+        'menu_icon' => 'dashicons-briefcase',
+        'rewrite' => array('slug' => 'work-experience'),
+    ));
     // Testimonials Post Type
     register_post_type('testimonial', array(
         'labels' => array(
@@ -377,6 +1174,295 @@ function arash_flush_rewrites() {
 }
 add_action('after_switch_theme', 'arash_flush_rewrites');
 
+function arash_output_hero_custom_styles() {
+    $options = arash_get_theme_options();
+    $light = !empty($options['hero_background_color_light']) ? $options['hero_background_color_light'] : $options['hero_background_color'];
+    $dark = !empty($options['hero_background_color_dark']) ? $options['hero_background_color_dark'] : '#020617';
+    ?>
+    <style id="arash-hero-custom-styles">
+        .hero-section-custom {
+            background-color: <?php echo esc_html($light); ?>;
+        }
+        .dark .hero-section-custom {
+            background-color: <?php echo esc_html($dark); ?>;
+        }
+    </style>
+    <?php
+}
+add_action('wp_head', 'arash_output_hero_custom_styles');
+
+function arash_add_education_meta_box() {
+    add_meta_box('education_meta_box', 'فیلدهای تحصیلات', 'arash_education_meta_box_callback', 'education', 'normal', 'high');
+}
+add_action('add_meta_boxes', 'arash_add_education_meta_box');
+
+function arash_education_meta_box_callback($post) {
+    wp_nonce_field('arash_education_meta_box_nonce', 'arash_education_nonce');
+    $degree = get_post_meta($post->ID, '_degree', true);
+    $institution = get_post_meta($post->ID, '_institution', true);
+    $institution_logo = get_post_meta($post->ID, '_institution_logo', true);
+    $field = get_post_meta($post->ID, '_field', true);
+    $start_date = get_post_meta($post->ID, '_start_date', true);
+    $end_date = get_post_meta($post->ID, '_end_date', true);
+    $gpa = get_post_meta($post->ID, '_gpa', true);
+    ?>
+    <p>
+        <label>عنوان مدرک/گواهی</label><br>
+        <input type="text" name="degree" value="<?php echo esc_attr($degree); ?>" style="width:100%;">
+    </p>
+    <p>
+        <label>نام موسسه</label><br>
+        <input type="text" name="institution" value="<?php echo esc_attr($institution); ?>" style="width:100%;">
+    </p>
+    <p>
+        <label>لوگوی موسسه</label><br>
+        <input type="text" id="institution_logo" name="institution_logo" value="<?php echo esc_attr($institution_logo); ?>" style="width:70%;">
+        <input type="button" id="institution_logo_button" class="button" value="آپلود تصویر" />
+    </p>
+    <script>
+    jQuery(function($){
+        let uploader;
+        $('#institution_logo_button').on('click', function(e){
+            e.preventDefault();
+            uploader = wp.media.frames.file_frame = wp.media({
+                title: 'انتخاب لوگو',
+                button: { text: 'انتخاب' },
+                multiple: false
+            });
+            uploader.on('select', function(){
+                const attachment = uploader.state().get('selection').first().toJSON();
+                $('#institution_logo').val(attachment.url);
+            });
+            uploader.open();
+        });
+    });
+    </script>
+    <p>
+        <label>رشته/حوزه</label><br>
+        <input type="text" name="field" value="<?php echo esc_attr($field); ?>" style="width:100%;">
+    </p>
+    <div style="display:flex;gap:12px;">
+        <p style="flex:1;">
+            <label>تاریخ شروع</label><br>
+            <input type="text" name="start_date" value="<?php echo esc_attr($start_date); ?>" placeholder="مثلاً ۱۳۹۸" style="width:100%;">
+        </p>
+        <p style="flex:1;">
+            <label>تاریخ پایان یا «در حال حاضر»</label><br>
+            <input type="text" name="end_date" value="<?php echo esc_attr($end_date); ?>" placeholder="مثلاً ۱۴۰۲ یا حاضر" style="width:100%;">
+        </p>
+    </div>
+    <p>
+        <label>معدل/GPA (اختیاری)</label><br>
+        <input type="text" name="gpa" value="<?php echo esc_attr($gpa); ?>" style="width:100%;">
+    </p>
+    <?php
+}
+
+function arash_save_education_meta_box($post_id) {
+    if (!isset($_POST['arash_education_nonce']) || !wp_verify_nonce($_POST['arash_education_nonce'], 'arash_education_meta_box_nonce')) return;
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+    $fields = ['degree','institution','institution_logo','field','start_date','end_date','gpa'];
+    foreach ($fields as $field) {
+        if (isset($_POST[$field])) {
+            update_post_meta($post_id, '_' . $field, sanitize_text_field($_POST[$field]));
+        }
+    }
+}
+add_action('save_post_education', 'arash_save_education_meta_box');
+
+function arash_add_work_meta_box() {
+    add_meta_box('work_meta_box', 'فیلدهای تجربه کاری', 'arash_work_meta_box_callback', 'work_experience', 'normal', 'high');
+}
+add_action('add_meta_boxes', 'arash_add_work_meta_box');
+
+function arash_work_meta_box_callback($post) {
+    wp_nonce_field('arash_work_meta_box_nonce', 'arash_work_nonce');
+    $company = get_post_meta($post->ID, '_company', true);
+    $company_logo = get_post_meta($post->ID, '_company_logo', true);
+    $employment_type = get_post_meta($post->ID, '_employment_type', true);
+    $location = get_post_meta($post->ID, '_location', true);
+    $start_date = get_post_meta($post->ID, '_work_start_date', true);
+    $end_date = get_post_meta($post->ID, '_work_end_date', true);
+    $technologies = get_post_meta($post->ID, '_work_technologies', true);
+    ?>
+    <p>
+        <label>نام شرکت</label><br>
+        <input type="text" name="company" value="<?php echo esc_attr($company); ?>" style="width:100%;">
+    </p>
+    <p>
+        <label>لوگوی شرکت</label><br>
+        <input type="text" id="company_logo" name="company_logo" value="<?php echo esc_attr($company_logo); ?>" style="width:70%;">
+        <input type="button" id="company_logo_button" class="button" value="آپلود تصویر" />
+    </p>
+    <script>
+    jQuery(function($){
+        let uploader;
+        $('#company_logo_button').on('click', function(e){
+            e.preventDefault();
+            uploader = wp.media.frames.file_frame = wp.media({
+                title: 'انتخاب لوگو شرکت',
+                button: { text: 'انتخاب' },
+                multiple: false
+            });
+            uploader.on('select', function(){
+                const attachment = uploader.state().get('selection').first().toJSON();
+                $('#company_logo').val(attachment.url);
+            });
+            uploader.open();
+        });
+    });
+    </script>
+    <div style="display:flex;gap:12px;">
+        <p style="flex:1;">
+            <label>نوع همکاری</label><br>
+            <select name="employment_type" style="width:100%;">
+                <?php
+                $types = ['full-time'=>'تمام‌وقت','part-time'=>'پاره‌وقت','freelance'=>'فریلنس','contract'=>'قراردادی'];
+                $current = $employment_type ?: 'full-time';
+                foreach ($types as $key=>$label) {
+                    echo '<option value="'.esc_attr($key).'" '.selected($current,$key,false).'>'.esc_html($label).'</option>';
+                }
+                ?>
+            </select>
+        </p>
+        <p style="flex:1;">
+            <label>مکان</label><br>
+            <input type="text" name="location" value="<?php echo esc_attr($location); ?>" placeholder="Remote / On-site / City" style="width:100%;">
+        </p>
+    </div>
+    <div style="display:flex;gap:12px;">
+        <p style="flex:1;">
+            <label>تاریخ شروع</label><br>
+            <input type="text" name="work_start_date" value="<?php echo esc_attr($start_date); ?>" style="width:100%;">
+        </p>
+        <p style="flex:1;">
+            <label>تاریخ پایان یا «حاضر»</label><br>
+            <input type="text" name="work_end_date" value="<?php echo esc_attr($end_date); ?>" style="width:100%;">
+        </p>
+    </div>
+    <p>
+        <label>تکنولوژی‌های استفاده‌شده (با کاما جدا شوند)</label><br>
+        <input type="text" name="work_technologies" value="<?php echo esc_attr($technologies); ?>" style="width:100%;" placeholder="PHP, Laravel, TailwindCSS">
+    </p>
+    <?php
+}
+
+function arash_save_work_meta_box($post_id) {
+    if (!isset($_POST['arash_work_nonce']) || !wp_verify_nonce($_POST['arash_work_nonce'], 'arash_work_meta_box_nonce')) return;
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+    $map = [
+        'company' => '_company',
+        'company_logo' => '_company_logo',
+        'employment_type' => '_employment_type',
+        'location' => '_location',
+        'work_start_date' => '_work_start_date',
+        'work_end_date' => '_work_end_date',
+        'work_technologies' => '_work_technologies',
+    ];
+    foreach ($map as $post_key=>$meta_key) {
+        if (isset($_POST[$post_key])) {
+            update_post_meta($post_id, $meta_key, sanitize_text_field($_POST[$post_key]));
+        }
+    }
+}
+add_action('save_post_work_experience', 'arash_save_work_meta_box');
+
+function arash_enqueue_comment_reply() {
+    if (is_singular() && comments_open() && get_option('thread_comments')) {
+        wp_enqueue_script('comment-reply');
+    }
+}
+add_action('wp_enqueue_scripts', 'arash_enqueue_comment_reply');
+
+function arash_comment_form_fields($fields) {
+    $fields['hp_field'] = '<p class="comment-form-url" style="display:none;"><label>تست</label><input type="text" name="hp_field" value=""></p>';
+    return $fields;
+}
+add_filter('comment_form_default_fields', 'arash_comment_form_fields');
+
+function arash_preprocess_comment($commentdata) {
+    if (!empty($_POST['hp_field'])) {
+        wp_die(__('ارسال شما به‌عنوان اسپم شناسایی شد.', 'arash-theme'));
+    }
+    return $commentdata;
+}
+add_filter('preprocess_comment', 'arash_preprocess_comment');
+
+function arash_save_comment_rating($comment_id, $approved, $commentdata) {
+    $opts = arash_get_theme_options();
+    $enabled = !empty($opts['blog_comment_rating_enabled']);
+    if ($enabled && isset($_POST['rating']) && get_post_type($commentdata['comment_post_ID']) === 'post') {
+        $rating = max(1, min(5, intval($_POST['rating'])));
+        add_comment_meta($comment_id, 'rating', $rating, true);
+    }
+}
+add_action('comment_post', 'arash_save_comment_rating', 10, 3);
+
+function arash_filter_comments_per_page($value) {
+    $opts = arash_get_theme_options();
+    if (!empty($opts['comments_per_page'])) {
+        return (int) $opts['comments_per_page'];
+    }
+    return $value;
+}
+add_filter('option_comments_per_page', 'arash_filter_comments_per_page');
+
+function arash_comment_callback($comment, $args, $depth) {
+    $rating = get_comment_meta($comment->comment_ID, 'rating', true);
+    ?>
+    <div id="comment-<?php comment_ID(); ?>" <?php comment_class('rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 p-4 sm:p-5'); ?>>
+        <div class="flex items-start gap-3">
+            <div class="flex-shrink-0">
+                <?php echo get_avatar($comment, 40, '', '', ['class' => 'h-10 w-10 rounded-full']); ?>
+            </div>
+            <div class="flex-1">
+                <div class="flex items-center justify-between gap-2 mb-1">
+                    <div>
+                        <div class="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                            <?php echo get_comment_author(); ?>
+                        </div>
+                        <time datetime="<?php comment_time('c'); ?>" class="text-xs text-zinc-500 dark:text-zinc-400">
+                            <?php comment_date(); ?>
+                        </time>
+                    </div>
+                    <?php if ($rating): ?>
+                        <div class="flex items-center gap-1 text-amber-400 text-xs">
+                            <?php for ($i = 1; $i <= 5; $i++): ?>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="<?php echo $i <= (int) $rating ? 'currentColor' : 'none'; ?>" class="h-4 w-4 stroke-amber-400">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                            <?php endfor; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="text-sm leading-relaxed text-zinc-700 dark:text-zinc-200 mb-2">
+                    <?php comment_text(); ?>
+                </div>
+
+                <?php if ($comment->comment_approved == '0'): ?>
+                    <p class="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                        نظر شما پس از تایید نمایش داده خواهد شد.
+                    </p>
+                <?php endif; ?>
+
+                <div class="mt-3 flex items-center gap-4 text-xs text-zinc-500 dark:text-zinc-400">
+                    <?php
+                    comment_reply_link(array_merge($args, [
+                        'reply_text' => 'پاسخ',
+                        'depth' => $depth,
+                        'max_depth' => $args['max_depth'],
+                        'class' => 'cursor-pointer text-red-600 dark:text-red-400 hover:text-red-500 dark:hover:text-red-300',
+                    ]));
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
+}
 /**
  * اضافه کردن تصویر شاخص کامل (url + alt + width + height + sizes) به همه پست‌ها و CPTها
  */
@@ -684,3 +1770,32 @@ function arash_save_testimonial_meta_box($post_id) {
     }
 }
 add_action('save_post_testimonial', 'arash_save_testimonial_meta_box');
+
+
+
+
+ function classic_table_responsive_script() {
+    ?>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // هدف‌گیری جدول‌های داخل محتوا
+        document.querySelectorAll('.entry-content table, .post-content table').forEach(function(table) {
+            const headers = table.querySelectorAll('thead th');
+            table.querySelectorAll('tbody tr').forEach(function(row) {
+                row.querySelectorAll('td').forEach(function(cell, index) {
+                    const headerText = headers[index] ? headers[index].textContent.trim() : 'داده';
+                    cell.setAttribute('data-label', headerText);
+                });
+            });
+        });
+    });
+    </script>
+    <?php
+}
+add_action('wp_footer', 'classic_table_responsive_script');
+
+
+
+
+
+
