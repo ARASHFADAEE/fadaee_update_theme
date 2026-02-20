@@ -23,7 +23,7 @@ while (have_posts()) : the_post();
         <!-- Back Button -->
         <div class="mb-8 sm:mb-12">
             <a href="<?php echo get_post_type_archive_link('portfolio'); ?>" class="group inline-flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition">
-                <div class="flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md ring-1 ring-zinc-900/5 transition group-hover:ring-zinc-900/10 dark:bg-zinc-800 dark:ring-0">
+                <div class="h-4 w-4 -scale-x-100 stroke-zinc-500 group-hover:stroke-zinc-700 dark:stroke-zinc-400">
                     <svg viewBox="0 0 16 16" fill="none" class="h-4 w-4 stroke-zinc-500 group-hover:stroke-zinc-700 dark:stroke-zinc-400 arrow">
                         <path d="M7.25 11.25 3.75 8m0 0 3.5-3.25M3.75 8h8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
@@ -132,7 +132,7 @@ while (have_posts()) : the_post();
             <?php endif; ?>
 
             <!-- Content -->
-            <div class="prose prose-zinc dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-headings:font-bold prose-h2:text-2xl prose-h2:sm:text-3xl prose-h3:text-xl prose-h3:sm:text-2xl prose-a:text-red-600 hover:prose-a:text-red-500 dark:prose-a:text-red-400 prose-img:rounded-xl prose-img:shadow-lg">
+            <div class="article-content prose prose-zinc dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-headings:font-bold prose-h2:text-2xl prose-h2:sm:text-3xl prose-h3:text-xl prose-h3:sm:text-2xl prose-a:text-red-600 hover:prose-a:text-red-500 dark:prose-a:text-red-400 prose-img:rounded-xl prose-img:shadow-lg">
                 <?php the_content(); ?>
             </div>
 

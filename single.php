@@ -51,7 +51,7 @@ $post_author = the_author_meta('display_name', $post_id);
                     />
 
 
-                    <div class="content pt-6 sm:pt-10 prose-p:text-base prose-p:sm:text-lg prose-p:leading-relaxed" style="font-size: 17px; line-height: 1.8;">
+                    <div class="content article-content pt-6 sm:pt-10 prose-p:text-base prose-p:sm:text-lg prose-p:leading-relaxed" style="font-size: 17px; line-height: 1.8;">
 
 
                         <?= $post_content ?>

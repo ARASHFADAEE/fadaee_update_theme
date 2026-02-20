@@ -1178,6 +1178,7 @@ function arash_output_hero_custom_styles() {
     $options = arash_get_theme_options();
     $light = !empty($options['hero_background_color_light']) ? $options['hero_background_color_light'] : $options['hero_background_color'];
     $dark = !empty($options['hero_background_color_dark']) ? $options['hero_background_color_dark'] : '#020617';
+    $primary = !empty($options['primary_color']) ? $options['primary_color'] : '#f97316';
     ?>
     <style id="arash-hero-custom-styles">
         .hero-section-custom {
@@ -1185,6 +1186,9 @@ function arash_output_hero_custom_styles() {
         }
         .dark .hero-section-custom {
             background-color: <?php echo esc_html($dark); ?>;
+        }
+        :root {
+            --arash-primary: <?php echo esc_html($primary); ?>;
         }
     </style>
     <?php
@@ -1412,13 +1416,13 @@ add_filter('option_comments_per_page', 'arash_filter_comments_per_page');
 function arash_comment_callback($comment, $args, $depth) {
     $rating = get_comment_meta($comment->comment_ID, 'rating', true);
     ?>
-    <div id="comment-<?php comment_ID(); ?>" <?php comment_class('rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 p-4 sm:p-5'); ?>>
+    <div id="comment-<?php comment_ID(); ?>" <?php comment_class('comment-item rounded-xl border border-zinc-100 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/60 p-4 sm:p-5'); ?>>
         <div class="flex items-start gap-3">
             <div class="flex-shrink-0">
                 <?php echo get_avatar($comment, 40, '', '', ['class' => 'h-10 w-10 rounded-full']); ?>
             </div>
             <div class="flex-1">
-                <div class="flex items-center justify-between gap-2 mb-1">
+                <div class="flex items-center justify-between gap-2 mb-2">
                     <div>
                         <div class="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                             <?php echo get_comment_author(); ?>
@@ -1438,12 +1442,12 @@ function arash_comment_callback($comment, $args, $depth) {
                     <?php endif; ?>
                 </div>
 
-                <div class="text-sm leading-relaxed text-zinc-700 dark:text-zinc-200 mb-2">
+                <div class="text-sm leading-relaxed text-zinc-700 dark:text-zinc-200">
                     <?php comment_text(); ?>
                 </div>
 
                 <?php if ($comment->comment_approved == '0'): ?>
-                    <p class="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                    <p class="text-xs text-amber-600 dark:text-amber-400 mt-2">
                         نظر شما پس از تایید نمایش داده خواهد شد.
                     </p>
                 <?php endif; ?>
@@ -1793,8 +1797,6 @@ add_action('save_post_testimonial', 'arash_save_testimonial_meta_box');
     <?php
 }
 add_action('wp_footer', 'classic_table_responsive_script');
-
-
 
 
 
