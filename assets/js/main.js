@@ -86,7 +86,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
 q(function($) {
 
     $("#loadmore").on("click", function() {
@@ -95,6 +94,11 @@ q(function($) {
         let page   = button.data('page');
         let ajaxurl = button.data('url');
 
+        const searchInput = document.getElementById('blog-search');
+        const activeChip = document.querySelector('.blog-category-chip.active');
+        const category = activeChip ? activeChip.getAttribute('data-category') : '';
+        const search   = searchInput ? searchInput.value : '';
+
         button.text("در حال بارگذاری...");
 
         $.ajax({
@@ -102,7 +106,9 @@ q(function($) {
             type: "POST",
             data: {
                 action: "fadaee_load_more",
-                page: page
+                page: page + 1,
+                category: category,
+                search: search
             },
             success: function(res) {
                 if(res.trim() !== "") {
@@ -118,6 +124,95 @@ q(function($) {
 
     });
 
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById('blog-search');
+    const categoryChips = document.querySelectorAll('.blog-category-chip');
+    const postContainer = document.getElementById('post-container');
+    const loadMoreBtn = document.getElementById('loadmore');
+    const meta = document.getElementById('blog-filters-meta');
+
+    if (!postContainer || !loadMoreBtn || !meta) {
+        return;
+    }
+
+    const ajaxUrl = meta.getAttribute('data-ajax-url');
+
+    function setLoading(state) {
+        if (state) {
+            postContainer.classList.add('opacity-60');
+            postContainer.classList.add('pointer-events-none');
+        } else {
+            postContainer.classList.remove('opacity-60');
+            postContainer.classList.remove('pointer-events-none');
+        }
+    }
+
+    function fetchPosts(page) {
+        const activeChip = document.querySelector('.blog-category-chip.active');
+        const category = activeChip ? activeChip.getAttribute('data-category') : '';
+        const search = searchInput ? searchInput.value : '';
+
+        setLoading(true);
+
+        q.ajax({
+            method: 'POST',
+            url: ajaxUrl,
+            data: {
+                action: 'fadaee_load_more',
+                page: page,
+                category: category,
+                search: search
+            },
+            success: function (res) {
+                setLoading(false);
+
+                if (page === 1) {
+                    postContainer.innerHTML = res.trim() !== '' ? res : '<div class="col-span-full text-center py-12"><p class="text-lg text-zinc-600 dark:text-zinc-400">مقاله‌ای یافت نشد.</p></div>';
+                } else if (res.trim() !== '') {
+                    postContainer.insertAdjacentHTML('beforeend', res);
+                }
+
+                if (res.trim() === '') {
+                    loadMoreBtn.textContent = 'مقاله‌ای دیگر وجود ندارد';
+                    loadMoreBtn.disabled = true;
+                } else {
+                    loadMoreBtn.disabled = false;
+                    loadMoreBtn.textContent = 'مشاهده بیشتر';
+                }
+
+                loadMoreBtn.dataset.page = page;
+            }
+        });
+    }
+
+    categoryChips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+            categoryChips.forEach(function (c) {
+                c.classList.remove('active');
+                c.classList.remove('bg-red-600', 'text-white');
+                c.classList.remove('hover:bg-red-500');
+                c.classList.add('bg-zinc-100', 'text-zinc-700');
+            });
+
+            this.classList.add('active');
+            this.classList.remove('bg-zinc-100', 'text-zinc-700');
+            this.classList.add('bg-red-600', 'text-white', 'hover:bg-red-500');
+
+            fetchPosts(1);
+        });
+    });
+
+    if (searchInput) {
+        let searchTimeout;
+        searchInput.addEventListener('input', function () {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(function () {
+                fetchPosts(1);
+            }, 400);
+        });
+    }
 });
 
 

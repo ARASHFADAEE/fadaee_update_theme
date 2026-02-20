@@ -1060,13 +1060,22 @@ add_action('wp_ajax_nopriv_fadaee_load_more', 'fadaee_load_more');
 
 function fadaee_load_more() {
 
-    $paged = intval($_POST['page']) + 2;
+    $paged = isset($_POST['page']) ? max(1, intval($_POST['page'])) : 1;
+    $category = isset($_POST['category']) ? intval($_POST['category']) : 0;
+    $search   = isset($_POST['search']) ? sanitize_text_field(wp_unslash($_POST['search'])) : '';
 
-    $query = new WP_Query([
-        'post_type' => 'post',
+    $args = [
+        'post_type'      => 'post',
         'posts_per_page' => 6,
-        'paged' => $paged
-    ]);
+        'paged'          => $paged,
+        's'              => $search,
+    ];
+
+    if ($category) {
+        $args['cat'] = $category;
+    }
+
+    $query = new WP_Query($args);
 
     if ($query->have_posts()) :
 
@@ -1836,5 +1845,4 @@ add_action('save_post_testimonial', 'arash_save_testimonial_meta_box');
     <?php
 }
 add_action('wp_footer', 'classic_table_responsive_script');
-
 

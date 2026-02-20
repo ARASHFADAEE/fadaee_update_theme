@@ -16,95 +16,99 @@
             </p>
         </header>
 
-        <!-- Articles Grid -->
-        <div id="post-container" class="mt-8 sm:mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
-
-
-            <?php
-            if ( have_posts() ) :
-                while ( have_posts() ):
-                    the_post();
-                    $post_id = get_the_ID();
-                    $views = fadaee_get_post_views($post_id);
-                    $likes = get_post_meta($post_id, 'likes_count', true) ?: 0;
-                    ?>
-                    <article class="group relative flex flex-col bg-white dark:bg-zinc-900 rounded-xl sm:rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-zinc-200 dark:border-zinc-800">
-                        <?php if ( has_post_thumbnail() ): ?>
-                            <div class="relative aspect-video w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800">
-                                <a href="<?php the_permalink(); ?>" class="block">
-                                    <img 
-                                        src="<?php echo get_the_post_thumbnail_url($post_id, 'large'); ?>" 
-                                        alt="<?php echo esc_attr(get_the_title()); ?>"
-                                        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                        loading="lazy"
-                                    />
-                                </a>
-                            </div>
-                        <?php endif; ?>
-                        
-                        <div class="flex flex-col flex-1 p-4 sm:p-6">
-                            <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
-                                <time datetime="<?php echo get_the_date('c'); ?>" class="whitespace-nowrap"><?php echo get_the_date('F j, Y'); ?></time>
-                                <span class="hidden sm:inline">•</span>
-                                <span class="whitespace-nowrap"><?php echo fadaee_persian_numbers($views); ?> <?php echo fadaee_translate('views'); ?></span>
-                                <?php if ($likes > 0): ?>
-                                    <span class="hidden sm:inline">•</span>
-                                    <span class="flex items-center gap-1 whitespace-nowrap">
-                                        <svg class="h-3.5 w-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                                        </svg>
-                                        <?php echo fadaee_persian_numbers($likes); ?>
-                                    </span>
-                                <?php endif; ?>
-                            </div>
-                            
-                            <h2 class="mt-3 sm:mt-4 text-lg sm:text-xl lg:text-2xl font-bold leading-tight" style="font-size: clamp(1.125rem, 3vw, 1.5rem); line-height: 1.3;">
-                                <a href="<?php the_permalink(); ?>" class="text-zinc-900 dark:text-zinc-100 hover:text-red-500 dark:hover:text-red-400 transition-colors">
-                                    <?php the_title(); ?>
-                                </a>
-                            </h2>
-                            
-                            <p class="mt-2 sm:mt-3 text-sm sm:text-base leading-relaxed text-zinc-600 dark:text-zinc-400 line-clamp-3" style="font-size: clamp(0.9375rem, 2vw, 1rem); line-height: 1.75;">
-                                <?php echo wp_trim_words(get_the_excerpt(), 20, '...'); ?>
-                            </p>
-                            
-                            <div class="mt-4 pt-4 border-t border-zinc-200 dark:border-zinc-800">
-                                <a href="<?php the_permalink(); ?>" class="inline-flex items-center gap-2 text-sm sm:text-base font-medium text-red-600 hover:text-red-500 dark:text-red-400 dark:hover:text-red-300 transition-colors group/link">
-                                    <?php echo fadaee_translate('read_more'); ?>
-                                    <svg class="h-4 w-4 transition-transform group-hover/link:translate-x-1 arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                    </svg>
-                                </a>
-                            </div>
+        <section class="mt-6 sm:mt-8 lg:mt-10">
+            <div class="bg-white/80 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800/80 rounded-2xl sm:rounded-3xl px-4 sm:px-6 py-4 sm:py-5 shadow-sm backdrop-blur">
+                <div class="flex flex-col md:flex-row gap-3 sm:gap-4 items-stretch md:items-center">
+                    <div class="flex-1">
+                        <div class="relative">
+                            <input
+                                id="blog-search"
+                                type="text"
+                                placeholder="جستجو در مقالات..."
+                                class="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50/80 dark:bg-zinc-900/80 px-4 py-2.5 pr-9 text-sm sm:text-base text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/80 focus:border-transparent"
+                            />
+                            <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-zinc-400">
+                                <svg class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="7" />
+                                    <line x1="16.5" y1="16.5" x2="21" y2="21" />
+                                </svg>
+                            </span>
                         </div>
-                    </article>
-                <?php
-                endwhile;
-            else:
-                ?>
-                <div class="col-span-full text-center py-12">
-                    <p class="text-lg text-zinc-600 dark:text-zinc-400"><?php echo fadaee_translate('no_posts'); ?></p>
+                    </div>
+
+                    <div class="md:w-px h-px md:h-9 bg-zinc-200 dark:bg-zinc-800 md:mx-2 lg:mx-4"></div>
+
+                    <div class="flex-1 md:flex-initial">
+                        <div class="flex flex-wrap gap-2">
+                            <button
+                                type="button"
+                                class="blog-category-chip active flex items-center gap-2 rounded-full px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium bg-red-600 text-white shadow-sm hover:bg-red-500 transition-colors"
+                                data-category=""
+                            >
+                                <span>همه مقالات</span>
+                            </button>
+                            <?php
+                            $categories = get_categories(array(
+                                'hide_empty' => true,
+                                'number'     => 6,
+                                'orderby'    => 'count',
+                                'order'      => 'DESC',
+                            ));
+                            foreach ($categories as $category): ?>
+                                <button
+                                    type="button"
+                                    class="blog-category-chip flex items-center gap-2 rounded-full px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+                                    data-category="<?php echo esc_attr($category->term_id); ?>"
+                                >
+                                    <span><?php echo esc_html($category->name); ?></span>
+                                    <span class="text-[0.7rem] sm:text-xs text-zinc-400">
+                                        <?php echo fadaee_persian_numbers($category->count); ?>
+                                    </span>
+                                </button>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
                 </div>
-            <?php
-            endif;
-            ?>
+            </div>
+        </section>
+
+        <div id="blog-filters-meta" class="hidden"
+             data-page="1"
+             data-max-pages="<?php echo esc_attr($wp_query->max_num_pages); ?>"
+             data-ajax-url="<?php echo esc_url(admin_url('admin-ajax.php')); ?>">
         </div>
 
-        <!-- Pagination -->
-        <div class="flex justify-center mt-8 sm:mt-12 lg:mt-16">
-            <button id="loadmore" 
-                    data-page="1" 
-                    data-url="<?php echo admin_url('admin-ajax.php'); ?>" 
-                    class="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-3.5 bg-red-600 hover:bg-red-500 text-white text-sm sm:text-base font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
-                <span>مشاهده بیشتر</span>
-                <svg class="mr-2 h-5 w-5 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-            </button>
-        </div>
+        <section class="mt-8 sm:mt-10 lg:mt-12">
+            <div id="post-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
+                <?php
+                if ( have_posts() ) :
+                    while ( have_posts() ):
+                        the_post();
+                        get_template_part('template/post-card', 'post-card');
+                    endwhile;
+                else:
+                    ?>
+                    <div class="col-span-full text-center py-12">
+                        <p class="text-lg text-zinc-600 dark:text-zinc-400"><?php echo fadaee_translate('no_posts'); ?></p>
+                    </div>
+                <?php
+                endif;
+                ?>
+            </div>
+
+            <div class="flex justify-center mt-8 sm:mt-10 lg:mt-12">
+                <button id="loadmore" 
+                        data-page="1" 
+                        data-url="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" 
+                        class="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-3.5 bg-red-600 hover:bg-red-500 text-white text-sm sm:text-base font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
+                    <span>مشاهده بیشتر</span>
+                    <svg class="mr-2 h-5 w-5 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+            </div>
+        </section>
+    </div>
 </main>
-
-
-
 
 <?php get_footer()?>
