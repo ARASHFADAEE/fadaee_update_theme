@@ -670,6 +670,8 @@
         </div>
         <?php endif; ?>
 
+        <?php endif; // end home_builder_mode conditional ?>
+
     </main>
 
 <?php get_footer(); ?>
