@@ -413,7 +413,7 @@ function arash_customize_register($wp_customize) {
     $defaults = arash_get_theme_option_defaults();
 
     $wp_customize->add_panel('arash_theme_options_panel', [
-        'title' => __('تنظیمات قالب فدایی', 'arash-theme'),
+        'title' => __('تنظیمات قالب مینیمو', 'arash-theme'),
         'priority' => 10,
     ]);
 
