@@ -278,6 +278,136 @@ pre::-webkit-scrollbar-thumb {
     text-decoration: underline;
 }
 
+.article-content {
+    font-size: 17px;
+    line-height: 1.9;
+    color: #111827;
+}
+
+.dark .article-content {
+    color: #e5e7eb;
+}
+
+.article-content > *:first-child {
+    margin-top: 0;
+}
+
+.article-content p {
+    margin-bottom: 1.1rem;
+}
+
+.article-content h2,
+.article-content h3,
+.article-content h4 {
+    font-weight: 800;
+    color: #111827;
+    letter-spacing: -0.02em;
+}
+
+.dark .article-content h2,
+.dark .article-content h3,
+.dark .article-content h4 {
+    color: #fafafa;
+}
+
+.article-content h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 1.25rem;
+    font-size: clamp(1.4rem, 3vw, 1.75rem);
+    border-right: 3px solid var(--arash-primary, #f97316);
+    padding-right: 0.75rem;
+}
+
+.article-content h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.9rem;
+    font-size: clamp(1.2rem, 2.6vw, 1.5rem);
+}
+
+.article-content h4 {
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
+    font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+}
+
+.article-content ul,
+.article-content ol {
+    margin: 1.25rem 0 1.5rem;
+    padding-inline-start: 1.25rem;
+}
+
+.article-content ul {
+    list-style-type: disc;
+}
+
+.article-content ol {
+    list-style-type: decimal;
+}
+
+.article-content li {
+    margin-bottom: 0.4rem;
+}
+
+.article-content li::marker {
+    color: var(--arash-primary, #f97316);
+}
+
+.article-content blockquote {
+    margin: 1.75rem 0;
+    padding: 1.25rem 1.5rem;
+    border-radius: 1rem;
+    background: #f9fafb;
+    border-right: 3px solid var(--arash-primary, #f97316);
+    color: #374151;
+}
+
+.dark .article-content blockquote {
+    background: rgba(24, 24, 27, 0.9);
+    color: #e5e7eb;
+    border-right-color: rgba(248, 113, 113, 0.9);
+}
+
+.article-content hr {
+    margin: 2.5rem 0;
+    border: none;
+    border-top: 1px dashed rgba(148, 163, 184, 0.6);
+}
+
+.article-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 2rem auto;
+    border-radius: 1rem;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+}
+
+.article-content strong {
+    font-weight: 700;
+    color: #111827;
+}
+
+.dark .article-content strong {
+    color: #fafafa;
+}
+
+.article-content p code,
+.article-content li code {
+    background: #f4f4f5;
+    color: #111827;
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.45rem;
+    font-size: 0.95em;
+    font-family: Consolas, Monaco, "Fira Code", monospace;
+    direction: ltr;
+}
+
+.dark .article-content p code,
+.dark .article-content li code {
+    background: #27272a;
+    color: #e5e7eb;
+}
+
 .article-content table {
     width: 100%;
     border-collapse: collapse;
