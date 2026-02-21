@@ -23,8 +23,7 @@ function support_theme_arash()
 
 add_action( 'after_setup_theme', 'support_theme_arash' );
 
-
-
+require_once THEME_DIR . '/inc/elementor-widgets.php';
 
 function enqueue_theme_styles() {
     // بارگذاری CSS تم
