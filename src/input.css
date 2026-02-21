@@ -61,7 +61,7 @@
   }
   .scroll-item {
     flex: none;
-    width: 18rem;
+    width: 24rem;
     scroll-snap-align: center;
   }
   .photo-tilt:nth-child(odd) {
