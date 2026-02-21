@@ -44,10 +44,11 @@ $footer_cta_button_url = !empty($options['footer_cta_button_url']) ? $options['f
                                 <div class="flex sm:items-center">
                                     <a href="<?php echo esc_url($footer_cta_button_url); ?>"
                                        class="inline-flex items-center justify-center rounded-full bg-red-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-red-600/30 transition hover:bg-red-500 hover:shadow-red-500/40 dark:bg-red-500 dark:hover:bg-red-400">
-                                        <span class="ml-2"><?php echo esc_html($footer_cta_button_label); ?></span>
-                                        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                                                               <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M5 10h10M10 5l5 5-5 5" />
                                         </svg>
+                                        <span class="ml-2"><?php echo esc_html($footer_cta_button_label); ?></span>
+
                                     </a>
                                 </div>
                             <?php endif; ?>
