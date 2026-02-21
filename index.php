@@ -7,13 +7,19 @@
 <main class="flex-1 px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-24 pb-16 sm:pb-24">
     <div class="mx-auto max-w-7xl">
         <header class="max-w-3xl">
+            <?php
+            $blog_page_title = arash_get_theme_option('blog_page_title');
+            $blog_page_description = arash_get_theme_option('blog_page_description');
+            ?>
             <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-tight" style="font-size: clamp(1.75rem, 5vw, 2.5rem);">
-                <?php echo fadaee_translate('everything_more'); ?>
+                <?php echo esc_html($blog_page_title); ?>
             </h1>
 
-            <p class="mt-4 sm:mt-6 text-base sm:text-lg leading-relaxed text-zinc-600 dark:text-zinc-400" style="font-size: clamp(1rem, 2.5vw, 1.125rem); line-height: 1.75;">
-                <?php echo fadaee_translate('blog_description'); ?>
-            </p>
+            <?php if (!empty($blog_page_description)): ?>
+                <p class="mt-4 sm:mt-6 text-base sm:text-lg leading-relaxed text-zinc-600 dark:text-zinc-400" style="font-size: clamp(1rem, 2.5vw, 1.125rem); line-height: 1.75;">
+                    <?php echo esc_html($blog_page_description); ?>
+                </p>
+            <?php endif; ?>
         </header>
 
         <section class="mt-6 sm:mt-8 lg:mt-10">

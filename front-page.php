@@ -328,7 +328,14 @@
                                         $location = get_post_meta(get_the_ID(), '_location', true);
                                         $start = get_post_meta(get_the_ID(), '_work_start_date', true);
                                         $end = get_post_meta(get_the_ID(), '_work_end_date', true);
-                                        $technologies = get_post_meta(get_the_ID(), '_work_technologies', true);
+                                        $technologies_raw = get_post_meta(get_the_ID(), '_work_technologies', true);
+                                        if (is_array($technologies_raw)) {
+                                            $technologies = $technologies_raw;
+                                        } elseif (!empty($technologies_raw) && is_string($technologies_raw)) {
+                                            $technologies = array_map('trim', explode(',', $technologies_raw));
+                                        } else {
+                                            $technologies = [];
+                                        }
                                         ?>
                                         <article class="relative ps-10 sm:ps-8">
                                             <div class="absolute start-2 sm:start-0 top-2 h-3 w-3 rounded-full bg-red-500 dark:bg-red-400 ring-4 ring-red-100/80 dark:ring-red-900/40"></div>
@@ -355,17 +362,36 @@
                                                     </div>
                                                 </div>
 
-                                                <?php if ($employment_type || $technologies): ?>
+                                                <?php if ($employment_type || !empty($technologies)): ?>
                                                     <div class="flex flex-wrap items-center gap-3 mb-3">
                                                         <?php if ($employment_type): ?>
                                                             <span class="inline-flex items-center rounded-full border border-zinc-200 dark:border-zinc-700 px-3 py-1 text-xs text-zinc-600 dark:text-zinc-300">
                                                                 <?php echo esc_html($employment_type); ?>
                                                             </span>
                                                         <?php endif; ?>
-                                                        <?php if ($technologies): ?>
-                                                            <span class="inline-flex items-center rounded-full bg-zinc-100 dark:bg-zinc-800 px-3 py-1 text-xs text-zinc-700 dark:text-zinc-200">
-                                                                <?php echo esc_html($technologies); ?>
-                                                            </span>
+                                                        <?php
+                                                        $clean_tech = array_values(array_filter(array_map('trim', $technologies), function($v){ return $v !== ''; }));
+                                                        if (!empty($clean_tech)): ?>
+                                                            <div class="flex flex-wrap gap-1.5">
+                                                                <?php
+                                                                $max_display = 4;
+                                                                $displayed = 0;
+                                                                foreach ($clean_tech as $tech_item):
+                                                                    if ($displayed >= $max_display) {
+                                                                        break;
+                                                                    }
+                                                                    $displayed++;
+                                                                    ?>
+                                                                    <span class="inline-flex items-center rounded-full bg-zinc-100 dark:bg-zinc-800 px-2.5 py-0.5 text-[0.7rem] font-medium text-zinc-700 dark:text-zinc-200">
+                                                                        <?php echo esc_html($tech_item); ?>
+                                                                    </span>
+                                                                <?php endforeach; ?>
+                                                                <?php if (count($clean_tech) > $max_display): ?>
+                                                                    <span class="inline-flex items-center rounded-full bg-zinc-100 dark:bg-zinc-800 px-2.5 py-0.5 text-[0.7rem] font-medium text-zinc-500 dark:text-zinc-400">
+                                                                        +<?php echo esc_html(fadaee_persian_numbers(count($clean_tech) - $max_display)); ?>
+                                                                    </span>
+                                                                <?php endif; ?>
+                                                            </div>
                                                         <?php endif; ?>
                                                     </div>
                                                 <?php endif; ?>

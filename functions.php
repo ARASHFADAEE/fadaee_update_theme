@@ -298,6 +298,8 @@ function arash_get_theme_option_defaults() {
         'portfolio_layout' => 'grid',
         'blog_enabled' => 1,
         'blog_items_per_page' => 6,
+        'blog_page_title' => fadaee_translate('everything_more'),
+        'blog_page_description' => fadaee_translate('blog_description'),
         'blog_comment_rating_enabled' => 1,
         'comments_per_page' => 10,
         'contact_email' => '',
@@ -1000,6 +1002,32 @@ function arash_customize_register($wp_customize) {
         'settings' => ARASH_THEME_OPTIONS_KEY . '[blog_items_per_page]',
     ]);
 
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[blog_page_title]', [
+        'type' => 'option',
+        'default' => $defaults['blog_page_title'],
+        'sanitize_callback' => 'arash_sanitize_text',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_blog_page_title', [
+        'label' => __('عنوان صفحه وبلاگ', 'arash-theme'),
+        'section' => 'arash_theme_section_blog',
+        'type' => 'text',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[blog_page_title]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[blog_page_description]', [
+        'type' => 'option',
+        'default' => $defaults['blog_page_description'],
+        'sanitize_callback' => 'arash_sanitize_textarea',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_blog_page_description', [
+        'label' => __('توضیح کوتاه صفحه وبلاگ', 'arash-theme'),
+        'section' => 'arash_theme_section_blog',
+        'type' => 'textarea',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[blog_page_description]',
+    ]);
+
     $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[contact_email]', [
         'type' => 'option',
         'default' => $defaults['contact_email'],
@@ -1039,6 +1067,32 @@ function arash_customize_register($wp_customize) {
         'settings' => ARASH_THEME_OPTIONS_KEY . '[contact_form_shortcode]',
     ]);
 
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[sticky_contact_phone]', [
+        'type' => 'option',
+        'default' => '',
+        'sanitize_callback' => 'arash_sanitize_text',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_sticky_contact_phone', [
+        'label' => __('شماره تماس دکمه ثابت', 'arash-theme'),
+        'section' => 'arash_theme_section_contact',
+        'type' => 'text',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[sticky_contact_phone]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[sticky_contact_label]', [
+        'type' => 'option',
+        'default' => 'تماس مستقیم با من',
+        'sanitize_callback' => 'arash_sanitize_text',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_sticky_contact_label', [
+        'label' => __('متن دکمه تماس ثابت', 'arash-theme'),
+        'section' => 'arash_theme_section_contact',
+        'type' => 'text',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[sticky_contact_label]',
+    ]);
+
     $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[footer_text]', [
         'type' => 'option',
         'default' => $defaults['footer_text'],
@@ -1069,6 +1123,7 @@ function fadaee_load_more() {
         'posts_per_page' => 6,
         'paged'          => $paged,
         's'              => $search,
+        'post_status'    => 'publish',
     ];
 
     if ($category) {
@@ -1336,7 +1391,14 @@ function arash_work_meta_box_callback($post) {
     $location = get_post_meta($post->ID, '_location', true);
     $start_date = get_post_meta($post->ID, '_work_start_date', true);
     $end_date = get_post_meta($post->ID, '_work_end_date', true);
-    $technologies = get_post_meta($post->ID, '_work_technologies', true);
+    $technologies_raw = get_post_meta($post->ID, '_work_technologies', true);
+    if (is_array($technologies_raw)) {
+        $technologies = $technologies_raw;
+    } elseif (!empty($technologies_raw) && is_string($technologies_raw)) {
+        $technologies = array_map('trim', explode(',', $technologies_raw));
+    } else {
+        $technologies = [];
+    }
     ?>
     <p>
         <label>نام شرکت</label><br>
@@ -1394,9 +1456,48 @@ function arash_work_meta_box_callback($post) {
         </p>
     </div>
     <p>
-        <label>تکنولوژی‌های استفاده‌شده (با کاما جدا شوند)</label><br>
-        <input type="text" name="work_technologies" value="<?php echo esc_attr($technologies); ?>" style="width:100%;" placeholder="PHP, Laravel, TailwindCSS">
+        <label>تکنولوژی‌های استفاده شده</label><br>
+        <div id="work_technologies_wrapper">
+            <?php if (!empty($technologies)): ?>
+                <?php foreach ($technologies as $tech_item): ?>
+                    <?php if (trim($tech_item) === '') continue; ?>
+                    <div class="work-tech-row" style="margin-bottom:6px; display:flex; gap:6px; align-items:center;">
+                        <input type="text" name="work_technologies[]" value="<?php echo esc_attr($tech_item); ?>" style="width:100%;">
+                        <button type="button" class="button remove-work-tech">حذف</button>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="work-tech-row" style="margin-bottom:6px; display:flex; gap:6px; align-items:center;">
+                    <input type="text" name="work_technologies[]" value="" style="width:100%;" placeholder="مثلاً: PHP">
+                    <button type="button" class="button remove-work-tech">حذف</button>
+                </div>
+            <?php endif; ?>
+        </div>
+        <button type="button" class="button" id="add_work_technology">افزودن تکنولوژی</button>
     </p>
+    <script>
+    jQuery(function($){
+        $('#add_work_technology').on('click', function(e){
+            e.preventDefault();
+            var $wrapper = $('#work_technologies_wrapper');
+            var $row = $('<div class="work-tech-row" style="margin-bottom:6px; display:flex; gap:6px; align-items:center;">' +
+                '<input type="text" name="work_technologies[]" value="" style="width:100%;">' +
+                '<button type="button" class="button remove-work-tech">حذف</button>' +
+            '</div>');
+            $wrapper.append($row);
+        });
+        $(document).on('click', '.remove-work-tech', function(e){
+            e.preventDefault();
+            var $row = $(this).closest('.work-tech-row');
+            var $wrapper = $('#work_technologies_wrapper');
+            if ($wrapper.find('.work-tech-row').length > 1) {
+                $row.remove();
+            } else {
+                $row.find('input[type="text"]').val('');
+            }
+        });
+    });
+    </script>
     <?php
 }
 
@@ -1415,7 +1516,13 @@ function arash_save_work_meta_box($post_id) {
     ];
     foreach ($map as $post_key=>$meta_key) {
         if (isset($_POST[$post_key])) {
-            update_post_meta($post_id, $meta_key, sanitize_text_field($_POST[$post_key]));
+            if ($post_key === 'work_technologies' && is_array($_POST[$post_key])) {
+                $techs = array_map('sanitize_text_field', $_POST[$post_key]);
+                $techs = array_filter($techs, function($v){ return trim($v) !== ''; });
+                update_post_meta($post_id, $meta_key, array_values($techs));
+            } else {
+                update_post_meta($post_id, $meta_key, sanitize_text_field($_POST[$post_key]));
+            }
         }
     }
 }
@@ -1823,26 +1930,4 @@ function arash_save_testimonial_meta_box($post_id) {
 }
 add_action('save_post_testimonial', 'arash_save_testimonial_meta_box');
 
-
-
-
- function classic_table_responsive_script() {
-    ?>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // هدف‌گیری جدول‌های داخل محتوا
-        document.querySelectorAll('.entry-content table, .post-content table').forEach(function(table) {
-            const headers = table.querySelectorAll('thead th');
-            table.querySelectorAll('tbody tr').forEach(function(row) {
-                row.querySelectorAll('td').forEach(function(cell, index) {
-                    const headerText = headers[index] ? headers[index].textContent.trim() : 'داده';
-                    cell.setAttribute('data-label', headerText);
-                });
-            });
-        });
-    });
-    </script>
-    <?php
-}
-add_action('wp_footer', 'classic_table_responsive_script');
 
