@@ -106,7 +106,7 @@ class Fadaee_Elementor_Testimonials_Widget extends Widget_Base {
                             }
                             $project_name = get_post_meta(get_the_ID(), '_project_name', true);
                             ?>
-                            <article class="scroll-item testimonial-item max-w-sm">
+                            <article class="scroll-item  max-w-sm">
                                 <div class="relative overflow-hidden rounded-2xl bg-white/90 dark:bg-zinc-900/90 border border-zinc-200/70 dark:border-zinc-800/70 shadow-sm hover:shadow-lg transition-shadow duration-200">
                                     <div class="absolute inset-0 pointer-events-none">
                                         <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-l from-red-500 via-orange-400 to-amber-400 dark:from-red-400 dark:via-orange-300 dark:to-amber-300 opacity-80"></div>
