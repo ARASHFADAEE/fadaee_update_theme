@@ -1,6 +1,15 @@
 <?php get_header()?>
     <main class="flex-1 pt-12 sm:pt-24 pb-16 sm:pb-32 px-4 sm:px-8">
         <?php
+        $home_builder_mode = arash_get_theme_option('home_builder_mode');
+        if ($home_builder_mode === 'elementor' && class_exists('Elementor\\Plugin')) :
+            if (have_posts()) :
+                while (have_posts()) :
+                    the_post();
+                    the_content();
+                endwhile;
+            endif;
+        else:
         $hero_headline = arash_get_theme_option('hero_headline');
         $hero_subheadline = arash_get_theme_option('hero_subheadline');
         $hero_primary_button_label = arash_get_theme_option('hero_primary_button_label');

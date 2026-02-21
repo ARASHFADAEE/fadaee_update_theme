@@ -12,10 +12,16 @@
             $blog_page_description = arash_get_theme_option('blog_page_description');
             ?>
             <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-tight" style="font-size: clamp(1.75rem, 5vw, 2.5rem);">
-                <?php echo esc_html($blog_page_title); ?>
+                <?php
+                if (is_category()) {
+                    single_cat_title();
+                } else {
+                    echo esc_html($blog_page_title);
+                }
+                ?>
             </h1>
 
-            <?php if (!empty($blog_page_description)): ?>
+            <?php if (!empty($blog_page_description) && !is_category()): ?>
                 <p class="mt-4 sm:mt-6 text-base sm:text-lg leading-relaxed text-zinc-600 dark:text-zinc-400" style="font-size: clamp(1rem, 2.5vw, 1.125rem); line-height: 1.75;">
                     <?php echo esc_html($blog_page_description); ?>
                 </p>
@@ -48,7 +54,7 @@
                         <div class="flex flex-wrap gap-2">
                             <button
                                 type="button"
-                                class="blog-category-chip active flex items-center gap-2 rounded-full px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium bg-red-600 text-white shadow-sm hover:bg-red-500 transition-colors"
+                                class="blog-category-chip flex items-center gap-2 rounded-full px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium <?php echo is_category() ? 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700' : 'bg-red-600 text-white shadow-sm hover:bg-red-500'; ?>"
                                 data-category=""
                             >
                                 <span>همه مقالات</span>
@@ -63,7 +69,7 @@
                             foreach ($categories as $category): ?>
                                 <button
                                     type="button"
-                                    class="blog-category-chip flex items-center gap-2 rounded-full px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+                                    class="blog-category-chip flex items-center gap-2 rounded-full px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium transition-colors <?php echo (is_category($category->term_id) ? 'active bg-red-600 text-white shadow-sm hover:bg-red-500 dark:bg-red-500 dark:text-white dark:hover:bg-red-400' : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700'); ?>"
                                     data-category="<?php echo esc_attr($category->term_id); ?>"
                                 >
                                     <span><?php echo esc_html($category->name); ?></span>
@@ -81,8 +87,11 @@
         <div id="blog-filters-meta" class="hidden"
              data-page="1"
              data-max-pages="<?php echo esc_attr($wp_query->max_num_pages); ?>"
-             data-ajax-url="<?php echo esc_url(admin_url('admin-ajax.php')); ?>">
-        </div>
+             data-ajax-url="<?php echo esc_url(admin_url('admin-ajax.php')); ?>"
+             <?php if (is_category()) : ?>
+                 data-current-category="<?php echo esc_attr(get_queried_object_id()); ?>"
+             <?php endif; ?>
+        ></div>
 
         <section class="mt-8 sm:mt-10 lg:mt-12">
             <div id="post-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">

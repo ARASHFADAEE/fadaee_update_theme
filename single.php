@@ -7,7 +7,13 @@ $post_id = get_the_ID();
 $post_title = get_the_title($post_id);
 $post_content = get_the_content();
 $post_date = get_the_time('F j, Y');
-$post_author = the_author_meta('display_name', $post_id);
+$post_author = get_the_author_meta('display_name');
+
+$post_word_count = str_word_count(wp_strip_all_tags($post_content));
+if ($post_word_count < 1) {
+    $post_word_count = 1;
+}
+$reading_time_minutes = max(1, ceil($post_word_count / 200));
 
 
 
@@ -28,12 +34,12 @@ $post_author = the_author_meta('display_name', $post_id);
                 </a>
             </div>
 
-            <nav class="mb-6 sm:mb-8 overflow-x-auto" aria-label="Breadcrumb">
+            <nav class="article-breadcrumbs mb-6 sm:mb-8 overflow-x-auto" aria-label="Breadcrumb">
                 <?php
                 if (function_exists('rank_math_the_breadcrumbs')) {
                     rank_math_the_breadcrumbs();
                 } elseif (function_exists('yoast_breadcrumb')) {
-                    yoast_breadcrumb('<p class="yoast-breadcrumbs text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">','</p>');
+                    yoast_breadcrumb('<p class="yoast-breadcrumbs">','</p>');
                 } else {
                     ?>
                     <div class="flex items-center gap-1.5 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
@@ -67,9 +73,11 @@ $post_author = the_author_meta('display_name', $post_id);
                         <?= $post_title ?>
                     </h1>
                     <div class="mt-4 sm:mt-6 flex flex-wrap items-center gap-2 sm:gap-4 text-sm sm:text-base text-zinc-500 dark:text-zinc-400">
-                        <time datetime="2025-08-21"><?= $post_date?></time>
+                        <time datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?= $post_date ?></time>
                         <span>•</span>
-                        <span><?php echo $post_author?></span>
+                        <span><?php echo esc_html($post_author); ?></span>
+                        <span>•</span>
+                        <span><?php echo fadaee_persian_numbers($reading_time_minutes); ?> دقیقه زمان مطالعه</span>
                     </div>
                 </div>
 

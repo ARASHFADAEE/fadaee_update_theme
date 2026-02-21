@@ -301,6 +301,7 @@ function arash_get_theme_option_defaults() {
         'testimonials_items' => 6,
         'portfolio_items_per_page' => 6,
         'portfolio_layout' => 'grid',
+        'home_builder_mode' => 'theme',
         'blog_enabled' => 1,
         'blog_items_per_page' => 6,
         'blog_page_title' => fadaee_translate('everything_more'),
@@ -310,6 +311,9 @@ function arash_get_theme_option_defaults() {
         'contact_email' => '',
         'contact_map_embed' => '',
         'contact_form_shortcode' => '',
+        'sticky_contact_phone' => '',
+        'sticky_contact_label' => 'تماس مستقیم با من',
+        'sticky_contact_color' => '#059669',
         'footer_text' => 'تمامی حقوق این وب‌سایت محفوظ است.',
         'footer_cta_enabled' => 1,
         'footer_cta_title' => 'آماده‌ای روی پروژه بعدی‌ات کار کنیم؟',
@@ -1055,6 +1059,23 @@ function arash_customize_register($wp_customize) {
         'settings' => ARASH_THEME_OPTIONS_KEY . '[portfolio_layout]',
     ]);
 
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[home_builder_mode]', [
+        'type' => 'option',
+        'default' => $defaults['home_builder_mode'],
+        'sanitize_callback' => 'arash_sanitize_choice',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_home_builder_mode', [
+        'label' => __('حالت صفحه اصلی', 'arash-theme'),
+        'section' => 'arash_theme_section_home',
+        'type' => 'select',
+        'choices' => [
+            'theme' => __('حالت پیش‌فرض قالب', 'arash-theme'),
+            'elementor' => __('سازگار با المنتور', 'arash-theme'),
+        ],
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[home_builder_mode]',
+    ]);
+
     $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[blog_enabled]', [
         'type' => 'option',
         'default' => $defaults['blog_enabled'],
@@ -1171,6 +1192,22 @@ function arash_customize_register($wp_customize) {
         'type' => 'text',
         'settings' => ARASH_THEME_OPTIONS_KEY . '[sticky_contact_label]',
     ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[sticky_contact_color]', [
+        'type' => 'option',
+        'default' => $defaults['sticky_contact_color'],
+        'sanitize_callback' => 'arash_sanitize_text',
+    ]);
+
+    $wp_customize->add_control(new WP_Customize_Color_Control(
+        $wp_customize,
+        'arash_theme_options_sticky_contact_color',
+        [
+            'label' => __('رنگ دکمه تماس ثابت', 'arash-theme'),
+            'section' => 'arash_theme_section_contact',
+            'settings' => ARASH_THEME_OPTIONS_KEY . '[sticky_contact_color]',
+        ]
+    ));
 
     $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[footer_text]', [
         'type' => 'option',

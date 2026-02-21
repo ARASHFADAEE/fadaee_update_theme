@@ -170,7 +170,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function fetchPosts(page) {
         const activeChip = document.querySelector('.blog-category-chip.active');
-        const category = activeChip ? activeChip.getAttribute('data-category') : '';
+        const defaultCategory = meta.getAttribute('data-current-category') || '';
+        const category = activeChip ? activeChip.getAttribute('data-category') || defaultCategory : defaultCategory;
         const search = searchInput ? searchInput.value : '';
 
         setLoading(true);

@@ -2,6 +2,7 @@
 $options = arash_get_theme_options();
 $sticky_phone = !empty($options['sticky_contact_phone']) ? preg_replace('/\s+/', '', $options['sticky_contact_phone']) : '';
 $sticky_label = !empty($options['sticky_contact_label']) ? $options['sticky_contact_label'] : 'تماس مستقیم با من';
+$sticky_color = !empty($options['sticky_contact_color']) ? $options['sticky_contact_color'] : '#059669';
 $footer_cta_enabled = !empty($options['footer_cta_enabled']);
 $footer_cta_title = !empty($options['footer_cta_title']) ? $options['footer_cta_title'] : '';
 $footer_cta_subtitle = !empty($options['footer_cta_subtitle']) ? $options['footer_cta_subtitle'] : '';
@@ -9,7 +10,7 @@ $footer_cta_button_label = !empty($options['footer_cta_button_label']) ? $option
 $footer_cta_button_url = !empty($options['footer_cta_button_url']) ? $options['footer_cta_button_url'] : '';
 ?>
 <?php if (!empty($sticky_phone)): ?>
-    <a href="tel:<?php echo esc_attr($sticky_phone); ?>" class="fixed bottom-6 left-6 z-50 flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-3 rounded-full shadow-lg shadow-emerald-600/20 transition-all duration-300">
+    <a href="tel:<?php echo esc_attr($sticky_phone); ?>" class="fixed bottom-6 left-6 z-50 flex items-center gap-2 text-white px-5 py-3 rounded-full shadow-lg transition-all duration-300" style="background-color: <?php echo esc_attr($sticky_color); ?>; box-shadow: 0 10px 25px <?php echo esc_attr($sticky_color); ?>33;">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h1.5a2.25 2.25 0 002.25-2.25v-2.772c0-.516-.351-.966-.852-1.091l-4.548-1.137a1.125 1.125 0 00-1.173.417l-.97 1.293a1.125 1.125 0 01-1.21.39 12.035 12.035 0 01-7.143-7.143 1.125 1.125 0 01.39-1.21l1.293-.97c.347-.26.49-.704.417-1.173L6.114 3.102A1.125 1.125 0 005.023 2.25H2.25A2.25 2.25 0 000 4.5v2.25z" />
         </svg>

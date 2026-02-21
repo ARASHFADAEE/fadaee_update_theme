@@ -846,6 +846,67 @@ pre::-webkit-scrollbar-thumb {
     }
 }
 
+.article-breadcrumbs {
+    direction: rtl;
+}
+
+.article-breadcrumbs .rank-math-breadcrumb,
+.article-breadcrumbs .yoast-breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+}
+
+@media (min-width: 640px) {
+    .article-breadcrumbs .rank-math-breadcrumb,
+    .article-breadcrumbs .yoast-breadcrumbs {
+        font-size: 0.875rem;
+    }
+}
+
+.article-breadcrumbs a {
+    color: rgb(113 113 122);
+}
+
+.dark .article-breadcrumbs a {
+    color: rgb(156 163 175);
+}
+
+.article-breadcrumbs a:hover {
+    color: rgb(127 29 29);
+}
+
+.dark .article-breadcrumbs a:hover {
+    color: rgb(252 165 165);
+}
+
+.article-breadcrumbs .separator {
+    color: rgb(161 161 170);
+}
+
+.dark .elementor-section,
+.dark .elementor-column,
+.dark .elementor-widget-container {
+    background-color: rgb(24 24 27);
+}
+
+.dark .elementor-heading-title,
+.dark .elementor-widget-text-editor,
+.dark .elementor-widget-text-editor p {
+    color: rgb(229 231 235);
+}
+
+.dark .elementor-button {
+    background-color: rgb(220 38 38);
+    color: #fff;
+}
+
+.dark .elementor-button:hover {
+    background-color: rgb(239 68 68);
+}
+
 
 /* ===============================
    Persian Font Responsive Optimization

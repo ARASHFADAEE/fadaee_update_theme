@@ -21,7 +21,7 @@ while (have_posts()) : the_post();
     <div class="mx-auto max-w-4xl">
         
         <!-- Back Button -->
-        <div class="mb-8 sm:mb-12">
+        <div class="mb-4 sm:mb-6">
             <a href="<?php echo get_post_type_archive_link('portfolio'); ?>" class="group inline-flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition">
                 <div class="h-4 w-4 -scale-x-100 stroke-zinc-500 group-hover:stroke-zinc-700 dark:stroke-zinc-400">
                     <svg viewBox="0 0 16 16" fill="none" class="h-4 w-4 stroke-zinc-500 group-hover:stroke-zinc-700 dark:stroke-zinc-400 arrow">
@@ -31,6 +31,32 @@ while (have_posts()) : the_post();
                 <span>بازگشت به نمونه‌کارها</span>
             </a>
         </div>
+
+        <nav class="article-breadcrumbs mb-6 sm:mb-8 overflow-x-auto" aria-label="Breadcrumb">
+            <?php
+            if (function_exists('rank_math_the_breadcrumbs')) {
+                rank_math_the_breadcrumbs();
+            } elseif (function_exists('yoast_breadcrumb')) {
+                yoast_breadcrumb('<p class="yoast-breadcrumbs">','</p>');
+            } else {
+                ?>
+                <div class="flex items-center gap-1.5 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+                    <a href="<?php echo esc_url(home_url('/')); ?>" class="hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors">
+                        خانه
+                    </a>
+                    <span class="mx-1.5 text-zinc-400">/</span>
+                    <a href="<?php echo esc_url(get_post_type_archive_link('portfolio')); ?>" class="hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors">
+                        نمونه‌کارها
+                    </a>
+                    <span class="mx-1.5 text-zinc-400">/</span>
+                    <span class="text-zinc-700 dark:text-zinc-200">
+                        <?php the_title(); ?>
+                    </span>
+                </div>
+                <?php
+            }
+            ?>
+        </nav>
 
         <!-- Portfolio Header -->
         <article class="portfolio-single">
