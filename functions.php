@@ -305,7 +305,12 @@ function arash_get_theme_option_defaults() {
         'contact_email' => '',
         'contact_map_embed' => '',
         'contact_form_shortcode' => '',
-        'footer_text' => 'تمامی حقوق برای آرش فدایی محفوظ است.',
+        'footer_text' => 'تمامی حقوق این وب‌سایت محفوظ است.',
+        'footer_cta_enabled' => 1,
+        'footer_cta_title' => 'آماده‌ای روی پروژه بعدی‌ات کار کنیم؟',
+        'footer_cta_subtitle' => 'اگر روی یک محصول جدید، وب‌اپلیکیشن یا سیستم پیچیده کار می‌کنی، خوشحال می‌شوم در کنار هم روی آن فکر کنیم.',
+        'footer_cta_button_label' => 'در ارتباط باشیم',
+        'footer_cta_button_url' => '',
     ];
 }
 
@@ -1105,6 +1110,71 @@ function arash_customize_register($wp_customize) {
         'type' => 'text',
         'settings' => ARASH_THEME_OPTIONS_KEY . '[footer_text]',
     ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[footer_cta_enabled]', [
+        'type' => 'option',
+        'default' => $defaults['footer_cta_enabled'],
+        'sanitize_callback' => 'arash_sanitize_checkbox',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_footer_cta_enabled', [
+        'label' => __('نمایش بخش دعوت به اقدام در فوتر', 'arash-theme'),
+        'section' => 'arash_theme_section_footer',
+        'type' => 'checkbox',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[footer_cta_enabled]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[footer_cta_title]', [
+        'type' => 'option',
+        'default' => $defaults['footer_cta_title'],
+        'sanitize_callback' => 'arash_sanitize_text',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_footer_cta_title', [
+        'label' => __('عنوان بخش دعوت به اقدام', 'arash-theme'),
+        'section' => 'arash_theme_section_footer',
+        'type' => 'text',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[footer_cta_title]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[footer_cta_subtitle]', [
+        'type' => 'option',
+        'default' => $defaults['footer_cta_subtitle'],
+        'sanitize_callback' => 'arash_sanitize_textarea',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_footer_cta_subtitle', [
+        'label' => __('توضیح کوتاه بخش دعوت به اقدام', 'arash-theme'),
+        'section' => 'arash_theme_section_footer',
+        'type' => 'textarea',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[footer_cta_subtitle]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[footer_cta_button_label]', [
+        'type' => 'option',
+        'default' => $defaults['footer_cta_button_label'],
+        'sanitize_callback' => 'arash_sanitize_text',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_footer_cta_button_label', [
+        'label' => __('متن دکمه دعوت به اقدام', 'arash-theme'),
+        'section' => 'arash_theme_section_footer',
+        'type' => 'text',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[footer_cta_button_label]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[footer_cta_button_url]', [
+        'type' => 'option',
+        'default' => $defaults['footer_cta_button_url'],
+        'sanitize_callback' => 'arash_sanitize_url',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_footer_cta_button_url', [
+        'label' => __('لینک دکمه دعوت به اقدام', 'arash-theme'),
+        'section' => 'arash_theme_section_footer',
+        'type' => 'url',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[footer_cta_button_url]',
+    ]);
 }
 add_action('customize_register', 'arash_customize_register');
 
@@ -1127,7 +1197,13 @@ function fadaee_load_more() {
     ];
 
     if ($category) {
-        $args['cat'] = $category;
+        $args['tax_query'] = [
+            [
+                'taxonomy' => 'category',
+                'field'    => 'term_id',
+                'terms'    => [$category],
+            ],
+        ];
     }
 
     $query = new WP_Query($args);
@@ -1929,5 +2005,3 @@ function arash_save_testimonial_meta_box($post_id) {
     }
 }
 add_action('save_post_testimonial', 'arash_save_testimonial_meta_box');
-
-

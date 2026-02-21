@@ -58,6 +58,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const html = document.documentElement;
     const toggleBtn = document.getElementById('theme-toggle');
+    const sunIcon = toggleBtn ? toggleBtn.querySelector('.sun') : null;
+    const moonIcon = toggleBtn ? toggleBtn.querySelector('.moon') : null;
+
+    const updateThemeIcons = () => {
+        if (!sunIcon || !moonIcon) return;
+        if (html.classList.contains('dark')) {
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+        } else {
+            moonIcon.classList.remove('hidden');
+            sunIcon.classList.add('hidden');
+        }
+    };
 
     // ست اولیه بر اساس LocalStorage
     if(localStorage.getItem('theme_fadaee') === 'dark') {
@@ -72,16 +85,22 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // کلیک روی دکمه
-    toggleBtn.addEventListener('click', function () {
-        html.classList.toggle('dark');
+    updateThemeIcons();
 
-        if(html.classList.contains('dark')) {
-            localStorage.setItem('theme_fadaee','dark');
-        } else {
-            localStorage.setItem('theme_fadaee','light');
-        }
-    });
+    // کلیک روی دکمه
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function () {
+            html.classList.toggle('dark');
+
+            if(html.classList.contains('dark')) {
+                localStorage.setItem('theme_fadaee','dark');
+            } else {
+                localStorage.setItem('theme_fadaee','light');
+            }
+
+            updateThemeIcons();
+        });
+    }
 
 });
 
@@ -193,12 +212,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 c.classList.remove('active');
                 c.classList.remove('bg-red-600', 'text-white');
                 c.classList.remove('hover:bg-red-500');
-                c.classList.add('bg-zinc-100', 'text-zinc-700');
+                c.classList.remove('dark:bg-red-500', 'dark:text-white', 'dark:hover:bg-red-400');
+                c.classList.add('bg-zinc-100', 'text-zinc-700', 'dark:bg-zinc-800', 'dark:text-zinc-200', 'dark:hover:bg-zinc-700');
             });
 
             this.classList.add('active');
-            this.classList.remove('bg-zinc-100', 'text-zinc-700');
-            this.classList.add('bg-red-600', 'text-white', 'hover:bg-red-500');
+            this.classList.remove('bg-zinc-100', 'text-zinc-700', 'dark:bg-zinc-800', 'dark:text-zinc-200', 'dark:hover:bg-zinc-700');
+            this.classList.add('bg-red-600', 'text-white', 'hover:bg-red-500', 'dark:bg-red-500', 'dark:text-white', 'dark:hover:bg-red-400');
 
             fetchPosts(1);
         });
