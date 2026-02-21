@@ -294,6 +294,11 @@ function arash_get_theme_option_defaults() {
         'education_order' => 1,
         'work_enabled' => 1,
         'work_order' => 2,
+        'testimonials_enabled' => 1,
+        'testimonials_order' => 3,
+        'testimonials_title' => 'نظرات مشتریان',
+        'testimonials_subtitle' => 'مشتری‌ها در مورد همکاری با من چه می‌گویند؟',
+        'testimonials_items' => 6,
         'portfolio_items_per_page' => 6,
         'portfolio_layout' => 'grid',
         'blog_enabled' => 1,
@@ -449,6 +454,12 @@ function arash_customize_register($wp_customize) {
         'title' => __('بخش تجربه کاری', 'arash-theme'),
         'panel' => 'arash_theme_options_panel',
         'priority' => 60,
+    ]);
+
+    $wp_customize->add_section('arash_theme_section_testimonials', [
+        'title' => __('بخش نظرات مشتریان', 'arash-theme'),
+        'panel' => 'arash_theme_options_panel',
+        'priority' => 65,
     ]);
 
     $wp_customize->add_section('arash_theme_section_portfolio', [
@@ -948,6 +959,71 @@ function arash_customize_register($wp_customize) {
         'section' => 'arash_theme_section_work',
         'type' => 'number',
         'settings' => ARASH_THEME_OPTIONS_KEY . '[work_order]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[testimonials_enabled]', [
+        'type' => 'option',
+        'default' => $defaults['testimonials_enabled'],
+        'sanitize_callback' => 'arash_sanitize_checkbox',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_testimonials_enabled', [
+        'label' => __('نمایش بخش نظرات مشتریان', 'arash-theme'),
+        'section' => 'arash_theme_section_testimonials',
+        'type' => 'checkbox',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[testimonials_enabled]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[testimonials_order]', [
+        'type' => 'option',
+        'default' => $defaults['testimonials_order'],
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_testimonials_order', [
+        'label' => __('ترتیب نمایش نظرات مشتریان', 'arash-theme'),
+        'section' => 'arash_theme_section_testimonials',
+        'type' => 'number',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[testimonials_order]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[testimonials_title]', [
+        'type' => 'option',
+        'default' => $defaults['testimonials_title'],
+        'sanitize_callback' => 'arash_sanitize_text',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_testimonials_title', [
+        'label' => __('عنوان بخش نظرات مشتریان', 'arash-theme'),
+        'section' => 'arash_theme_section_testimonials',
+        'type' => 'text',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[testimonials_title]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[testimonials_subtitle]', [
+        'type' => 'option',
+        'default' => $defaults['testimonials_subtitle'],
+        'sanitize_callback' => 'arash_sanitize_textarea',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_testimonials_subtitle', [
+        'label' => __('توضیح کوتاه بخش نظرات مشتریان', 'arash-theme'),
+        'section' => 'arash_theme_section_testimonials',
+        'type' => 'textarea',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[testimonials_subtitle]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[testimonials_items]', [
+        'type' => 'option',
+        'default' => $defaults['testimonials_items'],
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_testimonials_items', [
+        'label' => __('تعداد نظرات در صفحه اصلی', 'arash-theme'),
+        'section' => 'arash_theme_section_testimonials',
+        'type' => 'number',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[testimonials_items]',
     ]);
 
     $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[portfolio_items_per_page]', [
