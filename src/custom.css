@@ -835,6 +835,17 @@ pre::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.08);
 }
 
+.testimonial-item {
+    width: 19rem;
+}
+
+@media (max-width: 640px) {
+    .testimonial-item {
+        width: 80vw;
+        max-width: 22rem;
+    }
+}
+
 
 /* ===============================
    Persian Font Responsive Optimization

@@ -17,7 +17,7 @@ $post_author = the_author_meta('display_name', $post_id);
         <div class="mx-auto max-w-2xl lg:max-w-4xl">
 
             <!-- Back Button -->
-            <div class="mb-8 sm:mb-12">
+            <div class="mb-4 sm:mb-6">
                 <a href="<?php echo get_home_url()?>" class="group inline-flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition">
                     <div class="h-4 w-4 -scale-x-100 stroke-zinc-500 group-hover:stroke-zinc-700 dark:stroke-zinc-400">
                         <svg viewBox="0 0 16 16" fill="none" class="h-4 w-4 stroke-zinc-500 group-hover:stroke-zinc-700 dark:stroke-zinc-400 arrow">
@@ -27,6 +27,39 @@ $post_author = the_author_meta('display_name', $post_id);
                     <span><?php echo fadaee_translate('back_to_home'); ?></span>
                 </a>
             </div>
+
+            <nav class="mb-6 sm:mb-8 overflow-x-auto" aria-label="Breadcrumb">
+                <?php
+                if (function_exists('rank_math_the_breadcrumbs')) {
+                    rank_math_the_breadcrumbs();
+                } elseif (function_exists('yoast_breadcrumb')) {
+                    yoast_breadcrumb('<p class="yoast-breadcrumbs text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">','</p>');
+                } else {
+                    ?>
+                    <div class="flex items-center gap-1.5 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+                        <a href="<?php echo esc_url(home_url('/')); ?>" class="hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors">
+                            خانه
+                        </a>
+                        <span class="mx-1.5 text-zinc-400">/</span>
+                        <?php
+                        $blog_page_id = get_option('page_for_posts');
+                        if ($blog_page_id) {
+                            ?>
+                            <a href="<?php echo esc_url(get_permalink($blog_page_id)); ?>" class="hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors">
+                                <?php echo esc_html(get_the_title($blog_page_id)); ?>
+                            </a>
+                            <span class="mx-1.5 text-zinc-400">/</span>
+                            <?php
+                        }
+                        ?>
+                        <span class="text-zinc-700 dark:text-zinc-200">
+                            <?php the_title(); ?>
+                        </span>
+                    </div>
+                    <?php
+                }
+                ?>
+            </nav>
 
             <article class="prose prose-zinc dark:prose-invert max-w-none prose-img:rounded-xl prose-img:shadow-lg" dir="rtl" >
                 <div>
