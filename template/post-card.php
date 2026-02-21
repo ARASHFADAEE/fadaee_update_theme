@@ -62,10 +62,11 @@ $comments = get_comments_number($post_id);
         </p>
 
         <a href="<?php the_permalink(); ?>" class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-red-600 hover:text-red-500 dark:text-red-400 dark:hover:text-red-300 transition-colors group/link">
-            <?php echo fadaee_translate('read_more'); ?>
             <svg class="h-4 w-4 transition-transform group-hover/link:translate-x-1 arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
+            <?php echo fadaee_translate('read_more'); ?>
+
         </a>
     </div>
 </article>
