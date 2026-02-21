@@ -728,10 +728,8 @@ function arash_customize_register($wp_customize) {
         'section' => 'arash_theme_section_colors',
         'type' => 'select',
         'choices' => [
-            'IRANYekan' => 'IRANYekan',
-            'Vazirmatn' => 'Vazirmatn',
-            'IRANSans' => 'IRANSans',
-            'Estedad' => 'Estedad',
+            'IRANYekan' => __('ایران یکان', 'arash-theme'),
+            'PeydaWebVF' => __('پیدا', 'arash-theme'),
         ],
         'settings' => ARASH_THEME_OPTIONS_KEY . '[font_family]',
     ]);
@@ -1434,6 +1432,12 @@ function arash_output_hero_custom_styles() {
     $light = !empty($options['hero_background_color_light']) ? $options['hero_background_color_light'] : $options['hero_background_color'];
     $dark = !empty($options['hero_background_color_dark']) ? $options['hero_background_color_dark'] : '#020617';
     $primary = !empty($options['primary_color']) ? $options['primary_color'] : '#f97316';
+    $font_option = !empty($options['font_family']) ? $options['font_family'] : 'IRANYekan';
+    if ($font_option === 'PeydaWebVF') {
+        $font_stack = "'PeydaWebVF', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+    } else {
+        $font_stack = "'IRANYekan', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+    }
     ?>
     <style id="arash-hero-custom-styles">
         .hero-section-custom {
@@ -1444,6 +1448,10 @@ function arash_output_hero_custom_styles() {
         }
         :root {
             --arash-primary: <?php echo esc_html($primary); ?>;
+            --arash-font-family: <?php echo esc_html($font_stack); ?>;
+        }
+        body {
+            font-family: var(--arash-font-family);
         }
     </style>
     <?php
