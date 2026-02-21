@@ -1448,15 +1448,15 @@ function arash_output_hero_custom_styles() {
         }
         :root {
             --arash-primary: <?php echo esc_html($primary); ?>;
-            --arash-font-family: <?php echo esc_html($font_stack); ?>;
+            --arash-font-family: <?php echo $font_stack; ?>;
         }
         body {
-            font-family: var(--arash-font-family);
+            font-family: var(--arash-font-family) !important;
         }
     </style>
     <?php
 }
-add_action('wp_head', 'arash_output_hero_custom_styles');
+add_action('wp_head', 'arash_output_hero_custom_styles', 99);
 
 function arash_add_education_meta_box() {
     add_meta_box('education_meta_box', 'فیلدهای تحصیلات', 'arash_education_meta_box_callback', 'education', 'normal', 'high');
