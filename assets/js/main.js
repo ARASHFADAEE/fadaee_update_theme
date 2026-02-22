@@ -317,3 +317,31 @@ document.querySelectorAll('.submenu-toggle').forEach(toggle => {
         this.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
     });
 });
+
+
+
+
+function toggleContent(btn) {
+    const box = btn.closest('.content-box');
+    const preview = box.querySelector('.content-preview');
+    const full = box.querySelector('.content-full');
+    const isExpanded = full.style.display !== 'none';
+
+    if (isExpanded) {
+        full.style.display = 'none';
+        preview.style.display = 'block';
+        const label = btn.querySelector('.toggle-label');
+        const icon = btn.querySelector('.toggle-icon');
+        if (label) label.textContent = 'نمایش بیشتر';
+        if (icon) icon.textContent = '↓';
+        btn.setAttribute('aria-expanded', 'false');
+    } else {
+        full.style.display = 'block';
+        preview.style.display = 'none';
+        const label = btn.querySelector('.toggle-label');
+        const icon = btn.querySelector('.toggle-icon');
+        if (label) label.textContent = 'نمایش کمتر';
+        if (icon) icon.textContent = '↑';
+        btn.setAttribute('aria-expanded', 'true');
+    }
+}
