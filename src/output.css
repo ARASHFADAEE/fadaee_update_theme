@@ -665,14 +665,6 @@ video {
   bottom: 1.5rem;
 }
 
-.left-0 {
-  left: 0px;
-}
-
-.left-6 {
-  left: 1.5rem;
-}
-
 .right-0 {
   right: 0px;
 }
@@ -687,6 +679,10 @@ video {
 
 .start-4 {
   inset-inline-start: 1rem;
+}
+
+.start-6 {
+  inset-inline-start: 1.5rem;
 }
 
 .top-0 {
@@ -784,10 +780,6 @@ video {
 
 .mb-8 {
   margin-bottom: 2rem;
-}
-
-.ml-2 {
-  margin-left: 0.5rem;
 }
 
 .mr-1\.5 {
@@ -1689,10 +1681,6 @@ video {
 
 .pt-8 {
   padding-top: 2rem;
-}
-
-.text-left {
-  text-align: left;
 }
 
 .text-center {
@@ -3273,10 +3261,6 @@ video {
 
   .md\:gap-8 {
     gap: 2rem;
-  }
-
-  .md\:text-left {
-    text-align: left;
   }
 
   .md\:text-right {
