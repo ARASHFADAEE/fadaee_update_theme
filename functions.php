@@ -16,6 +16,7 @@ function support_theme_arash()
     add_theme_support( 'post-thumbnails' );
     add_theme_support( 'automatic-feed-links' );
     add_theme_support( 'menus' );
+    load_theme_textdomain( 'arash-theme', THEME_DIR . '/languages' );
 
 
 
@@ -64,18 +65,36 @@ add_action('wp_enqueue_scripts', function () {
 });
 
 
+function arash_get_anonymous_visitor_id() {
+    $ip = isset($_SERVER['REMOTE_ADDR']) ? (string) $_SERVER['REMOTE_ADDR'] : '';
+    if ($ip === '') {
+        return '';
+    }
+
+    if (function_exists('wp_privacy_anonymize_ip')) {
+        $ip = wp_privacy_anonymize_ip($ip);
+    }
+
+    return hash('sha256', $ip . NONCE_SALT);
+}
+
+
 
 
 function fadaee_like_post_handler() {
 
     check_ajax_referer('fadaee_nonce', 'nonce');
 
-    $post_id = intval($_POST['post_id']);
-    if (!$post_id) {
+    $post_id = isset($_POST['post_id']) ? absint($_POST['post_id']) : 0;
+    if (!$post_id || get_post_status($post_id) !== 'publish') {
         wp_send_json_error(['message' => 'Invalid Post ID']);
     }
 
-    $ip = $_SERVER['REMOTE_ADDR'];
+    $visitor_id = arash_get_anonymous_visitor_id();
+    if ($visitor_id === '') {
+        wp_send_json_error(['message' => 'امکان ثبت رای وجود ندارد']);
+    }
+
     $liked_ips = get_post_meta($post_id, 'liked_ips', true);
 
     if (!is_array($liked_ips)) {
@@ -83,7 +102,7 @@ function fadaee_like_post_handler() {
     }
 
     // جلوگیری از لایک تکراری
-    if (in_array($ip, $liked_ips)) {
+    if (in_array($visitor_id, $liked_ips, true)) {
         wp_send_json_error(['message' => 'شما قبلا این پست را لایک کرده‌اید']);
     }
 
@@ -94,7 +113,8 @@ function fadaee_like_post_handler() {
     update_post_meta($post_id, 'likes_count', $likes);
 
     // ذخیره IP
-    $liked_ips[] = $ip;
+    $liked_ips[] = $visitor_id;
+    $liked_ips = array_slice(array_values(array_unique($liked_ips)), -1000);
     update_post_meta($post_id, 'liked_ips', $liked_ips);
 
     wp_send_json_success([
@@ -127,8 +147,15 @@ add_action("wp_ajax_nopriv_fadaee_dislike_post", "fadaee_dislike_post");
 function fadaee_dislike_post() {
     check_ajax_referer('fadaee_nonce', 'nonce');
 
-    $post_id = intval($_POST['post_id']);
-    $user_ip = $_SERVER['REMOTE_ADDR']; // IP کاربر
+    $post_id = isset($_POST['post_id']) ? absint($_POST['post_id']) : 0;
+    if (!$post_id || get_post_status($post_id) !== 'publish') {
+        wp_send_json_error(['message' => 'شناسه پست معتبر نیست.']);
+    }
+
+    $visitor_id = arash_get_anonymous_visitor_id();
+    if ($visitor_id === '') {
+        wp_send_json_error(['message' => 'امکان ثبت رای وجود ندارد']);
+    }
 
     // گرفتن لیست IP هایی که قبلاً دیسلایک کرده‌اند
     $ips = get_post_meta($post_id, 'dislikes_ips', true);
@@ -139,7 +166,7 @@ function fadaee_dislike_post() {
     }
 
     // اگر این IP قبلاً رای داده، اجازه ثبت دوباره نده
-    if (in_array($user_ip, $ips)) {
+    if (in_array($visitor_id, $ips, true)) {
         wp_send_json_error([
             'message' => 'شما قبلاً دیسلایک کرده‌اید.'
         ]);
@@ -152,7 +179,8 @@ function fadaee_dislike_post() {
     update_post_meta($post_id, 'dislikes_count', $count);
 
     // اضافه کردن IP جدید به لیست
-    $ips[] = $user_ip;
+    $ips[] = $visitor_id;
+    $ips = array_slice(array_values(array_unique($ips)), -1000);
     update_post_meta($post_id, 'dislikes_ips', $ips);
 
     wp_send_json_success([
@@ -187,12 +215,14 @@ remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
 // اجرای تابع هنگام مشاهده پست
 function fadaee_track_post_views()
 {
-    if (is_single()) {
+    if (is_single() && !is_admin() && !is_preview() && !wp_doing_ajax() && !is_user_logged_in()) {
         global $post;
-        fadaee_set_post_views($post->ID);
+        if (!empty($post->ID)) {
+            fadaee_set_post_views($post->ID);
+        }
     }
 }
-add_action('wp_head', 'fadaee_track_post_views');
+add_action('template_redirect', 'fadaee_track_post_views');
 
 
 
@@ -1294,6 +1324,8 @@ add_action('wp_ajax_nopriv_fadaee_load_more', 'fadaee_load_more');
 
 function fadaee_load_more() {
 
+    check_ajax_referer('fadaee_nonce', 'nonce');
+
     $paged = isset($_POST['page']) ? max(1, intval($_POST['page'])) : 1;
     $category = isset($_POST['category']) ? intval($_POST['category']) : 0;
     $search   = isset($_POST['search']) ? sanitize_text_field(wp_unslash($_POST['search'])) : '';
@@ -1328,7 +1360,7 @@ function fadaee_load_more() {
     endif;
 
     wp_reset_postdata();
-    exit;
+    wp_die();
 }
 
 

@@ -126,6 +126,7 @@
                             <?php foreach ($social_links as $social): ?>
                                 <a href="<?php echo esc_url($social['url']); ?>" class="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors" aria-label="<?php echo esc_attr($social['label']); ?>" target="_blank" rel="noopener noreferrer">
                                     <span class="sr-only"><?php echo esc_html($social['label']); ?></span>
+                                    <?php $icon_url = ''; ?>
                                     <?php if (!empty($social['icon_id'])):
                                         $icon_url = wp_get_attachment_image_url((int) $social['icon_id'], 'thumbnail');
                                     endif; ?>
@@ -143,13 +144,12 @@
                 </div>
 
                 <?php
-                $ids = array(107, 105, 86, 20, 18);
-
                 $args = array(
                     'post_type'      => 'portfolio',
-                    'post__in'       => $ids,
-                    'orderby'        => 'post__in',
-                    'posts_per_page' => -1
+                    'post_status'    => 'publish',
+                    'posts_per_page' => 5,
+                    'orderby'        => 'date',
+                    'order'          => 'DESC',
                 );
 
                 $query_portfolio = new WP_Query($args);

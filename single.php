@@ -5,7 +5,7 @@
 
 $post_id = get_the_ID();
 $post_title = get_the_title($post_id);
-$post_content = get_the_content();
+$post_content = apply_filters('the_content', get_the_content());
 $post_date = get_the_time('F j, Y');
 $post_author = get_the_author_meta('display_name');
 
@@ -24,7 +24,7 @@ $reading_time_minutes = max(1, ceil($post_word_count / 200));
 
             <!-- Back Button -->
             <div class="mb-4 sm:mb-6">
-                <a href="<?php echo get_home_url()?>" class="group inline-flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition">
+                <a href="<?php echo esc_url(home_url('/')); ?>" class="group inline-flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition">
                     <div class="h-4 w-4 -scale-x-100 stroke-zinc-500 group-hover:stroke-zinc-700 dark:stroke-zinc-400">
                         <svg viewBox="0 0 16 16" fill="none" class="h-4 w-4 stroke-zinc-500 group-hover:stroke-zinc-700 dark:stroke-zinc-400 arrow">
                             <path d="M7.25 11.25 3.75 8m0 0 3.5-3.25M3.75 8h8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -70,10 +70,10 @@ $reading_time_minutes = max(1, ceil($post_word_count / 200));
             <article class="prose prose-zinc dark:prose-invert max-w-none prose-img:rounded-xl prose-img:shadow-lg" dir="rtl" >
                 <div>
                     <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-zinc-900 dark:text-white leading-tight" style="font-size: clamp(1.75rem, 5vw, 2.5rem);">
-                        <?= $post_title ?>
+                        <?php echo esc_html($post_title); ?>
                     </h1>
                     <div class="mt-4 sm:mt-6 flex flex-wrap items-center gap-2 sm:gap-4 text-sm sm:text-base text-zinc-500 dark:text-zinc-400">
-                        <time datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?= $post_date ?></time>
+                        <time datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?php echo esc_html($post_date); ?></time>
                         <span>•</span>
                         <span><?php echo esc_html($post_author); ?></span>
                         <span>•</span>
@@ -84,18 +84,20 @@ $reading_time_minutes = max(1, ceil($post_word_count / 200));
                 <div class="mt-8 sm:mt-12 prose-headings:scroll-mt-20 prose-headings:font-bold prose-h2:text-xl prose-h2:sm:text-2xl prose-h3:text-lg prose-h3:sm:text-xl prose-a:text-red-600 hover:prose-a:text-red-500 dark:prose-a:text-red-400" style="font-size: 17px; line-height: 1.8;">
 
                     <!-- Hero Image -->
-                    <img
-                        src="<?= get_the_post_thumbnail_url($post_id) ?>"
-                        alt="<?= esc_attr($post_title) ?>"
-                        class="w-full rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl ring-1 ring-zinc-900/5 dark:ring-white/10"
-                        loading="lazy"
-                    />
+                    <?php if (has_post_thumbnail($post_id)): ?>
+                        <img
+                            src="<?php echo esc_url(get_the_post_thumbnail_url($post_id)); ?>"
+                            alt="<?php echo esc_attr($post_title); ?>"
+                            class="w-full rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl ring-1 ring-zinc-900/5 dark:ring-white/10"
+                            loading="lazy"
+                        />
+                    <?php endif; ?>
 
 
                     <div class="content article-content pt-6 sm:pt-10 prose-p:text-base prose-p:sm:text-lg prose-p:leading-relaxed" style="font-size: 17px; line-height: 1.8;">
 
 
-                        <?= $post_content ?>
+                        <?php echo $post_content; ?>
 
                     </div>
                 </div>
@@ -150,7 +152,7 @@ $reading_time_minutes = max(1, ceil($post_word_count / 200));
                     <?php endif; ?>
                     
                     <?php if ($next_post) : ?>
-                        <a href="<?php echo get_permalink($next_post); ?>" class="group flex-1 p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition border border-zinc-200 dark:border-zinc-800 text-left">
+                        <a href="<?php echo get_permalink($next_post); ?>" class="group flex-1 p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition border border-zinc-200 dark:border-zinc-800 text-right">
                             <div class="text-xs text-zinc-500 dark:text-zinc-500 mb-1 flex items-center gap-1 justify-end">
                                 مقاله بعدی
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">

@@ -22,7 +22,7 @@ while (have_posts()) : the_post();
         
         <!-- Back Button -->
         <div class="mb-4 sm:mb-6">
-            <a href="<?php echo get_post_type_archive_link('portfolio'); ?>" class="group inline-flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition">
+            <a href="<?php echo esc_url(get_post_type_archive_link('portfolio')); ?>" class="group inline-flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition">
                 <div class="h-4 w-4 -scale-x-100 stroke-zinc-500 group-hover:stroke-zinc-700 dark:stroke-zinc-400">
                     <svg viewBox="0 0 16 16" fill="none" class="h-4 w-4 stroke-zinc-500 group-hover:stroke-zinc-700 dark:stroke-zinc-400 arrow">
                         <path d="M7.25 11.25 3.75 8m0 0 3.5-3.25M3.75 8h8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -200,7 +200,7 @@ while (have_posts()) : the_post();
                     <?php endif; ?>
                     
                     <?php if ($next_post) : ?>
-                        <a href="<?php echo get_permalink($next_post); ?>" class="group flex-1 p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition border border-zinc-200 dark:border-zinc-800 text-left">
+                        <a href="<?php echo get_permalink($next_post); ?>" class="group flex-1 p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition border border-zinc-200 dark:border-zinc-800 text-right">
                             <div class="text-xs text-zinc-500 dark:text-zinc-500 mb-1 flex items-center gap-1 justify-end">
                                 پروژه بعدی
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">

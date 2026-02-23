@@ -1,5 +1,10 @@
 <?php get_header(); ?>
 
+<?php
+$posts_page_id = (int) get_option('page_for_posts');
+$posts_page_url = $posts_page_id ? get_permalink($posts_page_id) : home_url('/');
+?>
+
 <main class="flex flex-col items-center justify-center text-center px-6 py-24 sm:py-32">
     
     <h1 class="text-8xl font-extrabold text-red-600 dark:text-red-500 tracking-tight">
@@ -16,12 +21,12 @@
     </p>
 
     <div class="mt-8 flex gap-4">
-        <a href="<?php echo home_url(); ?>"
+        <a href="<?php echo esc_url(home_url('/')); ?>"
            class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl transition-all shadow-sm">
             بازگشت به صفحه اصلی
         </a>
 
-        <a href="<?php echo get_permalink( get_option( 'page_for_posts' ) ); ?>"
+        <a href="<?php echo esc_url($posts_page_url); ?>"
            class="px-6 py-3 bg-zinc-800 hover:bg-zinc-700 text-white rounded-xl transition-all dark:bg-zinc-700 dark:hover:bg-zinc-600">
             مشاهده مقالات
         </a>
@@ -29,7 +34,7 @@
 
     <!-- Search Box -->
     <div class="mt-10 max-w-md w-full">
-        <form action="<?php echo home_url('/'); ?>" method="get" class="flex">
+        <form action="<?php echo esc_url(home_url('/')); ?>" method="get" class="flex">
             <input 
                 type="text" 
                 name="s" 

@@ -10,7 +10,7 @@ $footer_cta_button_label = !empty($options['footer_cta_button_label']) ? $option
 $footer_cta_button_url = !empty($options['footer_cta_button_url']) ? $options['footer_cta_button_url'] : '';
 ?>
 <?php if (!empty($sticky_phone)): ?>
-    <a href="tel:<?php echo esc_attr($sticky_phone); ?>" class="fixed bottom-6 left-6 z-50 flex items-center gap-2 text-white px-5 py-3 rounded-full shadow-lg transition-all duration-300" style="background-color: <?php echo esc_attr($sticky_color); ?>; box-shadow: 0 10px 25px <?php echo esc_attr($sticky_color); ?>33;">
+    <a href="tel:<?php echo esc_attr($sticky_phone); ?>" class="fixed bottom-6 start-6 z-50 flex items-center gap-2 text-white px-5 py-3 rounded-full shadow-lg transition-all duration-300" style="background-color: <?php echo esc_attr($sticky_color); ?>; box-shadow: 0 10px 25px <?php echo esc_attr($sticky_color); ?>33;">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h1.5a2.25 2.25 0 002.25-2.25v-2.772c0-.516-.351-.966-.852-1.091l-4.548-1.137a1.125 1.125 0 00-1.173.417l-.97 1.293a1.125 1.125 0 01-1.21.39 12.035 12.035 0 01-7.143-7.143 1.125 1.125 0 01.39-1.21l1.293-.97c.347-.26.49-.704.417-1.173L6.114 3.102A1.125 1.125 0 005.023 2.25H2.25A2.25 2.25 0 000 4.5v2.25z" />
         </svg>
@@ -48,7 +48,7 @@ $footer_cta_button_url = !empty($options['footer_cta_button_url']) ? $options['f
                                                                                <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M5 10h10M10 5l5 5-5 5" />
                                         </svg>
-                                        <span class="ml-2"><?php echo esc_html($footer_cta_button_label); ?></span>
+                                        <span class="mr-2"><?php echo esc_html($footer_cta_button_label); ?></span>
 
                                     </a>
                                 </div>
@@ -89,7 +89,7 @@ $footer_cta_button_url = !empty($options['footer_cta_button_url']) ? $options['f
                             </div>
 
                             <div class="flex flex-col items-center gap-3 md:items-end">
-                                <p class="text-center md:text-left text-xs sm:text-sm text-zinc-400 dark:text-zinc-500 leading-relaxed md:text-right">
+                                <p class="text-center text-xs sm:text-sm text-zinc-400 dark:text-zinc-500 leading-relaxed md:text-right">
                                     <?php
                                     $footer_text = arash_get_theme_option('footer_text');
                                     $footer_fallback = 'استفاده از تمامی مطالب با ذکر منبع بلامانع است.';

@@ -14,7 +14,7 @@ $term = get_queried_object();
         <!-- Page Header -->
         <header class="mb-12 sm:mb-16">
             <div class="mb-4">
-                <a href="<?php echo get_post_type_archive_link('portfolio'); ?>" class="inline-flex items-center gap-1 text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition">
+                <a href="<?php echo esc_url(get_post_type_archive_link('portfolio')); ?>" class="inline-flex items-center gap-1 text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
                         <path fill-rule="evenodd" d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z" clip-rule="evenodd" />
                     </svg>
@@ -33,7 +33,7 @@ $term = get_queried_object();
             <?php endif; ?>
             
             <div class="mt-4 text-sm text-zinc-500 dark:text-zinc-500">
-                <?php echo $term->count; ?> پروژه
+                <?php echo esc_html(fadaee_persian_numbers($term->count)); ?> پروژه
             </div>
         </header>
 
@@ -48,15 +48,15 @@ $term = get_queried_object();
         ?>
             <div class="mb-8 sm:mb-12">
                 <div class="flex flex-wrap gap-2">
-                    <a href="<?php echo get_post_type_archive_link('portfolio'); ?>" 
+                    <a href="<?php echo esc_url(get_post_type_archive_link('portfolio')); ?>" 
                        class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition">
                         همه
                     </a>
                     <?php foreach ($categories as $category) : ?>
-                        <a href="<?php echo get_term_link($category); ?>" 
+                        <a href="<?php echo esc_url(get_term_link($category)); ?>" 
                            class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition <?php echo $category->term_id === $term->term_id ? 'bg-red-500 text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'; ?>">
                             <?php echo esc_html($category->name); ?>
-                            <span class="mr-1.5 text-xs opacity-75">(<?php echo $category->count; ?>)</span>
+                            <span class="mr-1.5 text-xs opacity-75">(<?php echo esc_html(fadaee_persian_numbers($category->count)); ?>)</span>
                         </a>
                     <?php endforeach; ?>
                 </div>

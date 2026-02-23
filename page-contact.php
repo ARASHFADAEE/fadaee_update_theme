@@ -10,6 +10,20 @@ $contact_email = !empty($options['contact_email']) ? $options['contact_email'] :
 $map_embed = !empty($options['contact_map_embed']) ? $options['contact_map_embed'] : '';
 $form_shortcode = !empty($options['contact_form_shortcode']) ? $options['contact_form_shortcode'] : '';
 
+$allowed_map_iframe = [
+    'iframe' => [
+        'src' => true,
+        'width' => true,
+        'height' => true,
+        'style' => true,
+        'allow' => true,
+        'allowfullscreen' => true,
+        'loading' => true,
+        'referrerpolicy' => true,
+        'title' => true,
+    ],
+];
+
 $social_links = [];
 if (!empty($options['social_github'])) {
     $social_links[] = ['label' => 'GitHub', 'url' => $options['social_github']];
@@ -69,7 +83,7 @@ if (!empty($options['social_dribbble'])) {
 
                 <?php if (!empty($map_embed)): ?>
                     <div class="mt-6 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
-                        <?php echo $map_embed; ?>
+                        <?php echo wp_kses($map_embed, $allowed_map_iframe); ?>
                     </div>
                 <?php endif; ?>
             </div>
@@ -85,7 +99,7 @@ if (!empty($options['social_dribbble'])) {
 
                     <?php if (!empty($form_shortcode)): ?>
                         <div class="prose prose-sm max-w-none dark:prose-invert">
-                            <?php echo do_shortcode($form_shortcode); ?>
+                            <?php echo do_shortcode(sanitize_text_field($form_shortcode)); ?>
                         </div>
                     <?php else: ?>
                         <p class="text-sm text-zinc-500 dark:text-zinc-400">

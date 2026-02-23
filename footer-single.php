@@ -10,7 +10,7 @@ $footer_cta_button_label = !empty($options['footer_cta_button_label']) ? $option
 $footer_cta_button_url = !empty($options['footer_cta_button_url']) ? $options['footer_cta_button_url'] : '';
 ?>
 <?php if (!empty($sticky_phone)): ?>
-    <a href="tel:<?php echo esc_attr($sticky_phone); ?>" class="fixed bottom-6 left-6 z-50 flex items-center gap-2 text-white px-5 py-3 rounded-full shadow-lg transition-all duration-300" style="background-color: <?php echo esc_attr($sticky_color); ?>; box-shadow: 0 10px 25px <?php echo esc_attr($sticky_color); ?>33;">
+    <a href="tel:<?php echo esc_attr($sticky_phone); ?>" class="fixed bottom-6 start-6 z-50 flex items-center gap-2 text-white px-5 py-3 rounded-full shadow-lg transition-all duration-300" style="background-color: <?php echo esc_attr($sticky_color); ?>; box-shadow: 0 10px 25px <?php echo esc_attr($sticky_color); ?>33;">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h1.5a2.25 2.25 0 002.25-2.25v-2.772c0-.516-.351-.966-.852-1.091l-4.548-1.137a1.125 1.125 0 00-1.173.417l-.97 1.293a1.125 1.125 0 01-1.21.39 12.035 12.035 0 01-7.143-7.143 1.125 1.125 0 01.39-1.21l1.293-.97c.347-.26.49-.704.417-1.173L6.114 3.102A1.125 1.125 0 005.023 2.25H2.25A2.25 2.25 0 000 4.5v2.25z" />
         </svg>
@@ -45,7 +45,7 @@ $footer_cta_button_url = !empty($options['footer_cta_button_url']) ? $options['f
                                 <div class="flex sm:items-center">
                                     <a href="<?php echo esc_url($footer_cta_button_url); ?>"
                                        class="inline-flex items-center justify-center rounded-full bg-red-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-red-600/30 transition hover:bg-red-500 hover:shadow-red-500/40 dark:bg-red-500 dark:hover:bg-red-400">
-                                        <span class="ml-2"><?php echo esc_html($footer_cta_button_label); ?></span>
+                                        <span class="mr-2"><?php echo esc_html($footer_cta_button_label); ?></span>
                                         <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M5 10h10M10 5l5 5-5 5" />
                                         </svg>

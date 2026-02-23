@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fa" dir='rtl' class="scroll-smooth antialiased">
+<html <?php language_attributes(); ?> class="scroll-smooth antialiased">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,8 +32,11 @@
                                 <div class="flex flex-1 justify-end md:justify-center">
                                     <?php
                                     $menus = get_nav_menu_locations();
-                                    $menu_id = $menus['main_menu'];
-                                    $get_items = wp_get_nav_menu_items($menu_id);
+                                    $menu_id = isset($menus['main_menu']) ? (int) $menus['main_menu'] : 0;
+                                    $get_items = $menu_id ? wp_get_nav_menu_items($menu_id) : [];
+                                    if (!is_array($get_items)) {
+                                        $get_items = [];
+                                    }
                                     ?>
                                     
                                     <!-- Mobile menu button -->
@@ -84,7 +87,7 @@
                 </a>
 
                 <?php if ($has_children): ?>
-                    <ul class="absolute left-0 top-full mt-1 min-w-[180px] bg-white dark:bg-zinc-800 
+                    <ul class="absolute right-0 top-full mt-1 min-w-[180px] bg-white dark:bg-zinc-800 
                                rounded-md shadow-lg opacity-0 invisible 
                                group-hover:visible group-hover:opacity-100 
                                transition-opacity duration-200 z-50">

@@ -127,7 +127,8 @@ q(function($) {
                 action: "fadaee_load_more",
                 page: page + 1,
                 category: category,
-                search: search
+                search: search,
+                nonce: fadaee_ajax.nonce
             },
             success: function(res) {
                 if(res.trim() !== "") {
@@ -183,7 +184,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 action: 'fadaee_load_more',
                 page: page,
                 category: category,
-                search: search
+                search: search,
+                nonce: fadaee_ajax.nonce
             },
             success: function (res) {
                 setLoading(false);
@@ -267,9 +269,18 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", () => {
     const toggle = document.getElementById("mobile-menu-toggle");
     const menuOverlay = document.getElementById("mobile-menu");
+    const closeBtn = document.getElementById("mobile-menu-close");
+
+    if (!menuOverlay) {
+        return;
+    }
+
     const navPanel = menuOverlay.querySelector(".mobile-nav");
     const backdrop = menuOverlay.querySelector(".mobile-menu-backdrop");
-    const closeBtn = document.getElementById("mobile-menu-close");
+
+    if (!navPanel || !backdrop) {
+        return;
+    }
 
     const openMenu = () => {
         menuOverlay.classList.remove("hidden");
@@ -300,21 +311,26 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-document.querySelectorAll('.submenu-toggle').forEach(toggle => {
-    toggle.addEventListener('click', function(e) {
-        e.preventDefault();
-        const submenu = this.closest('li').querySelector('.mobile-submenu');
-        if (!submenu) return;
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.submenu-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            const item = this.closest('li');
+            if (!item) return;
 
-        const isHidden = submenu.classList.contains('hidden');
-        submenu.classList.toggle('hidden');
+            const submenu = item.querySelector('.mobile-submenu');
+            if (!submenu) return;
 
-        const icon = this.querySelector('svg');
-        if (icon) {
-            icon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
-        }
+            const isHidden = submenu.classList.contains('hidden');
+            submenu.classList.toggle('hidden');
 
-        this.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+            const icon = this.querySelector('svg');
+            if (icon) {
+                icon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+            }
+
+            this.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+        });
     });
 });
 

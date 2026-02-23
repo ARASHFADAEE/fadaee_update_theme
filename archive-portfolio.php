@@ -30,14 +30,14 @@ get_header();
         ?>
             <div class="mb-8 sm:mb-12">
                 <div class="flex flex-wrap gap-2">
-                    <a href="<?php echo get_post_type_archive_link('portfolio'); ?>" 
+                    <a href="<?php echo esc_url(get_post_type_archive_link('portfolio')); ?>" 
                        class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition <?php echo !is_tax('portfolio_category') ? 'bg-red-500 text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'; ?>">
                         همه
                     </a>
                     <?php foreach ($categories as $category) : ?>
-                        <a href="<?php echo get_term_link($category); ?>" 
+                        <a href="<?php echo esc_url(get_term_link($category)); ?>" 
                            class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition <?php echo is_tax('portfolio_category', $category->term_id) ? 'bg-red-500 text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'; ?>">
-                           <span class="mr-1.5 text-xs opacity-75">(<?php echo $category->count; ?>)</span>
+                           <span class="mr-1.5 text-xs opacity-75">(<?php echo esc_html(fadaee_persian_numbers($category->count)); ?>)</span>
                             <?php echo esc_html($category->name); ?>
                         </a>
                     <?php endforeach; ?>
