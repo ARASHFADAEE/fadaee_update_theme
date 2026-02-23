@@ -700,31 +700,37 @@
     $needs_toggle = mb_strlen($content_stripped) > $char_limit;
     ?>
 
-    <div class="content-box mx-auto w-full" itemprop="articleBody">
-        <?php if ($needs_toggle): ?>
-            <div class="content-preview" aria-hidden="true">
-                <?php echo esc_html(mb_substr($content_stripped, 0, $char_limit)); ?>
-                <span class="content-dots">...</span>
-            </div>
+    <?php if (!empty(trim($content_stripped))): ?>
+        <section class="w-full py-16 sm:py-20">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="content-box" itemprop="articleBody">
+                    <?php if ($needs_toggle): ?>
+                        <div class="content-preview" aria-hidden="true">
+                            <?php echo esc_html(mb_substr($content_stripped, 0, $char_limit)); ?>
+                            <span class="content-dots">...</span>
+                        </div>
 
-            <div class="content-full" id="content-full" data-full="1">
-                <?php echo $content; ?>
-            </div>
+                        <div class="content-full" id="content-full" data-full="1">
+                            <?php echo $content; ?>
+                        </div>
 
-            <button class="toggle-content-btn"
-                    type="button"
-                    onclick="toggleContent(this)"
-                    aria-expanded="false"
-                    aria-controls="content-full">
-                <span class="toggle-label">نمایش بیشتر</span>
-                <span class="toggle-icon">↓</span>
-            </button>
-        <?php else: ?>
-            <div class="content-full" id="content-full" data-full="1">
-                <?php echo $content; ?>
+                        <button class="toggle-content-btn"
+                                type="button"
+                                onclick="toggleContent(this)"
+                                aria-expanded="false"
+                                aria-controls="content-full">
+                            <span class="toggle-label">نمایش بیشتر</span>
+                            <span class="toggle-icon">↓</span>
+                        </button>
+                    <?php else: ?>
+                        <div class="content-full" id="content-full" data-full="1">
+                            <?php echo $content; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
-        <?php endif; ?>
-    </div>
+        </section>
+    <?php endif; ?>
 
 </main>
 
