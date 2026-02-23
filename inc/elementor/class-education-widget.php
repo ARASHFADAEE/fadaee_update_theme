@@ -7,7 +7,6 @@ if (!defined('ABSPATH')) {
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Border;
-use Elementor\Group_Control_Background;
 use Elementor\Widget_Base;
 
 class Fadaee_Elementor_Education_Widget extends Widget_Base {
@@ -17,7 +16,7 @@ class Fadaee_Elementor_Education_Widget extends Widget_Base {
     }
 
     public function get_title() {
-        return 'تحصیلات (Fadaee)';
+        return esc_html__('تحصیلات (Fadaee)', 'arash-theme');
     }
 
     public function get_icon() {
@@ -30,38 +29,59 @@ class Fadaee_Elementor_Education_Widget extends Widget_Base {
 
     protected function register_controls() {
         $this->start_controls_section('content_section', [
-            'label' => 'محتوا',
+            'label' => esc_html__('محتوا', 'arash-theme'),
             'tab' => Controls_Manager::TAB_CONTENT,
         ]);
 
         $this->add_control('section_title', [
-            'label' => 'عنوان بخش',
+            'label' => esc_html__('عنوان بخش', 'arash-theme'),
             'type' => Controls_Manager::TEXT,
-            'default' => 'تحصیلات',
+            'default' => esc_html__('تحصیلات', 'arash-theme'),
         ]);
 
         $this->add_control('section_subtitle', [
-            'label' => 'توضیح بخش',
+            'label' => esc_html__('توضیح بخش', 'arash-theme'),
             'type' => Controls_Manager::TEXTAREA,
             'rows' => 3,
-            'default' => 'مسیرهای آموزشی و مدارک تحصیلی من',
+            'default' => esc_html__('مسیرهای آموزشی و مدارک تحصیلی من', 'arash-theme'),
         ]);
 
         $this->add_control('items_limit', [
-            'label' => 'حداکثر تعداد آیتم‌ها',
+            'label' => esc_html__('حداکثر تعداد آیتم‌ها', 'arash-theme'),
             'type' => Controls_Manager::NUMBER,
             'default' => -1,
+        ]);
+
+        $this->add_control('order_by', [
+            'label' => esc_html__('مرتب‌سازی بر اساس', 'arash-theme'),
+            'type' => Controls_Manager::SELECT,
+            'default' => 'menu_order',
+            'options' => [
+                'menu_order' => esc_html__('ترتیب دستی', 'arash-theme'),
+                'date' => esc_html__('تاریخ', 'arash-theme'),
+                'title' => esc_html__('عنوان', 'arash-theme'),
+            ],
+        ]);
+
+        $this->add_control('order', [
+            'label' => esc_html__('جهت مرتب‌سازی', 'arash-theme'),
+            'type' => Controls_Manager::SELECT,
+            'default' => 'ASC',
+            'options' => [
+                'ASC' => esc_html__('صعودی', 'arash-theme'),
+                'DESC' => esc_html__('نزولی', 'arash-theme'),
+            ],
         ]);
 
         $this->end_controls_section();
 
         $this->start_controls_section('style_section', [
-            'label' => 'استایل کارت‌ها',
+            'label' => esc_html__('استایل کارت‌ها', 'arash-theme'),
             'tab' => Controls_Manager::TAB_STYLE,
         ]);
 
         $this->add_control('card_background_color', [
-            'label' => 'رنگ پس‌زمینه کارت',
+            'label' => esc_html__('رنگ پس‌زمینه کارت', 'arash-theme'),
             'type' => Controls_Manager::COLOR,
             'selectors' => [
                 '{{WRAPPER}} .fadaee-education-card' => 'background-color: {{VALUE}};',
@@ -80,7 +100,7 @@ class Fadaee_Elementor_Education_Widget extends Widget_Base {
             Group_Control_Typography::get_type(),
             [
                 'name' => 'title_typography',
-                'label' => 'تایپوگرافی عنوان',
+                'label' => esc_html__('تایپوگرافی عنوان', 'arash-theme'),
                 'selector' => '{{WRAPPER}} .fadaee-education-title',
             ]
         );
@@ -94,12 +114,14 @@ class Fadaee_Elementor_Education_Widget extends Widget_Base {
         $section_title = isset($settings['section_title']) ? $settings['section_title'] : '';
         $section_subtitle = isset($settings['section_subtitle']) ? $settings['section_subtitle'] : '';
         $items_limit = isset($settings['items_limit']) ? (int) $settings['items_limit'] : -1;
+        $order_by = isset($settings['order_by']) ? sanitize_key($settings['order_by']) : 'menu_order';
+        $order = isset($settings['order']) ? strtoupper($settings['order']) : 'ASC';
 
         $query_args = [
             'post_type' => 'education',
             'posts_per_page' => $items_limit,
-            'orderby' => 'menu_order',
-            'order' => 'ASC',
+            'orderby' => in_array($order_by, ['menu_order', 'date', 'title'], true) ? $order_by : 'menu_order',
+            'order' => in_array($order, ['ASC', 'DESC'], true) ? $order : 'ASC',
         ];
 
         $education_query = new WP_Query($query_args);
@@ -183,7 +205,7 @@ class Fadaee_Elementor_Education_Widget extends Widget_Base {
                     </div>
                 <?php else: ?>
                     <p class="text-sm text-zinc-500 dark:text-zinc-400">
-                        تحصیلی ثبت نشده است.
+                        <?php echo esc_html__('تحصیلی ثبت نشده است.', 'arash-theme'); ?>
                     </p>
                 <?php endif; ?>
             </div>

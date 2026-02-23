@@ -6,17 +6,31 @@ if (!defined('ABSPATH')) {
 
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Typography;
-use Elementor\Group_Control_Border;
 use Elementor\Widget_Base;
 
 class Fadaee_Elementor_Blog_Widget extends Widget_Base {
+
+    private function get_blog_category_options() {
+        $options = [];
+        $categories = get_categories([
+            'hide_empty' => false,
+        ]);
+
+        if (is_array($categories)) {
+            foreach ($categories as $category) {
+                $options[$category->term_id] = $category->name;
+            }
+        }
+
+        return $options;
+    }
 
     public function get_name() {
         return 'fadaee_blog';
     }
 
     public function get_title() {
-        return 'یادداشت‌ها / مقالات (Fadaee)';
+        return esc_html__('یادداشت‌ها / مقالات (Fadaee)', 'arash-theme');
     }
 
     public function get_icon() {
@@ -29,28 +43,58 @@ class Fadaee_Elementor_Blog_Widget extends Widget_Base {
 
     protected function register_controls() {
         $this->start_controls_section('content_section', [
-            'label' => 'محتوا',
+            'label' => esc_html__('محتوا', 'arash-theme'),
             'tab' => Controls_Manager::TAB_CONTENT,
         ]);
 
         $this->add_control('section_title', [
-            'label' => 'عنوان بخش',
+            'label' => esc_html__('عنوان بخش', 'arash-theme'),
             'type' => Controls_Manager::TEXT,
             'default' => fadaee_translate('recent_notes'),
         ]);
 
         $this->add_control('items_per_page', [
-            'label' => 'تعداد یادداشت‌ها',
+            'label' => esc_html__('تعداد یادداشت‌ها', 'arash-theme'),
             'type' => Controls_Manager::NUMBER,
             'default' => 4,
             'min' => 1,
             'max' => 12,
         ]);
 
+        $this->add_control('category_filter', [
+            'label' => esc_html__('فیلتر دسته‌بندی', 'arash-theme'),
+            'type' => Controls_Manager::SELECT2,
+            'options' => $this->get_blog_category_options(),
+            'multiple' => true,
+            'label_block' => true,
+        ]);
+
+        $this->add_control('order_by', [
+            'label' => esc_html__('مرتب‌سازی بر اساس', 'arash-theme'),
+            'type' => Controls_Manager::SELECT,
+            'default' => 'date',
+            'options' => [
+                'date' => esc_html__('تاریخ', 'arash-theme'),
+                'title' => esc_html__('عنوان', 'arash-theme'),
+                'comment_count' => esc_html__('تعداد دیدگاه', 'arash-theme'),
+                'rand' => esc_html__('تصادفی', 'arash-theme'),
+            ],
+        ]);
+
+        $this->add_control('order', [
+            'label' => esc_html__('جهت مرتب‌سازی', 'arash-theme'),
+            'type' => Controls_Manager::SELECT,
+            'default' => 'DESC',
+            'options' => [
+                'DESC' => esc_html__('نزولی', 'arash-theme'),
+                'ASC' => esc_html__('صعودی', 'arash-theme'),
+            ],
+        ]);
+
         $this->end_controls_section();
 
         $this->start_controls_section('style_section', [
-            'label' => 'استایل آیتم‌ها',
+            'label' => esc_html__('استایل آیتم‌ها', 'arash-theme'),
             'tab' => Controls_Manager::TAB_STYLE,
         ]);
 
@@ -78,12 +122,23 @@ class Fadaee_Elementor_Blog_Widget extends Widget_Base {
 
         $section_title = isset($settings['section_title']) ? $settings['section_title'] : '';
         $items_per_page = isset($settings['items_per_page']) ? (int) $settings['items_per_page'] : 4;
+        $order_by = isset($settings['order_by']) ? sanitize_key($settings['order_by']) : 'date';
+        $order = isset($settings['order']) ? strtoupper($settings['order']) : 'DESC';
+        $category_filter = isset($settings['category_filter']) && is_array($settings['category_filter']) ? array_map('absint', $settings['category_filter']) : [];
 
-        $the_query = new WP_Query([
+        $query_args = [
             'post_type' => 'post',
             'post_status' => 'publish',
             'posts_per_page' => $items_per_page,
-        ]);
+            'orderby' => in_array($order_by, ['date', 'title', 'comment_count', 'rand'], true) ? $order_by : 'date',
+            'order' => in_array($order, ['ASC', 'DESC'], true) ? $order : 'DESC',
+        ];
+
+        if (!empty($category_filter)) {
+            $query_args['category__in'] = array_values(array_filter($category_filter));
+        }
+
+        $the_query = new WP_Query($query_args);
 
         ?>
         <div class="max-w-6xl mx-auto px-6 pt-10" style="text-align: right;">

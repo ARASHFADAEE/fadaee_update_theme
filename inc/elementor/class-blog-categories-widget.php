@@ -12,12 +12,27 @@ use Elementor\Widget_Base;
 
 class Fadaee_Elementor_Blog_Categories_Widget extends Widget_Base {
 
+    private function get_blog_category_options() {
+        $options = [];
+        $categories = get_categories([
+            'hide_empty' => false,
+        ]);
+
+        if (is_array($categories)) {
+            foreach ($categories as $category) {
+                $options[$category->term_id] = $category->name;
+            }
+        }
+
+        return $options;
+    }
+
     public function get_name() {
         return 'fadaee_blog_categories';
     }
 
     public function get_title() {
-        return 'دسته‌بندی مقالات (Fadaee)';
+        return esc_html__('دسته‌بندی مقالات (Fadaee)', 'arash-theme');
     }
 
     public function get_icon() {
@@ -30,33 +45,36 @@ class Fadaee_Elementor_Blog_Categories_Widget extends Widget_Base {
 
     protected function register_controls() {
         $this->start_controls_section('content_section', [
-            'label' => 'محتوا',
+            'label' => esc_html__('محتوا', 'arash-theme'),
             'tab' => Controls_Manager::TAB_CONTENT,
         ]);
 
         $this->add_control('section_title', [
-            'label' => 'عنوان بخش',
+            'label' => esc_html__('عنوان بخش', 'arash-theme'),
             'type' => Controls_Manager::TEXT,
-            'default' => 'دسته‌بندی مقالات',
+            'default' => esc_html__('دسته‌بندی مقالات', 'arash-theme'),
         ]);
 
         $this->add_control('section_subtitle', [
-            'label' => 'توضیح بخش',
+            'label' => esc_html__('توضیح بخش', 'arash-theme'),
             'type' => Controls_Manager::TEXTAREA,
             'rows' => 3,
-            'default' => 'موضوعات مختلف در حوزه برنامه‌نویسی را مرور کنید',
+            'default' => esc_html__('موضوعات مختلف در حوزه برنامه‌نویسی را مرور کنید', 'arash-theme'),
         ]);
 
         $this->add_control('categories', [
-            'label' => 'انتخاب دسته‌ها',
-            'type' => Controls_Manager::TEXT,
-            'description' => 'شناسه دسته‌ها را با کاما جدا کنید (مثلاً: 1,2,3)',
+            'label' => esc_html__('انتخاب دسته‌ها', 'arash-theme'),
+            'type' => Controls_Manager::SELECT2,
+            'options' => $this->get_blog_category_options(),
+            'multiple' => true,
+            'label_block' => true,
+            'description' => esc_html__('یک یا چند دسته را انتخاب کنید.', 'arash-theme'),
         ]);
 
         $this->end_controls_section();
 
         $this->start_controls_section('style_section', [
-            'label' => 'استایل کارت‌ها',
+            'label' => esc_html__('استایل کارت‌ها', 'arash-theme'),
             'tab' => Controls_Manager::TAB_STYLE,
         ]);
 
@@ -92,13 +110,12 @@ class Fadaee_Elementor_Blog_Categories_Widget extends Widget_Base {
 
         $section_title = isset($settings['section_title']) ? $settings['section_title'] : '';
         $section_subtitle = isset($settings['section_subtitle']) ? $settings['section_subtitle'] : '';
-        $categories_input = isset($settings['categories']) ? $settings['categories'] : '';
+        $categories_input = isset($settings['categories']) ? $settings['categories'] : [];
 
         $category_ids = [];
-        if (!empty($categories_input)) {
-            $parts = explode(',', $categories_input);
-            foreach ($parts as $part) {
-                $id = (int) trim($part);
+        if (is_array($categories_input)) {
+            foreach ($categories_input as $raw_id) {
+                $id = absint($raw_id);
                 if ($id > 0) {
                     $category_ids[] = $id;
                 }
@@ -157,7 +174,7 @@ class Fadaee_Elementor_Blog_Categories_Widget extends Widget_Base {
                     </div>
                 <?php else: ?>
                     <p class="text-sm text-zinc-500 dark:text-zinc-400 text-center">
-                        هنوز دسته‌ای انتخاب نشده است.
+                        <?php echo esc_html__('هنوز دسته‌ای انتخاب نشده است.', 'arash-theme'); ?>
                     </p>
                 <?php endif; ?>
             </div>

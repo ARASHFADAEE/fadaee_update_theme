@@ -14,7 +14,7 @@ class Fadaee_Elementor_Testimonials_Widget extends Widget_Base {
     }
 
     public function get_title() {
-        return 'نظرات مشتریان (Fadaee)';
+        return esc_html__('نظرات مشتریان (Fadaee)', 'arash-theme');
     }
 
     public function get_icon() {
@@ -27,29 +27,58 @@ class Fadaee_Elementor_Testimonials_Widget extends Widget_Base {
 
     protected function register_controls() {
         $this->start_controls_section('content_section', [
-            'label' => 'محتوا',
+            'label' => esc_html__('محتوا', 'arash-theme'),
             'tab' => Controls_Manager::TAB_CONTENT,
         ]);
 
         $this->add_control('title', [
-            'label' => 'عنوان بخش',
+            'label' => esc_html__('عنوان بخش', 'arash-theme'),
             'type' => Controls_Manager::TEXT,
-            'default' => 'نظرات مشتریان',
+            'default' => esc_html__('نظرات مشتریان', 'arash-theme'),
         ]);
 
         $this->add_control('subtitle', [
-            'label' => 'توضیح بخش',
+            'label' => esc_html__('توضیح بخش', 'arash-theme'),
             'type' => Controls_Manager::TEXTAREA,
             'rows' => 3,
-            'default' => 'مشتری‌ها در مورد همکاری با من چه می‌گویند؟',
+            'default' => esc_html__('مشتری‌ها در مورد همکاری با من چه می‌گویند؟', 'arash-theme'),
         ]);
 
         $this->add_control('items', [
-            'label' => 'تعداد نظرات',
+            'label' => esc_html__('تعداد نظرات', 'arash-theme'),
             'type' => Controls_Manager::NUMBER,
             'default' => 6,
             'min' => 1,
             'max' => 24,
+        ]);
+
+        $this->add_control('featured_only', [
+            'label' => esc_html__('فقط نظرات ویژه', 'arash-theme'),
+            'type' => Controls_Manager::SWITCHER,
+            'return_value' => 'yes',
+            'default' => 'yes',
+        ]);
+
+        $this->add_control('order_by', [
+            'label' => esc_html__('مرتب‌سازی بر اساس', 'arash-theme'),
+            'type' => Controls_Manager::SELECT,
+            'default' => 'date',
+            'options' => [
+                'date' => esc_html__('تاریخ', 'arash-theme'),
+                'title' => esc_html__('عنوان', 'arash-theme'),
+                'rand' => esc_html__('تصادفی', 'arash-theme'),
+                'menu_order' => esc_html__('ترتیب دستی', 'arash-theme'),
+            ],
+        ]);
+
+        $this->add_control('order', [
+            'label' => esc_html__('جهت مرتب‌سازی', 'arash-theme'),
+            'type' => Controls_Manager::SELECT,
+            'default' => 'DESC',
+            'options' => [
+                'DESC' => esc_html__('نزولی', 'arash-theme'),
+                'ASC' => esc_html__('صعودی', 'arash-theme'),
+            ],
         ]);
 
         $this->end_controls_section();
@@ -61,18 +90,28 @@ class Fadaee_Elementor_Testimonials_Widget extends Widget_Base {
         $title = isset($settings['title']) ? $settings['title'] : '';
         $subtitle = isset($settings['subtitle']) ? $settings['subtitle'] : '';
         $items = !empty($settings['items']) ? (int) $settings['items'] : 6;
+        $featured_only = isset($settings['featured_only']) && $settings['featured_only'] === 'yes';
+        $order_by = isset($settings['order_by']) ? sanitize_key($settings['order_by']) : 'date';
+        $order = isset($settings['order']) ? strtoupper($settings['order']) : 'DESC';
 
-        $query = new WP_Query([
+        $query_args = [
             'post_type' => 'testimonial',
             'posts_per_page' => $items,
-            'meta_query' => [
+            'orderby' => in_array($order_by, ['date', 'title', 'rand', 'menu_order'], true) ? $order_by : 'date',
+            'order' => in_array($order, ['ASC', 'DESC'], true) ? $order : 'DESC',
+        ];
+
+        if ($featured_only) {
+            $query_args['meta_query'] = [
                 [
                     'key' => '_testimonial_featured',
                     'value' => 1,
                     'compare' => '=',
                 ],
-            ],
-        ]);
+            ];
+        }
+
+        $query = new WP_Query($query_args);
 
         ?>
         <section class="w-full py-16 sm:py-20 bg-gradient-to-b from-white via-zinc-50 to-white dark:from-black dark:via-zinc-950 dark:to-black">
@@ -167,7 +206,7 @@ class Fadaee_Elementor_Testimonials_Widget extends Widget_Base {
                     </div>
                 <?php else: ?>
                     <p class="text-sm text-zinc-500 dark:text-zinc-400">
-                        هنوز نظری ثبت نشده است.
+                        <?php echo esc_html__('هنوز نظری ثبت نشده است.', 'arash-theme'); ?>
                     </p>
                 <?php endif; ?>
             </div>
