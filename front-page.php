@@ -144,13 +144,28 @@
                 </div>
 
                 <?php
+                $hero_portfolio_ids = array_unique(array_filter([
+                    (int) arash_get_theme_option('hero_portfolio_1'),
+                    (int) arash_get_theme_option('hero_portfolio_2'),
+                    (int) arash_get_theme_option('hero_portfolio_3'),
+                    (int) arash_get_theme_option('hero_portfolio_4'),
+                    (int) arash_get_theme_option('hero_portfolio_5'),
+                ]));
+
                 $args = array(
                     'post_type'      => 'portfolio',
                     'post_status'    => 'publish',
                     'posts_per_page' => 5,
-                    'orderby'        => 'date',
-                    'order'          => 'DESC',
                 );
+
+                if (!empty($hero_portfolio_ids)) {
+                    $args['post__in'] = $hero_portfolio_ids;
+                    $args['posts_per_page'] = count($hero_portfolio_ids);
+                    $args['orderby'] = 'post__in';
+                } else {
+                    $args['orderby'] = 'date';
+                    $args['order'] = 'DESC';
+                }
 
                 $query_portfolio = new WP_Query($args);
                 ?>

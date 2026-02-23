@@ -330,6 +330,11 @@ function arash_get_theme_option_defaults() {
         'testimonials_items' => 6,
         'portfolio_items_per_page' => 6,
         'portfolio_layout' => 'grid',
+        'hero_portfolio_1' => 0,
+        'hero_portfolio_2' => 0,
+        'hero_portfolio_3' => 0,
+        'hero_portfolio_4' => 0,
+        'hero_portfolio_5' => 0,
         'home_builder_mode' => 'theme',
         'blog_enabled' => 1,
         'blog_items_per_page' => 6,
@@ -1086,6 +1091,86 @@ function arash_customize_register($wp_customize) {
             'list' => __('لیستی', 'arash-theme'),
         ],
         'settings' => ARASH_THEME_OPTIONS_KEY . '[portfolio_layout]',
+    ]);
+
+    $portfolio_posts = get_posts([
+        'post_type' => 'portfolio',
+        'post_status' => 'publish',
+        'numberposts' => -1,
+        'orderby' => 'date',
+        'order' => 'DESC',
+    ]);
+
+    $portfolio_choices = [
+        0 => __('— انتخاب نمونه‌کار —', 'arash-theme'),
+    ];
+    foreach ($portfolio_posts as $portfolio_post) {
+        $portfolio_choices[$portfolio_post->ID] = $portfolio_post->post_title;
+    }
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[hero_portfolio_1]', [
+        'type' => 'option',
+        'default' => $defaults['hero_portfolio_1'],
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+    $wp_customize->add_control('arash_theme_options_hero_portfolio_1', [
+        'label' => __('نمونه‌کار ۱ اسلایدر هیرو', 'arash-theme'),
+        'section' => 'arash_theme_section_portfolio',
+        'type' => 'select',
+        'choices' => $portfolio_choices,
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[hero_portfolio_1]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[hero_portfolio_2]', [
+        'type' => 'option',
+        'default' => $defaults['hero_portfolio_2'],
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+    $wp_customize->add_control('arash_theme_options_hero_portfolio_2', [
+        'label' => __('نمونه‌کار ۲ اسلایدر هیرو (اختیاری)', 'arash-theme'),
+        'section' => 'arash_theme_section_portfolio',
+        'type' => 'select',
+        'choices' => $portfolio_choices,
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[hero_portfolio_2]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[hero_portfolio_3]', [
+        'type' => 'option',
+        'default' => $defaults['hero_portfolio_3'],
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+    $wp_customize->add_control('arash_theme_options_hero_portfolio_3', [
+        'label' => __('نمونه‌کار ۳ اسلایدر هیرو (اختیاری)', 'arash-theme'),
+        'section' => 'arash_theme_section_portfolio',
+        'type' => 'select',
+        'choices' => $portfolio_choices,
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[hero_portfolio_3]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[hero_portfolio_4]', [
+        'type' => 'option',
+        'default' => $defaults['hero_portfolio_4'],
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+    $wp_customize->add_control('arash_theme_options_hero_portfolio_4', [
+        'label' => __('نمونه‌کار ۴ اسلایدر هیرو (اختیاری)', 'arash-theme'),
+        'section' => 'arash_theme_section_portfolio',
+        'type' => 'select',
+        'choices' => $portfolio_choices,
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[hero_portfolio_4]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[hero_portfolio_5]', [
+        'type' => 'option',
+        'default' => $defaults['hero_portfolio_5'],
+        'sanitize_callback' => 'arash_sanitize_integer',
+    ]);
+    $wp_customize->add_control('arash_theme_options_hero_portfolio_5', [
+        'label' => __('نمونه‌کار ۵ اسلایدر هیرو (اختیاری)', 'arash-theme'),
+        'section' => 'arash_theme_section_portfolio',
+        'type' => 'select',
+        'choices' => $portfolio_choices,
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[hero_portfolio_5]',
     ]);
 
     $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[home_builder_mode]', [
