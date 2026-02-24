@@ -175,10 +175,15 @@ class Fadaee_Elementor_Agency_Demo_Widget extends Widget_Base {
             'tab' => Controls_Manager::TAB_STYLE,
         ]);
 
+        $this->add_control('light_section_bg_info', [
+            'type' => Controls_Manager::RAW_HTML,
+            'raw' => '<div style="color: #666; font-size: 12px;">پس‌زمینه بخش در light mode اختیاری است. برای حذف رنگ پس‌زمینه، مقدار خالی بگذارید.</div>',
+        ]);
+
         $this->add_control('light_section_bg', [
             'label' => esc_html__('پس‌زمینه بخش', 'arash-theme'),
             'type' => Controls_Manager::COLOR,
-            'default' => '#ffffff',
+            'default' => 'transparent',
             'selectors' => [
                 'body:not(.dark) {{WRAPPER}} .fadaee-agency-demo' => 'background-color: {{VALUE}};',
             ],
@@ -290,10 +295,15 @@ class Fadaee_Elementor_Agency_Demo_Widget extends Widget_Base {
             'tab' => Controls_Manager::TAB_STYLE,
         ]);
 
+        $this->add_control('dark_section_bg_info', [
+            'type' => Controls_Manager::RAW_HTML,
+            'raw' => '<div style="color: #999; font-size: 12px;">پس‌زمینه بخش در dark mode اختیاری است. برای حذف رنگ پس‌زمینه، مقدار خالی بگذارید.</div>',
+        ]);
+
         $this->add_control('dark_section_bg', [
             'label' => esc_html__('پس‌زمینه بخش', 'arash-theme'),
             'type' => Controls_Manager::COLOR,
-            'default' => '#09090b',
+            'default' => 'transparent',
             'selectors' => [
                 'body.dark {{WRAPPER}} .fadaee-agency-demo' => 'background-color: {{VALUE}};',
             ],

@@ -215,8 +215,8 @@ if ($is_agency_demo || $use_agency_styling) {
         </section>
 
         <?php
-        $education_enabled = arash_get_theme_option('education_enabled');
-        $work_enabled = arash_get_theme_option('work_enabled');
+        $education_enabled = !$is_agency_demo && arash_get_theme_option('education_enabled');
+        $work_enabled = !$is_agency_demo && arash_get_theme_option('work_enabled');
         $testimonials_enabled = arash_get_theme_option('testimonials_enabled');
         $education_order = (int) arash_get_theme_option('education_order');
         $work_order = (int) arash_get_theme_option('work_order');
