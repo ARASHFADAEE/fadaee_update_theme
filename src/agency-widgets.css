@@ -1,0 +1,210 @@
+/* ==========================================
+   Agency Widgets - Elementor Custom Styles
+   ========================================== */
+
+:root {
+  --agency-bg-light: #ffffff;
+  --agency-bg-dark: #09090b;
+  --agency-border-light: #e4e4e7;
+  --agency-border-dark: #3f3f46;
+  --agency-text-light: #18181b;
+  --agency-text-dark: #f4f4f5;
+  --agency-muted-light: #52525b;
+  --agency-muted-dark: #a1a1aa;
+}
+
+/* Agency Demo Widget Base */
+.fadaee-agency-demo,
+.fadaee-agency-hero,
+.fadaee-agency-blog,
+.fadaee-agency-faq,
+.fadaee-agency-cta,
+.fadaee-agency-services,
+.fadaee-agency-portfolio {
+  background-color: var(--agency-bg-light, transparent) !important;
+  border-color: var(--agency-border-light, #e4e4e7) !important;
+  color: var(--agency-text-light, #18181b) !important;
+  transition: all 0.3s ease;
+}
+
+body.dark .fadaee-agency-demo,
+body.dark .fadaee-agency-hero,
+body.dark .fadaee-agency-blog,
+body.dark .fadaee-agency-faq,
+body.dark .fadaee-agency-cta,
+body.dark .fadaee-agency-services,
+body.dark .fadaee-agency-portfolio {
+  background-color: var(--agency-bg-dark, transparent) !important;
+  border-color: var(--agency-border-dark, #3f3f46) !important;
+  color: var(--agency-text-dark, #f4f4f5) !important;
+}
+
+/* Typography Overrides */
+.fadaee-agency-demo-title,
+.fadaee-agency-hero h2,
+.fadaee-agency-blog h2,
+.fadaee-agency-blog h3,
+.fadaee-agency-faq h3,
+.fadaee-agency-blog h4,
+.fadaee-agency-services h3,
+.fadaee-agency-portfolio h3 {
+  color: var(--agency-text-light, #18181b) !important;
+}
+
+body.dark .fadaee-agency-demo-title,
+body.dark .fadaee-agency-hero h2,
+body.dark .fadaee-agency-blog h2,
+body.dark .fadaee-agency-blog h3,
+body.dark .fadaee-agency-faq h3,
+body.dark .fadaee-agency-blog h4,
+body.dark .fadaee-agency-services h3,
+body.dark .fadaee-agency-portfolio h3 {
+  color: var(--agency-text-dark, #f4f4f5) !important;
+}
+
+/* Description Text */
+.fadaee-agency-demo-description,
+.fadaee-agency-demo-card div,
+.fadaee-agency-blog-card p,
+.fadaee-agency-faq-item p,
+.fadaee-agency-services-card p {
+  color: var(--agency-muted-light, #52525b) !important;
+}
+
+body.dark .fadaee-agency-demo-description,
+body.dark .fadaee-agency-demo-card div,
+body.dark .fadaee-agency-blog-card p,
+body.dark .fadaee-agency-faq-item p,
+body.dark .fadaee-agency-services-card p {
+  color: var(--agency-muted-dark, #a1a1aa) !important;
+}
+
+/* Badge Styles */
+.fadaee-agency-demo-badge {
+  border-color: currentColor !important;
+  opacity: 0.6;
+}
+
+/* Card Styles */
+.fadaee-agency-demo-card,
+.fadaee-agency-blog-card,
+.fadaee-agency-faq-item,
+.fadaee-agency-services-card,
+.fadaee-agency-portfolio-item {
+  background-color: transparent !important;
+  border-color: inherit !important;
+  transition: all 0.2s ease;
+}
+
+/* Card Hover */
+.fadaee-agency-demo-card:hover,
+.fadaee-agency-blog-card:hover,
+.fadaee-agency-portfolio-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+body.dark .fadaee-agency-demo-card:hover,
+body.dark .fadaee-agency-blog-card:hover,
+body.dark .fadaee-agency-portfolio-item:hover {
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.08);
+}
+
+/* Button Styles */
+.fadaee-agency-demo-btn-primary {
+  background-color: #ef4444 !important;
+  color: white !important;
+  border: none !important;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.fadaee-agency-demo-btn-primary:hover {
+  background-color: #dc2626 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.fadaee-agency-demo-btn-secondary {
+  background-color: transparent !important;
+  border: 1px solid currentColor !important;
+  color: var(--agency-muted-light, #52525b) !important;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+body.dark .fadaee-agency-demo-btn-secondary {
+  color: var(--agency-muted-dark, #a1a1aa) !important;
+}
+
+.fadaee-agency-demo-btn-secondary:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  transform: translateY(-2px);
+}
+
+body.dark .fadaee-agency-demo-btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Remove all hardcoded bg-, text-, border- classes */
+.fadaee-agency-demo [class*="bg-zinc"],
+.fadaee-agency-demo [class*="text-zinc"],
+.fadaee-agency-demo [class*="border-zinc"],
+.fadaee-agency-hero [class*="bg-zinc"],
+.fadaee-agency-hero [class*="text-zinc"],
+.fadaee-agency-hero [class*="border-zinc"],
+.fadaee-agency-blog [class*="bg-zinc"],
+.fadaee-agency-blog [class*="text-zinc"],
+.fadaee-agency-blog [class*="border-zinc"],
+.fadaee-agency-faq [class*="bg-zinc"],
+.fadaee-agency-faq [class*="text-zinc"],
+.fadaee-agency-faq [class*="border-zinc"] {
+  background-color: transparent !important;
+  color: inherit !important;
+  border-color: inherit !important;
+}
+
+/* Fix Progress Bar */
+.fadaee-agency-demo div[class*="bg-red"],
+.fadaee-agency-demo div[class*="bg-indigo"],
+.fadaee-agency-demo div[class*="bg-emerald"] {
+  background-color: #ef4444 !important;
+}
+
+/* Portal Links */
+.fadaee-agency-demo a[class*="text-red"],
+.fadaee-agency-blog a[class*="text-red"],
+.fadaee-agency-blog a[class*="text-emerald"] {
+  color: #ef4444 !important;
+}
+
+.fadaee-agency-demo a[class*="text-red"]:hover,
+.fadaee-agency-blog a[class*="text-red"]:hover {
+  color: #dc2626 !important;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .fadaee-agency-demo,
+  .fadaee-agency-hero,
+  .fadaee-agency-blog,
+  .fadaee-agency-faq {
+    padding: 1.5rem 1rem;
+  }
+}
+
+/* Accessibility */
+.fadaee-agency-demo-btn-primary:focus,
+.fadaee-agency-demo-btn-secondary:focus {
+  outline: 2px solid #ef4444;
+  outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+  .fadaee-agency-demo,
+  .fadaee-agency-hero,
+  .fadaee-agency-blog {
+    page-break-inside: avoid;
+  }
+}

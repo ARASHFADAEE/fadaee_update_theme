@@ -41,6 +41,13 @@ function enqueue_theme_styles() {
         array(), // وابستگی‌ها
         filemtime( get_template_directory() . '/src/custom.css' ) // ورژن براساس تغییرات فایل
     );
+
+    wp_enqueue_style(
+        'agency-widgets-style',
+        get_template_directory_uri() . '/src/agency-widgets.css',
+        array(),
+        filemtime( get_template_directory() . '/src/agency-widgets.css' )
+    );
 }
 add_action( 'wp_enqueue_scripts', 'enqueue_theme_styles' );
 

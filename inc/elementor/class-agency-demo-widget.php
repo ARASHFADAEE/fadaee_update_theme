@@ -411,6 +411,32 @@ class Fadaee_Elementor_Agency_Demo_Widget extends Widget_Base {
         $this->end_controls_section();
     }
 
+    private function get_inline_styles() {
+        $settings = $this->get_settings_for_display();
+        $is_dark = wp_is_mobile() ? false : true;
+        
+        $styles = [
+            '--bg-color' => $is_dark 
+                ? (!empty($settings['dark_section_bg']) ? $settings['dark_section_bg'] : 'transparent')
+                : (!empty($settings['light_section_bg']) ? $settings['light_section_bg'] : 'transparent'),
+            '--border-color' => $is_dark
+                ? (!empty($settings['dark_section_border']) ? $settings['dark_section_border'] : '#3f3f46')
+                : (!empty($settings['light_section_border']) ? $settings['light_section_border'] : '#e4e4e7'),
+            '--text-color' => $is_dark
+                ? (!empty($settings['dark_title_color']) ? $settings['dark_title_color'] : '#f4f4f5')
+                : (!empty($settings['light_title_color']) ? $settings['light_title_color'] : '#18181b'),
+        ];
+        
+        $css = '';
+        foreach ($styles as $key => $value) {
+            if (!empty($value)) {
+                $css .= $key . ': ' . esc_attr($value) . '; ';
+            }
+        }
+        
+        return $css;
+    }
+
     protected function render() {
         $settings = $this->get_settings_for_display();
 
@@ -461,56 +487,56 @@ class Fadaee_Elementor_Agency_Demo_Widget extends Widget_Base {
             'order' => 'DESC',
         ]);
         ?>
-        <section class="fadaee-agency-demo relative overflow-hidden rounded-3xl border border-zinc-800/60 bg-zinc-950 px-6 py-16 sm:px-8 lg:px-12 lg:py-24 text-zinc-200 shadow-2xl transition-shadow duration-500 hover:shadow-red-500/10">
-            <div class="pointer-events-none absolute -top-20 -right-20 h-60 w-60 rounded-full bg-red-500/20 blur-3xl"></div>
-            <div class="pointer-events-none absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-indigo-500/20 blur-3xl"></div>
+        <section class="fadaee-agency-demo relative overflow-hidden rounded-3xl border px-6 py-16 sm:px-8 lg:px-12 lg:py-24 shadow-sm transition-shadow duration-500" style="<?php echo $this->get_inline_styles(); ?>">
+            <div class="pointer-events-none absolute -top-20 -right-20 h-60 w-60 rounded-full blur-3xl" style="background: currentColor; opacity: 0.05;"></div>
+            <div class="pointer-events-none absolute -bottom-20 -left-20 h-72 w-72 rounded-full blur-3xl" style="background: currentColor; opacity: 0.03;"></div>
 
             <div class="relative grid gap-12 lg:grid-cols-2 items-center">
                 <div>
-                    <span class="fadaee-agency-demo-badge inline-flex items-center rounded-full border border-zinc-700 bg-zinc-900/90 px-3 py-1 text-sm text-zinc-300">
+                    <span class="fadaee-agency-demo-badge inline-flex items-center rounded-full border px-3 py-1 text-sm">
                         <?php echo esc_html($settings['badge_text']); ?>
                     </span>
 
-                    <h2 class="fadaee-agency-demo-title mt-6 text-3xl sm:text-4xl font-black tracking-tight leading-tight text-zinc-100">
+                    <h2 class="fadaee-agency-demo-title mt-6 text-3xl sm:text-4xl font-black tracking-tight leading-tight">
                         <?php echo esc_html($settings['title']); ?>
                     </h2>
 
-                    <p class="fadaee-agency-demo-description mt-5 text-base sm:text-lg leading-8 text-zinc-400">
+                    <p class="fadaee-agency-demo-description mt-5 text-base sm:text-lg leading-8">
                         <?php echo esc_html($settings['description']); ?>
                     </p>
 
-                    <ul class="mt-6 space-y-2 text-sm text-zinc-300">
-                        <li class="flex items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400">✓</span> تحویل سریع با کیفیت پایدار</li>
-                        <li class="flex items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400">✓</span> معماری قابل توسعه برای رشد آینده</li>
-                        <li class="flex items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400">✓</span> تمرکز بر KPI واقعی کسب‌وکار</li>
+                    <ul class="mt-6 space-y-2 text-sm">
+                        <li class="flex items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded-full text-emerald-500">✓</span> تحویل سریع با کیفیت پایدار</li>
+                        <li class="flex items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded-full text-emerald-500">✓</span> معماری قابل توسعه برای رشد آینده</li>
+                        <li class="flex items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded-full text-emerald-500">✓</span> تمرکز بر KPI واقعی کسب‌وکار</li>
                     </ul>
 
                     <div class="mt-8 flex flex-wrap gap-4">
                         <?php if (!empty($settings['primary_text']) && !empty($settings['primary_url']['url'])): ?>
-                            <a <?php echo $this->get_render_attribute_string('primary_link'); ?> class="fadaee-agency-demo-btn fadaee-agency-demo-btn-primary inline-flex items-center rounded-xl bg-red-500 px-6 py-3 text-sm font-semibold text-white hover:bg-red-400 transition">
+                            <a <?php echo $this->get_render_attribute_string('primary_link'); ?> class="fadaee-agency-demo-btn fadaee-agency-demo-btn-primary inline-flex items-center rounded-xl px-6 py-3 text-sm font-semibold transition">
                                 <?php echo esc_html($settings['primary_text']); ?>
                             </a>
                         <?php endif; ?>
 
                         <?php if (!empty($settings['secondary_text']) && !empty($settings['secondary_url']['url'])): ?>
-                            <a <?php echo $this->get_render_attribute_string('secondary_link'); ?> class="fadaee-agency-demo-btn fadaee-agency-demo-btn-secondary inline-flex items-center rounded-xl border border-zinc-700 px-6 py-3 text-sm font-semibold text-zinc-200 hover:border-zinc-500 transition">
+                            <a <?php echo $this->get_render_attribute_string('secondary_link'); ?> class="fadaee-agency-demo-btn fadaee-agency-demo-btn-secondary inline-flex items-center rounded-xl border px-6 py-3 text-sm font-semibold transition">
                                 <?php echo esc_html($settings['secondary_text']); ?>
                             </a>
                         <?php endif; ?>
                     </div>
 
                     <div class="mt-8 grid grid-cols-3 gap-4 text-center sm:max-w-md">
-                        <div class="fadaee-agency-demo-card rounded-xl border border-zinc-800 bg-zinc-900/80 p-3">
-                            <div class="text-2xl font-bold text-zinc-100">+80</div>
-                            <div class="mt-1 text-xs text-zinc-400">پروژه تکمیل‌شده</div>
+                        <div class="fadaee-agency-demo-card rounded-xl border p-3">
+                            <div class="text-2xl font-bold">+80</div>
+                            <div class="mt-1 text-xs opacity-70">پروژه تکمیل‌شده</div>
                         </div>
-                        <div class="fadaee-agency-demo-card rounded-xl border border-zinc-800 bg-zinc-900/80 p-3">
-                            <div class="text-2xl font-bold text-zinc-100">+6</div>
-                            <div class="mt-1 text-xs text-zinc-400">سال تجربه</div>
+                        <div class="fadaee-agency-demo-card rounded-xl border p-3">
+                            <div class="text-2xl font-bold">+6</div>
+                            <div class="mt-1 text-xs opacity-70">سال تجربه</div>
                         </div>
-                        <div class="fadaee-agency-demo-card rounded-xl border border-zinc-800 bg-zinc-900/80 p-3">
-                            <div class="text-2xl font-bold text-zinc-100">%98</div>
-                            <div class="mt-1 text-xs text-zinc-400">رضایت مشتری</div>
+                        <div class="fadaee-agency-demo-card rounded-xl border p-3">
+                            <div class="text-2xl font-bold">%98</div>
+                            <div class="mt-1 text-xs opacity-70">رضایت مشتری</div>
                         </div>
                     </div>
                 </div>
