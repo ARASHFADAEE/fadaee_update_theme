@@ -22,7 +22,7 @@ class Fadaee_Elementor_Testimonials_Widget extends Widget_Base {
     }
 
     public function get_categories() {
-        return ['general'];
+        return ['fadaee-widgets'];
     }
 
     protected function register_controls() {
@@ -82,6 +82,65 @@ class Fadaee_Elementor_Testimonials_Widget extends Widget_Base {
         ]);
 
         $this->end_controls_section();
+
+        $this->start_controls_section('style_section', [
+            'label' => esc_html__('استایل', 'arash-theme'),
+            'tab' => Controls_Manager::TAB_STYLE,
+        ]);
+
+        $this->add_control('light_section_bg', [
+            'label' => esc_html__('پس‌زمینه بخش (روشن)', 'arash-theme'),
+            'type' => Controls_Manager::COLOR,
+            'default' => '#ffffff',
+            'selectors' => [
+                'body:not(.dark) {{WRAPPER}} .fadaee-testimonials-section' => 'background-color: {{VALUE}};',
+            ],
+        ]);
+
+        $this->add_control('dark_section_bg', [
+            'label' => esc_html__('پس‌زمینه بخش (تیره)', 'arash-theme'),
+            'type' => Controls_Manager::COLOR,
+            'default' => '#09090b',
+            'selectors' => [
+                'body.dark {{WRAPPER}} .fadaee-testimonials-section' => 'background-color: {{VALUE}};',
+            ],
+        ]);
+
+        $this->add_control('light_card_bg', [
+            'label' => esc_html__('پس‌زمینه کارت (روشن)', 'arash-theme'),
+            'type' => Controls_Manager::COLOR,
+            'default' => '#ffffff',
+            'selectors' => [
+                'body:not(.dark) {{WRAPPER}} .fadaee-testimonial-card' => 'background-color: {{VALUE}};',
+            ],
+        ]);
+
+        $this->add_control('dark_card_bg', [
+            'label' => esc_html__('پس‌زمینه کارت (تیره)', 'arash-theme'),
+            'type' => Controls_Manager::COLOR,
+            'default' => '#18181b',
+            'selectors' => [
+                'body.dark {{WRAPPER}} .fadaee-testimonial-card' => 'background-color: {{VALUE}};',
+            ],
+        ]);
+
+        $this->add_control('title_color', [
+            'label' => esc_html__('رنگ عنوان بخش', 'arash-theme'),
+            'type' => Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} .fadaee-testimonials-title' => 'color: {{VALUE}};',
+            ],
+        ]);
+
+        $this->add_control('content_color', [
+            'label' => esc_html__('رنگ متن کارت', 'arash-theme'),
+            'type' => Controls_Manager::COLOR,
+            'selectors' => [
+                '{{WRAPPER}} .fadaee-testimonial-content' => 'color: {{VALUE}};',
+            ],
+        ]);
+
+        $this->end_controls_section();
     }
 
     protected function render() {
@@ -114,12 +173,12 @@ class Fadaee_Elementor_Testimonials_Widget extends Widget_Base {
         $query = new WP_Query($query_args);
 
         ?>
-        <section class="w-full py-16 sm:py-20 bg-gradient-to-b from-white via-zinc-50 to-white dark:from-black dark:via-zinc-950 dark:to-black">
+        <section class="fadaee-testimonials-section w-full py-16 sm:py-20 bg-gradient-to-b from-white via-zinc-50 to-white dark:from-black dark:via-zinc-950 dark:to-black">
             <div class="max-w-6xl mx-auto px-6">
                 <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
                     <div>
                         <?php if (!empty($title)): ?>
-                            <h2 class="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
+                            <h2 class="fadaee-testimonials-title text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
                                 <?php echo esc_html($title); ?>
                             </h2>
                         <?php endif; ?>
@@ -146,7 +205,7 @@ class Fadaee_Elementor_Testimonials_Widget extends Widget_Base {
                             $project_name = get_post_meta(get_the_ID(), '_project_name', true);
                             ?>
                             <article class="scroll-item  max-w-sm">
-                                <div class="relative overflow-hidden rounded-2xl bg-white/90 dark:bg-zinc-900/90 border border-zinc-200/70 dark:border-zinc-800/70 shadow-sm hover:shadow-lg transition-shadow duration-200">
+                                <div class="fadaee-testimonial-card relative overflow-hidden rounded-2xl bg-white/90 dark:bg-zinc-900/90 border border-zinc-200/70 dark:border-zinc-800/70 shadow-sm hover:shadow-lg transition-shadow duration-200">
                                     <div class="absolute inset-0 pointer-events-none">
                                         <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-l from-red-500 via-orange-400 to-amber-400 dark:from-red-400 dark:via-orange-300 dark:to-amber-300 opacity-80"></div>
                                     </div>
@@ -196,7 +255,7 @@ class Fadaee_Elementor_Testimonials_Widget extends Widget_Base {
                                                 <?php endif; ?>
                                             </div>
                                         </div>
-                                        <div class="text-sm leading-relaxed text-zinc-600 dark:text-zinc-300">
+                                        <div class="fadaee-testimonial-content text-sm leading-relaxed text-zinc-600 dark:text-zinc-300">
                                             <?php echo wp_kses_post(wp_trim_words(get_the_content(), 40, '...')); ?>
                                         </div>
                                     </div>

@@ -38,7 +38,7 @@ class Fadaee_Elementor_Blog_Widget extends Widget_Base {
     }
 
     public function get_categories() {
-        return ['general'];
+        return ['fadaee-widgets'];
     }
 
     protected function register_controls() {
@@ -98,6 +98,42 @@ class Fadaee_Elementor_Blog_Widget extends Widget_Base {
             'tab' => Controls_Manager::TAB_STYLE,
         ]);
 
+        $this->add_control('light_section_bg', [
+            'label' => esc_html__('پس‌زمینه بخش (روشن)', 'arash-theme'),
+            'type' => Controls_Manager::COLOR,
+            'default' => '#ffffff',
+            'selectors' => [
+                'body:not(.dark) {{WRAPPER}} .fadaee-blog-section' => 'background-color: {{VALUE}};',
+            ],
+        ]);
+
+        $this->add_control('dark_section_bg', [
+            'label' => esc_html__('پس‌زمینه بخش (تیره)', 'arash-theme'),
+            'type' => Controls_Manager::COLOR,
+            'default' => '#09090b',
+            'selectors' => [
+                'body.dark {{WRAPPER}} .fadaee-blog-section' => 'background-color: {{VALUE}};',
+            ],
+        ]);
+
+        $this->add_control('light_card_bg', [
+            'label' => esc_html__('پس‌زمینه کارت (روشن)', 'arash-theme'),
+            'type' => Controls_Manager::COLOR,
+            'default' => '#ffffff',
+            'selectors' => [
+                'body:not(.dark) {{WRAPPER}} .fadaee-blog-card' => 'background-color: {{VALUE}};',
+            ],
+        ]);
+
+        $this->add_control('dark_card_bg', [
+            'label' => esc_html__('پس‌زمینه کارت (تیره)', 'arash-theme'),
+            'type' => Controls_Manager::COLOR,
+            'default' => '#18181b',
+            'selectors' => [
+                'body.dark {{WRAPPER}} .fadaee-blog-card' => 'background-color: {{VALUE}};',
+            ],
+        ]);
+
         $this->add_control('title_color', [
             'label' => 'رنگ عنوان',
             'type' => Controls_Manager::COLOR,
@@ -141,6 +177,7 @@ class Fadaee_Elementor_Blog_Widget extends Widget_Base {
         $the_query = new WP_Query($query_args);
 
         ?>
+        <section class="fadaee-blog-section rounded-3xl">
         <div class="max-w-6xl mx-auto px-6 pt-10" style="text-align: right;">
             <div class="flex items-center justify-between mb-8 sm:mb-12">
                 <?php if (!empty($section_title)): ?>
@@ -162,7 +199,7 @@ class Fadaee_Elementor_Blog_Widget extends Widget_Base {
                         $post_id = get_the_ID();
                         $views = fadaee_get_post_views($post_id);
                         ?>
-                        <article class="group">
+                        <article class="fadaee-blog-card group rounded-2xl border border-zinc-200 dark:border-zinc-800 p-5">
                             <a href="<?php the_permalink(); ?>"
                                class="fadaee-blog-item-title text-zinc-900 dark:text-zinc-100 hover:text-red-500 dark:hover:text-red-400 transition-colors">
                                 <div class="text-lg sm:text-xl font-semibold leading-tight mb-2">
@@ -184,6 +221,7 @@ class Fadaee_Elementor_Blog_Widget extends Widget_Base {
                 <?php endif; ?>
             </div>
         </div>
+        </section>
         <?php
     }
 }

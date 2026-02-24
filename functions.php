@@ -298,8 +298,8 @@ function arash_get_theme_option_defaults() {
         'hero_secondary_button_label' => 'مشاهده رزومه',
         'hero_secondary_button_url' => '',
         'hero_background_type' => 'color',
-        'hero_background_color' => '#f97316',
-        'hero_background_color_light' => '#f97316',
+        'hero_background_color' => '',
+        'hero_background_color_light' => '',
         'hero_background_color_dark' => '#020617',
         'hero_background_image' => 0,
         'hero_avatar_id' => 0,
@@ -335,7 +335,9 @@ function arash_get_theme_option_defaults() {
         'hero_portfolio_3' => 0,
         'hero_portfolio_4' => 0,
         'hero_portfolio_5' => 0,
-        'home_builder_mode' => 'theme',
+        'home_builder_mode' => 'elementor',
+        'home_demo_variant' => 'classic_personal',
+        'use_agency_styling' => 0,
         'blog_enabled' => 1,
         'blog_items_per_page' => 6,
         'blog_page_title' => fadaee_translate('everything_more'),
@@ -416,16 +418,19 @@ function arash_sanitize_integer($value) {
 }
 
 
-function arash_sanitize_choice($value, $setting) {
-    $control = $setting->manager->get_control($setting->id);
-    if (!$control || empty($control->choices)) {
-        return $value;
+function arash_sanitize_choice($value, $setting = null) {
+    if (is_object($setting) && isset($setting->manager, $setting->id)) {
+        $control = $setting->manager->get_control($setting->id);
+        if ($control && !empty($control->choices)) {
+            if (isset($control->choices[$value])) {
+                return $value;
+            }
+            $keys = array_keys($control->choices);
+            return reset($keys);
+        }
     }
-    if (isset($control->choices[$value])) {
-        return $value;
-    }
-    $keys = array_keys($control->choices);
-    return reset($keys);
+
+    return sanitize_text_field((string) $value);
 }
 
 
@@ -474,6 +479,12 @@ function arash_customize_register($wp_customize) {
         'title' => __('شبکه‌های اجتماعی', 'arash-theme'),
         'panel' => 'arash_theme_options_panel',
         'priority' => 40,
+    ]);
+
+    $wp_customize->add_section('arash_theme_section_home', [
+        'title' => __('صفحه اصلی', 'arash-theme'),
+        'panel' => 'arash_theme_options_panel',
+        'priority' => 43,
     ]);
 
     $wp_customize->add_section('arash_theme_section_home_categories', [
@@ -1179,15 +1190,46 @@ function arash_customize_register($wp_customize) {
         'sanitize_callback' => 'arash_sanitize_choice',
     ]);
 
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[home_demo_variant]', [
+        'type' => 'option',
+        'default' => $defaults['home_demo_variant'],
+        'sanitize_callback' => 'arash_sanitize_choice',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_home_demo_variant', [
+        'label' => __('دموی صفحه اصلی (حالت قالب)', 'arash-theme'),
+        'section' => 'arash_theme_section_home',
+        'type' => 'select',
+        'choices' => [
+            'classic_personal' => __('دمو ۱ - شخصی کلاسیک', 'arash-theme'),
+            'agency_nova' => __('دمو ۲ - آژانس نُوا', 'arash-theme'),
+        ],
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[home_demo_variant]',
+    ]);
+
     $wp_customize->add_control('arash_theme_options_home_builder_mode', [
         'label' => __('حالت صفحه اصلی', 'arash-theme'),
-        'section' => 'arash_theme_section_home',
+        'section' => 'arash_theme_section_general',
         'type' => 'select',
         'choices' => [
             'theme' => __('حالت پیش‌فرض قالب', 'arash-theme'),
             'elementor' => __('سازگار با المنتور', 'arash-theme'),
         ],
         'settings' => ARASH_THEME_OPTIONS_KEY . '[home_builder_mode]',
+    ]);
+
+    $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[use_agency_styling]', [
+        'type' => 'option',
+        'default' => $defaults['use_agency_styling'],
+        'sanitize_callback' => 'arash_sanitize_checkbox',
+    ]);
+
+    $wp_customize->add_control('arash_theme_options_use_agency_styling', [
+        'label' => __('استفاده از هدر/فوتر اختصاصی آژانس', 'arash-theme'),
+        'description' => __('هدر و فوتر تیره‌رنگ آژانس را حتی در حالت المنتور استفاده کن', 'arash-theme'),
+        'section' => 'arash_theme_section_general',
+        'type' => 'checkbox',
+        'settings' => ARASH_THEME_OPTIONS_KEY . '[use_agency_styling]',
     ]);
 
     $wp_customize->add_setting(ARASH_THEME_OPTIONS_KEY . '[blog_enabled]', [
@@ -1582,7 +1624,7 @@ add_action('after_switch_theme', 'arash_flush_rewrites');
 
 function arash_output_hero_custom_styles() {
     $options = arash_get_theme_options();
-    $light = !empty($options['hero_background_color_light']) ? $options['hero_background_color_light'] : $options['hero_background_color'];
+    $light = !empty($options['hero_background_color_light']) ? $options['hero_background_color_light'] : 'transparent';
     $dark = !empty($options['hero_background_color_dark']) ? $options['hero_background_color_dark'] : '#020617';
     $primary = !empty($options['primary_color']) ? $options['primary_color'] : '#f97316';
     $font_option = !empty($options['font_family']) ? $options['font_family'] : 'IRANYekan';
@@ -1610,6 +1652,74 @@ function arash_output_hero_custom_styles() {
     <?php
 }
 add_action('wp_head', 'arash_output_hero_custom_styles', 99);
+
+function arash_is_elementor_built($post_id = null) {
+    if (!$post_id) {
+        $post_id = get_queried_object_id();
+    }
+
+    $post_id = absint($post_id);
+    if ($post_id <= 0) {
+        return false;
+    }
+
+    if (!class_exists('Elementor\\Plugin')) {
+        return false;
+    }
+
+    $edit_mode = get_post_meta($post_id, '_elementor_edit_mode', true);
+    if (!empty($edit_mode)) {
+        return true;
+    }
+
+    $plugin = Elementor\Plugin::instance();
+    if (isset($plugin->db) && method_exists($plugin->db, 'is_built_with_elementor')) {
+        return (bool) $plugin->db->is_built_with_elementor($post_id);
+    }
+
+    return false;
+}
+
+function arash_output_elementor_compat_styles() {
+    if (!class_exists('Elementor\\Plugin')) {
+        return;
+    }
+    ?>
+    <style id="arash-elementor-compat-styles">
+        body.elementor-page .elementor {
+            color: #18181b;
+        }
+
+        body.dark.elementor-page .elementor {
+            color: #e4e4e7;
+        }
+
+        body.elementor-page .elementor-widget-text-editor,
+        body.elementor-page .elementor-widget-text-editor p,
+        body.elementor-page .elementor-widget-heading .elementor-heading-title {
+            color: inherit;
+        }
+
+        body.elementor-page .elementor-widget-container,
+        body.elementor-page .elementor-column,
+        body.elementor-page .elementor-section {
+            transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+        }
+
+        body.dark.elementor-page .elementor-widget-divider .elementor-divider-separator {
+            border-color: rgba(161, 161, 170, 0.35);
+        }
+
+        body.dark.elementor-page .elementor-widget-icon-list .elementor-icon-list-text,
+        body.dark.elementor-page .elementor-widget-button .elementor-button-text,
+        body.dark.elementor-page .elementor-widget-text-editor,
+        body.dark.elementor-page .elementor-widget-text-editor p {
+            color: inherit;
+        }
+    </style>
+    <?php
+}
+add_action('wp_head', 'arash_output_elementor_compat_styles', 100);
 
 function arash_add_education_meta_box() {
     add_meta_box('education_meta_box', 'فیلدهای تحصیلات', 'arash_education_meta_box_callback', 'education', 'normal', 'high');

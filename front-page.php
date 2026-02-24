@@ -1,7 +1,21 @@
-<?php get_header() ?>
-<main class="flex-1 pt-12 sm:pt-24 pb-16 sm:pb-32 px-4 sm:px-8">
+<?php
+$home_demo_variant = arash_get_theme_option('home_demo_variant');
+$is_agency_demo = ($home_demo_variant === 'agency_nova');
+$use_agency_styling = arash_get_theme_option('use_agency_styling');
+$home_builder_mode = arash_get_theme_option('home_builder_mode');
+$is_elementor_home = ($home_builder_mode === 'elementor' && class_exists('Elementor\\Plugin'));
+$main_classes = $is_elementor_home
+    ? 'flex-1'
+    : 'flex-1 pt-12 sm:pt-24 pb-16 sm:pb-32 px-4 sm:px-8';
+
+if ($is_agency_demo || $use_agency_styling) {
+    get_header('agency');
+} else {
+    get_header();
+}
+?>
+<main class="<?php echo esc_attr($main_classes); ?>">
     <?php
-    $home_builder_mode = arash_get_theme_option('home_builder_mode');
     if ($home_builder_mode === 'elementor' && class_exists('Elementor\\Plugin')) :
         if (have_posts()) :
             while (have_posts()) :
@@ -79,7 +93,12 @@
                 'icon_id' => 0,
             ];
         }
+
+        $home_demo_variant = arash_get_theme_option('home_demo_variant');
     ?>
+        <?php if ($home_demo_variant === 'agency_nova'): ?>
+            <?php get_template_part('template/home', 'demo-agency'); ?>
+        <?php else: ?>
         <section class="hero-section-custom rounded-3xl lg:rounded-[2rem] px-4 sm:px-8 py-8 sm:py-10 shadow-sm backdrop-blur" style="<?php echo esc_attr($hero_style); ?>">
             <div class="mx-auto max-w-2xl lg:max-w-5xl">
 
@@ -688,6 +707,8 @@
             </div>
         <?php endif; ?>
 
+        <?php endif; ?>
+
     <?php endif; // end home_builder_mode conditional 
     ?>
 
@@ -700,7 +721,7 @@
     $needs_toggle = mb_strlen($content_stripped) > $char_limit;
     ?>
 
-    <?php if (!empty(trim($content_stripped))): ?>
+    <?php if ($home_builder_mode !== 'elementor' && !empty(trim($content_stripped))): ?>
         <section class="w-full py-16 sm:py-20">
             <div class="max-w-6xl mx-auto px-6">
                 <div class="content-box" itemprop="articleBody">
@@ -734,4 +755,10 @@
 
 </main>
 
-<?php get_footer(); ?>
+<?php
+if ($is_agency_demo || $use_agency_styling) {
+    get_footer('agency');
+} else {
+    get_footer();
+}
+?>
